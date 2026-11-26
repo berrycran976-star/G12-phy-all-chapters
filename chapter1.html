@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade 12 Physics - မာတိကာ (Table of Contents) & Interactive 3D</title>
+    <title>Grade 12 Physics - Chapter 1: Rotational Motion (Interactive 3D)</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -68,7 +68,7 @@
             background: #94a3b8;
         }
 
-        /* Sidebar Styling */
+        /* Left Sidebar Styling */
         #sidebar {
             background: linear-gradient(180deg, #0a1022 0%, #0f1830 55%, #121b3a 100%);
             box-shadow: 8px 0 40px -18px rgba(10, 16, 34, 0.7);
@@ -87,7 +87,7 @@
             border-color: rgba(129, 140, 248, 0.25);
         }
 
-        /* Hero Banner Decorative Rotational Wheel */
+        /* Top Hero Banner with Subtle Rotational Gear Accent */
         .hero-banner {
             position: relative;
             overflow: hidden;
@@ -128,7 +128,7 @@
             box-shadow: 0 1px 2px rgba(10, 16, 34, 0.05), 0 18px 40px -22px rgba(30, 27, 75, 0.35);
         }
 
-        /* 3D Canvas Container & Toolbar */
+        /* 3D Canvas Container & Top-Right Toolbar */
         .canvas-container {
             position: relative;
             width: 100%;
@@ -137,11 +137,11 @@
             overflow: hidden;
             background: radial-gradient(ellipse at 50% 35%, #1f2a4d 0%, #0a1022 80%);
             box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.14), 0 22px 44px -24px rgba(2, 6, 23, 0.8);
-            touch-action: none;
+            touch-action: none; /* Enables smooth 3D touch rotation & pinch zoom on mobile */
         }
         @media (min-width: 768px) {
             .canvas-container {
-                height: 460px;
+                height: 470px;
             }
         }
         .canvas-container canvas {
@@ -150,7 +150,7 @@
             height: 100% !important;
         }
 
-        /* Top-Right 3D Toolbar (Overlay Toggle Switch + Zoom Controls) */
+        /* 3D Toolbar (Explanation Text Toggle Switch + Zoom Controls) */
         .cv-tools {
             position: absolute;
             top: 10px;
@@ -215,7 +215,7 @@
             transform: translateX(13px);
         }
 
-        /* Smooth Fade Out when Overlay Text Toggle is OFF */
+        /* Smooth Fade Out when Overlay Text Toggle Switch is OFF */
         .cv-ov {
             transition: opacity 0.22s ease, transform 0.22s ease;
         }
@@ -341,7 +341,7 @@
         }
 
         /* Floating Bottom Navigation Dock (Chapter & Article Switcher) */
-        .bottom-dock {
+        .dock {
             position: sticky;
             bottom: 14px;
             z-index: 35;
@@ -350,7 +350,7 @@
             margin: 0 12px 16px;
             pointer-events: none;
         }
-        .dock-inner {
+        .dock-in {
             pointer-events: auto;
             display: flex;
             flex-wrap: wrap;
@@ -364,22 +364,22 @@
             border: 1px solid rgba(148, 163, 184, 0.28);
             box-shadow: 0 18px 40px -12px rgba(2, 6, 23, 0.8);
         }
-        .dock-group {
+        .dock-grp {
             display: flex;
             align-items: center;
             gap: 6px;
             transition: opacity 0.2s;
         }
-        .dock-group.dim {
+        .dock-grp.dim {
             opacity: 0.4;
         }
-        .dock-label {
+        .dock-lbl {
             font-size: 12px;
             font-weight: 600;
             color: #94a3b8;
             margin-right: 2px;
         }
-        .dock-value {
+        .dock-v {
             min-width: 64px;
             text-align: center;
             font-size: 13px;
@@ -391,7 +391,7 @@
             height: 24px;
             background: rgba(148, 163, 184, 0.25);
         }
-        .dock-btn {
+        .dock-b {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -407,45 +407,29 @@
             cursor: pointer;
             transition: background 0.15s, transform 0.15s;
         }
-        .dock-btn:hover:not(:disabled) {
+        .dock-b:hover:not(:disabled) {
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
             border-color: transparent;
             transform: translateY(-1px);
         }
-        .dock-btn:disabled {
+        .dock-b:disabled {
             opacity: 0.32;
             cursor: not-allowed;
         }
-        .dock-btn svg {
+        .dock-b svg {
             width: 15px;
             height: 15px;
         }
         @media (max-width: 560px) {
             .dock-btn-text { display: none; }
             .dock-sep { display: none; }
-            .dock-value { min-width: 52px; font-size: 12px; }
+            .dock-v { min-width: 52px; font-size: 12px; }
         }
 
         .katex-display {
             overflow-x: auto;
             overflow-y: hidden;
             padding: 0.4rem 0;
-        }
-
-        /* Table of Contents (မာတိကာ) Landing View Styling */
-        .toc-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-        .toc-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 38px -20px rgba(30, 27, 75, 0.35);
-            border-color: #818cf8;
-        }
-        .toc-pill.active {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: #ffffff;
-            border-color: transparent;
-            box-shadow: 0 8px 20px -8px rgba(79, 70, 229, 0.75);
         }
     </style>
 </head>
@@ -454,24 +438,19 @@
     <!-- Mobile Top Header -->
     <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-2.5">
-            <button type="button" id="mobile-home-btn" class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm" title="မာတိကာ (13 Chapters)">
+            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm">
                 G12
-            </button>
+            </div>
             <div>
                 <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
-                <p id="mobile-header-subtitle" class="text-xs text-indigo-600 font-medium">မာတိကာ (Chapters 1 – 13)</p>
+                <p id="mobile-header-subtitle" class="text-xs text-indigo-600 font-medium">Chapter 1: Rotational Motion</p>
             </div>
         </div>
-        <div class="flex items-center gap-2">
-            <button type="button" id="mobile-toc-btn" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-200 hover:bg-indigo-100 transition">
-                မာတိကာ
-            </button>
-            <button id="mobile-menu-btn" aria-label="Open Navigation Menu" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
+        <button id="mobile-menu-btn" aria-label="Open Navigation Menu" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </header>
 
     <!-- Mobile Backdrop Overlay -->
@@ -496,19 +475,6 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
-                </button>
-            </div>
-
-            <!-- TABLE OF CONTENTS (မာတိကာ) HOME BUTTON -->
-            <div class="px-4 pt-3.5 pb-1">
-                <button type="button" id="sidebar-toc-btn" class="w-full px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-between shadow-md hover:bg-indigo-500 transition">
-                    <span class="flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                        </svg>
-                        <span>မာတိကာ (All 13 Chapters)</span>
-                    </span>
-                    <span class="text-[11px] bg-white/20 px-2 py-0.5 rounded-full">Home</span>
                 </button>
             </div>
 
@@ -586,186 +552,491 @@
 
         <!-- MAIN CONTENT AREA -->
         <main class="flex-1 min-w-0 flex flex-col">
+            <!-- Top Hero Banner -->
+            <div class="hero-banner text-white px-6 py-8 md:px-10 md:py-10 border-b border-slate-800">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-300 mb-2">
+                        <span id="banner-chapter-badge" class="bg-indigo-500/20 border border-indigo-400/30 px-2.5 py-1 rounded-full">Chapter 1 of 13</span>
+                        <span>•</span>
+                        <span>Grade 12 Physics</span>
+                    </div>
+                    <h1 id="banner-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+                        Rotational Motion <span class="text-indigo-300 font-bold block sm:inline sm:ml-2 text-xl sm:text-2xl">(လည်ပတ်ရွေ့လျားမှု)</span>
+                    </h1>
+                    <p id="banner-desc" class="mt-3 text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+                        ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီနှင့် အခန်းများကို ပြောင်းလဲကြည့်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများကို Toggle Switch ဖြင့် အဖွင့်/အပိတ် ပြုလုပ်နိုင်ပါသည်။
+                    </p>
+                </div>
+            </div>
 
-            <!-- ========================================== -->
-            <!-- LANDING VIEW: 13-CHAPTER TABLE OF CONTENTS -->
-            <!-- ========================================== -->
-            <section id="toc-view" class="flex-1 flex flex-col">
-                <!-- Table of Contents Hero Header -->
-                <div class="hero-banner text-white px-6 py-10 md:px-10 md:py-12 border-b border-slate-800">
-                    <div class="max-w-5xl mx-auto space-y-4">
-                        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-300">
-                            <span class="bg-indigo-500/20 border border-indigo-400/30 px-3 py-1 rounded-full">Myanmar Grade 12 Curriculum</span>
-                            <span>•</span>
-                            <span class="text-emerald-300">13 Chapters Directory</span>
-                        </div>
-                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-                            Grade 12 Physics — မာတိကာ
-                            <span class="block sm:inline sm:ml-2 text-lg sm:text-2xl font-bold text-indigo-300">(Table of Contents)</span>
-                        </h1>
-                        <p class="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-                            ဒွါဒသမတန်း ရူပဗေဒ သင်ရိုးသစ် အခန်း (၁) မှ အခန်း (၁၃) အထိ မိမိလေ့လာလိုသော အခန်းကို အောက်ပါ မာတိကာကတ်ပြားများမှ ရွေးချယ်နှိပ်၍ ဝင်ရောက်လေ့လာနိုင်ပါသည်။
-                        </p>
-                        <div class="pt-2 flex flex-wrap items-center gap-3">
-                            <button type="button" id="toc-start-ch1-btn" class="px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
-                                <span>Chapter 1: Rotational Motion (3D Lab) ဖွင့်မည်</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                                </svg>
-                            </button>
-                            <span class="text-xs text-slate-400">
-                                စုစုပေါင်း ၁၃ ခန်း • အခန်း (၁) တွင် Interactive 3D Simulations ၃ ခု ပါဝင်သည်
+            <!-- CHAPTER 1 FULL INTERACTIVE CONTENT -->
+            <div id="chapter1-content" class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 md:px-10 py-8 space-y-10">
+
+                <!-- ARTICLE 1.1 -->
+                <section id="art-1-1" class="article-section bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-indigo-50/70 to-white">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">
+                                Article 1.1
                             </span>
+                            <span class="text-xs text-slate-500 font-medium">Rigid Body & Kinematics</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Search & Category Filter Controls -->
-                <div class="max-w-5xl w-full mx-auto px-4 sm:px-6 md:px-10 pt-7 pb-12 space-y-6">
-                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
-                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-                            <div class="relative flex-1">
-                                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-                                </svg>
-                                <input id="toc-search-input" type="text" placeholder="အခန်းနံပါတ် သို့မဟုတ် ခေါင်းစဉ် ရှာရန် (ဥပမာ - Rotational, Light, Capacitor, 1)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                            </div>
-                            <div id="toc-count-badge" class="text-xs font-semibold text-slate-500 px-3 py-2 rounded-xl bg-slate-100 text-center shrink-0">
-                                ပြသထားသော အခန်း: 13 / 13
-                            </div>
-                        </div>
-
-                        <!-- Category Filter Pills -->
-                        <div id="toc-filter-bar" class="flex flex-wrap gap-2">
-                            <button type="button" data-cat="all" class="toc-pill active px-3.5 py-1.5 rounded-full text-xs font-semibold border border-slate-200 transition">
-                                အားလုံး (13)
-                            </button>
-                            <button type="button" data-cat="mechanics" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
-                                Mechanics (Ch 1–3)
-                            </button>
-                            <button type="button" data-cat="thermal" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
-                                Energy & Thermal (Ch 4–5)
-                            </button>
-                            <button type="button" data-cat="waves" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
-                                Sound & Optics (Ch 6–8)
-                            </button>
-                            <button type="button" data-cat="electricity" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
-                                Electricity & Magnetism (Ch 9–11)
-                            </button>
-                            <button type="button" data-cat="modern" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
-                                Electronics & Modern (Ch 12–13)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 13 Chapters Cards Grid -->
-                    <div id="toc-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-                        <!-- Populated dynamically via JS -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- ========================================== -->
-            <!-- CHAPTER WORKSPACE VIEW (CHAPTERS 1 TO 13)  -->
-            <!-- ========================================== -->
-            <div id="chapter-workspace" class="hidden flex-1 flex flex-col">
-                <!-- Top Hero Banner -->
-                <div class="hero-banner text-white px-6 py-8 md:px-10 md:py-10 border-b border-slate-800">
-                    <div class="max-w-5xl mx-auto">
-                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-300">
-                                <span id="banner-chapter-badge" class="bg-indigo-500/20 border border-indigo-400/30 px-2.5 py-1 rounded-full">Chapter 1 of 13</span>
-                                <span>•</span>
-                                <span>Grade 12 Physics</span>
-                            </div>
-                            <button type="button" id="banner-back-toc-btn" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition flex items-center gap-1.5">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7"/>
-                                </svg>
-                                <span>မာတိကာ (13 Chapters) သို့</span>
-                            </button>
-                        </div>
-                        <h1 id="banner-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-                            Rotational Motion <span class="text-indigo-300 font-bold block sm:inline sm:ml-2 text-xl sm:text-2xl">(လည်ပတ်ရွေ့လျားမှု)</span>
-                        </h1>
-                        <p id="banner-desc" class="mt-3 text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-                            ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီနှင့် အခန်းများကို ပြောင်းလဲကြည့်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများကို Toggle Switch ဖြင့် အဖွင့်/အပိတ် ပြုလုပ်နိုင်ပါသည်။
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+                            1.1 Rotational Motion Under Constant Angular Acceleration
+                        </h2>
+                        <p class="text-indigo-700 font-semibold text-sm sm:text-base mt-1">
+                            (ကိန်းသေ ထောင့်ပြောင်းနှုန်းအရှိန်ဖြင့် လည်ပတ်ရွေ့လျားခြင်း)
                         </p>
                     </div>
-                </div>
 
-                <!-- CHAPTER 1 FULL INTERACTIVE CONTENT -->
-                <div id="chapter1-content" class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 md:px-10 py-8 space-y-10">
+                    <div class="p-6 md:p-8 space-y-6">
+                        <!-- Concept Cards: Circular vs Rotational -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-xl bg-sky-50/70 border border-sky-200/80">
+                                <div class="flex items-center gap-2.5 mb-2">
+                                    <span class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center font-bold text-sm">1</span>
+                                    <h3 class="font-bold text-slate-900">Circular Motion (စက်ဝိုင်းပတ်ရွေ့လျားမှု)</h3>
+                                </div>
+                                <p class="text-sm text-slate-700 leading-relaxed">
+                                    အရာဝတ္ထုတစ်ခုက ပြင်ပဗဟိုချက်တစ်ခုကို ပတ်၍ စက်ဝိုင်းပတ်လမ်းကြောင်းအတိုင်း ရွေ့လျားခြင်း ဖြစ်ပါတယ်။
+                                    <span class="block mt-1.5 text-xs font-medium text-sky-800 bg-sky-100/80 px-2.5 py-1.5 rounded-lg">
+                                        ဥပမာ - ကမ္ဘာကို ပတ်နေသော ဂြိုဟ်တု (Satellite)
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-indigo-50/70 border border-indigo-200/80">
+                                <div class="flex items-center gap-2.5 mb-2">
+                                    <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">2</span>
+                                    <h3 class="font-bold text-slate-900">Rotational Motion (လည်ပတ်ရွေ့လျားမှု)</h3>
+                                </div>
+                                <p class="text-sm text-slate-700 leading-relaxed">
+                                    အရာဝတ္ထုတစ်ခုက မိမိ၏ ဝင်ရိုး (axis) တစ်ခုကို ဗဟိုပြု၍ လည်ပတ်နေခြင်း ဖြစ်ပါတယ်။
+                                    <span class="block mt-1.5 text-xs font-medium text-indigo-800 bg-indigo-100/80 px-2.5 py-1.5 rounded-lg">
+                                        ဥပမာ - ကမ္ဘာမိမိဝင်ရိုးပေါ် လည်ပတ်ခြင်း၊ ပန်ကာဒလက်၊ ချားရဟတ်
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Rigid Body & Constant Angular Acceleration Explanation -->
+                        <div class="space-y-4 text-sm sm:text-base text-slate-700">
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                    Rigid Body (ပုံသဏ္ဌာန်မပြောင်းလဲသော အရာဝတ္ထု)
+                                </h4>
+                                <p class="text-sm text-slate-700">
+                                    မည်သို့ပင် ရွေ့လျားစေကာမူ အရာဝတ္ထုအတွင်းရှိ အမှုန် (particles) နှစ်ခုကြား အကွာအဝေး အမြဲတမ်း ကိန်းသေရှိနေပြီး ပုံပျက်ခြင်း မရှိသော အရာဝတ္ထု ဖြစ်ပါတယ်။ Rigid body တစ်ခု လည်ပတ်သောအခါ ၎င်းတွင်ပါဝင်သော အမှုန်အားလုံးသည် <strong>ဘုံဝင်ရိုး (common axis)</strong> တစ်ခုတည်းကို ဗဟိုပြု၍ တူညီသော ထောင့်ပြောင်းနှုန်း ($\theta, \omega, \alpha$) ဖြင့် ရွေ့လျားကြပါတယ်။
+                                </p>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                                <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                    Constant Angular Acceleration ($\alpha$)
+                                </h4>
+                                <p class="text-sm text-slate-700">
+                                    လည်ပတ်နေသော အရာဝတ္ထုတစ်ခု အရှိန်မြန်လာခြင်း (speed up) သို့မဟုတ် နှေးသွားခြင်း (slow down) ဖြစ်ပေါ်သည့်အခါ ထောင့်ပြောင်းနှုန်းအလျင် ($\omega$) ပြောင်းလဲသွားပါတယ်။ ထို $\omega$ ပြောင်းလဲနှုန်းသည် အချိန်နှင့်အမျှ တသမတ်တည်း (constant rate) ဖြစ်နေပါက ထောင့်ပြောင်းနှုန်းအရှိန် ($\alpha$) ကိန်းသေဖြစ်နေသည်ဟု ခေါ်ပါတယ်။
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- INTERACTIVE 3D SIMULATION FOR 1.1 -->
+                        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-4 sm:p-5 shadow-md">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Interactive 3D Lab 1.1</span>
+                                    <h4 class="text-white font-bold text-sm sm:text-base">Rigid Body Rotation vs. Circular Orbit (3D)</h4>
+                                </div>
+                                <div class="flex gap-1.5 bg-slate-800 p-1 rounded-xl">
+                                    <button id="sim1-mode-rot" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition">Rotational Motion</button>
+                                    <button id="sim1-mode-cir" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition">Circular Motion</button>
                                 </div>
                             </div>
 
-                <!-- PLACEHOLDER / OVERVIEW FOR CHAPTERS 2 TO 13 -->
-                <div id="other-chapter-content" class="hidden flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 md:px-10 py-12">
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-10 text-center space-y-5">
-                        <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto text-2xl font-extrabold">
-                            <span id="other-ch-num">Ch 2</span>
+                            <div id="canvas-1-1" class="canvas-container border border-slate-700/80">
+                                <!-- Live HUD Overlay (Toggled by ရှင်းလင်းချက် switch) -->
+                                <div class="cv-ov absolute top-12 sm:top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none z-10">
+                                    <div class="font-semibold text-indigo-300">Live Telemetry (Both Particles Share):</div>
+                                    <div>Angle ($\theta$): <span id="sim1-theta" class="font-mono text-white font-bold">0.00</span> rad</div>
+                                    <div>Angular Vel ($\omega$): <span id="sim1-omega" class="font-mono text-emerald-400 font-bold">1.50</span> rad/s</div>
+                                    <div>Angular Accel ($\alpha$): <span id="sim1-alpha-val" class="font-mono text-amber-400 font-bold">0.20</span> rad/s²</div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div class="sm:col-span-7 flex flex-col gap-1">
+                                    <div class="flex justify-between text-xs text-slate-300">
+                                        <label for="sim1-alpha-slider">Angular Acceleration ($\alpha$):</label>
+                                        <span id="sim1-slider-label" class="font-mono text-amber-300">+0.20 rad/s² (Speeding up)</span>
+                                    </div>
+                                    <input id="sim1-alpha-slider" type="range" min="-1.0" max="1.0" step="0.1" value="0.2" class="w-full accent-indigo-500 cursor-pointer">
+                                </div>
+                                <div class="sm:col-span-5 flex items-center justify-end gap-2">
+                                    <button id="sim1-toggle-btn" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-xs">
+                                        Pause
+                                    </button>
+                                    <button id="sim1-reset-btn" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold transition">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <h2 id="other-ch-title" class="text-2xl sm:text-3xl font-bold text-slate-900">
-                            Chapter 2: Forces in Circular Motion
-                        </h2>
-                        <p id="other-ch-myanmar" class="text-indigo-600 font-semibold text-base">
-                            စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ
-                        </p>
-                        <div id="other-ch-topics" class="flex flex-wrap justify-center gap-2 max-w-xl mx-auto"></div>
-                        <p id="other-ch-desc" class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
-                            ဤအခန်း၏ အသေးစိတ် Article များနှင့် 3D သင်ခန်းစာများကို ဆက်လက်ဖြည့်သွင်းပေးသွားပါမည်။ လက်ရှိတွင် Chapter 1 (Rotational Motion) ၏ သင်ခန်းစာအပြည့်အစုံနှင့် 3D Simulations များကို အပြည့်အဝ လေ့လာနိုင်ပါပြီ။
-                        </p>
-                        <div class="pt-2 flex flex-wrap justify-center gap-3">
-                            <button type="button" id="other-back-toc-btn" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm transition">
-                                ← မာတိကာ (13 Chapters) သို့
-                            </button>
-                            <button type="button" id="back-to-ch1-btn" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition">
-                                Chapter 1: Rotational Motion (3D) ဖွင့်မည် →
-                            </button>
+
+                        <!-- Kinematic Equations Comparison Table -->
+                        <div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-3">
+                                ကိန်းသေ ထောင့်ပြောင်းနှုန်းအရှိန် ညီမျှခြင်းများ (Kinematic Equations)
+                            </h3>
+                            <div class="overflow-x-auto rounded-xl border border-slate-200">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200">
+                                        <tr>
+                                            <th class="py-3 px-4">Linear Motion (မျဉ်းဖြောင့်ရွေ့လျားမှု)</th>
+                                            <th class="py-3 px-4 bg-indigo-50/80 text-indigo-900">Angular Motion (လည်ပတ်ရွေ့လျားမှု)</th>
+                                            <th class="py-3 px-4">Missing Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200 bg-white">
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">$v = v_0 + at$</td>
+                                            <td class="py-3 px-4 bg-indigo-50/40 font-semibold text-indigo-950">$\omega = \omega_0 + \alpha t$</td>
+                                            <td class="py-3 px-4 text-slate-500 text-xs">$\theta$ (Angular displacement)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">$s = v_0 t + \frac{1}{2}at^2$</td>
+                                            <td class="py-3 px-4 bg-indigo-50/40 font-semibold text-indigo-950">$\theta = \omega_0 t + \frac{1}{2}\alpha t^2$</td>
+                                            <td class="py-3 px-4 text-slate-500 text-xs">$\omega$ (Final angular velocity)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">$v^2 = v_0^2 + 2as$</td>
+                                            <td class="py-3 px-4 bg-indigo-50/40 font-semibold text-indigo-950">$\omega^2 = \omega_0^2 + 2\alpha \theta$</td>
+                                            <td class="py-3 px-4 text-slate-500 text-xs">$t$ (Time)</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-4 font-medium">$\bar{v} = \frac{v + v_0}{2}$</td>
+                                            <td class="py-3 px-4 bg-indigo-50/40 font-semibold text-indigo-950">$\bar{\omega} = \frac{\omega + \omega_0}{2}$</td>
+                                            <td class="py-3 px-4 text-slate-500 text-xs">$\alpha$ (Angular acceleration)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- STICKY BOTTOM NAVIGATION DOCK (CHAPTER & ARTICLE SWITCHER) -->
-                <div class="bottom-dock" role="navigation" aria-label="Bottom Chapter and Article Switcher">
-                    <div class="dock-inner">
-                        <!-- Back to Table of Contents -->
-                        <button type="button" class="dock-btn" id="dock-toc-btn" aria-label="မာတိကာ (Table of Contents)" title="မာတိကာ (13 Chapters)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                            <span class="dock-btn-text">မာတိကာ</span>
+                <!-- ARTICLE 1.2 -->
+                <section id="art-1-2" class="article-section bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-emerald-50/70 to-white">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
+                                Article 1.2
+                            </span>
+                            <span class="text-xs text-slate-500 font-medium">Tangential Quantities & Right-Hand Rule</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+                            1.2 Relations Between Linear and Angular Quantities
+                        </h2>
+                        <p class="text-emerald-700 font-semibold text-sm sm:text-base mt-1">
+                            (မျဉ်းဖြောင့်ဆိုင်ရာ တန်ဖိုးများနှင့် ထောင့်ပြောင်းနှုန်းဆိုင်ရာ တန်ဖိုးများ၏ ဆက်သွယ်ချက်)
+                        </p>
+                    </div>
+
+                    <div class="p-6 md:p-8 space-y-6">
+                        <p class="text-sm sm:text-base text-slate-700">
+                            လည်ပတ်နေသော အရာဝတ္ထုတစ်ခုလုံး၏ တစ်ခဏတာ ထောင့်ပြောင်းနှုန်းအလျင် ($\omega$) သည် ၎င်းအရာဝတ္ထုရှိ အမှုန်တိုင်းအတွက် အတူတူပင် ဖြစ်သော်လည်း <strong>ဝင်ရိုးမှ အကွာအဝေး ($r$)</strong> ပေါ် မူတည်၍ မျဉ်းဖြောင့်ဆိုင်ရာ တန်ဖိုးများ (linear quantities) ကွာခြားသွားပါတယ်။
+                        </p>
+
+                        <!-- Relations Table -->
+                        <div class="overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-slate-100 text-slate-800 font-bold border-b border-slate-200">
+                                    <tr>
+                                        <th class="py-3 px-4">Physical Quantity</th>
+                                        <th class="py-3 px-4">Linear</th>
+                                        <th class="py-3 px-4">Angular</th>
+                                        <th class="py-3 px-4 bg-emerald-50/80 text-emerald-900">ဆက်သွယ်ချက် ပုံသေနည်း ($\theta, \omega, \alpha$ in rad)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">Displacement (အရွေ့)</td>
+                                        <td class="py-3 px-4">$s$</td>
+                                        <td class="py-3 px-4">$\theta$</td>
+                                        <td class="py-3 px-4 bg-emerald-50/40 font-bold text-emerald-950">$s = r\theta$</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">Tangential Velocity (ထိမျဉ်းအလျင်)</td>
+                                        <td class="py-3 px-4">$v$</td>
+                                        <td class="py-3 px-4">$\omega$</td>
+                                        <td class="py-3 px-4 bg-emerald-50/40 font-bold text-emerald-950">$v = r\omega$</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4 font-semibold text-slate-800">Tangential Acceleration (ထိမျဉ်းအရှိန်)</td>
+                                        <td class="py-3 px-4">$a_T$</td>
+                                        <td class="py-3 px-4">$\alpha$</td>
+                                        <td class="py-3 px-4 bg-emerald-50/40 font-bold text-emerald-950">$a_T = r\alpha$</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Key Explanations Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+                                <h3 class="font-bold text-slate-900 mb-2">Tangential Quantities ၏ သဘောသဘာဝ</h3>
+                                <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                                    <li>အမှုန်တစ်ခု၏ မျဉ်းဖြောင့်အလျင် ($v$) သည် စက်ဝိုင်းပတ်လမ်းကြောင်း၏ <strong>ထိမျဉ်း (tangent)</strong> အတိုင်း ဦးတည်နေသောကြောင့် <strong>Tangential Velocity</strong> ဟု ခေါ်ပါတယ်။</li>
+                                    <li>လည်ပတ်မှု အမြန်နှုန်း ($\omega$) ပြောင်းလဲပါက ထိမျဉ်းအလျင် ($v$) ပါ ပြောင်းလဲသွားပြီး <strong>Tangential Acceleration ($a_T$)</strong> ဖြစ်ပေါ်လာပါတယ်။</li>
+                                    <li>ဝင်ရိုးမှ ဝေးလေ ($r$ ကြီးလေ) $v$ နှင့် $a_T$ တန်ဖိုး ပိုကြီးလေ ဖြစ်ပါတယ်။</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-amber-50/70 border border-amber-200/80">
+                                <h3 class="font-bold text-slate-900 mb-2">Right-Hand Rule & Vector ဦးတည်ရာများ</h3>
+                                <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                                    <li><strong>$\vec{\omega}$ ဦးတည်ရာ:</strong> ညာဘက်လက်ချောင်းလေးများကို လည်ပတ်ရာ လမ်းကြောင်းအတိုင်း ဆုပ်ကိုင်လိုက်လျှင် <strong>လက်မညွှန်ပြရာဘက်</strong> (လည်ပတ်မှုဝင်ရိုးတစ်လျှောက်) သည် $\vec{\omega}$ ၏ ဦးတည်ရာ ဖြစ်ပါတယ်။</li>
+                                    <li><strong>Speeding up (အရှိန်တက်လျှင်):</strong> $\vec{\alpha}$ နှင့် $\vec{\omega}$ ဦးတည်ရာ <strong>တူညီ</strong> ပါတယ်။</li>
+                                    <li><strong>Slowing down (အရှိန်လျော့လျှင်):</strong> $\vec{\alpha}$ နှင့် $\vec{\omega}$ ဦးတည်ရာ <strong>ဆန့်ကျင်ဘက်</strong> ဖြစ်ပါတယ်။</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- INTERACTIVE 3D SIMULATION FOR 1.2 -->
+                        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-4 sm:p-5 shadow-md">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Interactive 3D Lab 1.2</span>
+                                    <h4 class="text-white font-bold text-sm sm:text-base">Tangential Vectors ($v = r\omega$) & Right-Hand Rule Axis ($\vec{\omega}, \vec{\alpha}$)</h4>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button id="sim2-dir-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition">
+                                        Spin: Counter-Clockwise (CCW)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div id="canvas-1-2" class="canvas-container border border-slate-700/80">
+                                <!-- Legend Overlay (Toggled by ရှင်းလင်းချက် switch) -->
+                                <div class="cv-ov absolute top-12 sm:top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1.5 pointer-events-none z-10">
+                                    <div class="font-bold text-white border-b border-slate-800 pb-1">3D Vector Legend</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span> $\vec{\omega}$ Angular Velocity (Right-Hand Thumb)</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-fuchsia-400 inline-block"></span> $\vec{\alpha}$ Angular Acceleration</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span> $\vec{v}_1, \vec{v}_2$ Tangential Velocity ($v_2 = 2v_1$)</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> $\vec{a}_{T1}, \vec{a}_{T2}$ Tangential Accel ($a_{T2} = 2a_{T1}$)</div>
+                                </div>
+                                <div class="cv-ov absolute bottom-10 sm:bottom-3 left-3 bg-slate-950/85 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 pointer-events-none z-10">
+                                    Inner ($r_1=1\text{m}$): $v_1 =$ <span id="sim2-v1" class="font-mono text-emerald-400 font-bold">2.0</span> m/s |
+                                    Outer ($r_2=2\text{m}$): $v_2 =$ <span id="sim2-v2" class="font-mono text-emerald-400 font-bold">4.0</span> m/s
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div class="flex flex-wrap gap-2">
+                                    <button id="sim2-speedup-btn" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold transition">
+                                        Speeding Up ($\vec{\alpha}$ same as $\vec{\omega}$)
+                                    </button>
+                                    <button id="sim2-slowdown-btn" class="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold transition">
+                                        Slowing Down ($\vec{\alpha}$ opposite $\vec{\omega}$)
+                                    </button>
+                                </div>
+                                <span id="sim2-status-text" class="text-xs font-medium text-amber-300">
+                                    Status: Speeding Up ($\vec{\omega}$ & $\vec{\alpha}$ point same direction)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ARTICLE 1.3 -->
+                <section id="art-1-3" class="article-section bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-rose-50/70 to-white">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-rose-700 bg-rose-100 px-3 py-1 rounded-full">
+                                Article 1.3
+                            </span>
+                            <span class="text-xs text-slate-500 font-medium">Uniform vs Nonuniform Circular Motion</span>
+                        </div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+                            1.3 Centripetal Acceleration
+                        </h2>
+                        <p class="text-rose-700 font-semibold text-sm sm:text-base mt-1">
+                            (ဗဟိုချဉ်းအရှိန်နှင့် မညီညာသော စက်ဝိုင်းပတ်ရွေ့လျားမှု ရလဒ်အရှိန်)
+                        </p>
+                    </div>
+
+                    <div class="p-6 md:p-8 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <!-- Uniform Circular Motion -->
+                            <div class="p-5 rounded-2xl bg-blue-50/60 border border-blue-200/80 space-y-3">
+                                <h3 class="font-bold text-slate-900 text-base sm:text-lg">
+                                    1. Uniform Circular Motion & $\vec{a}_c$
+                                </h3>
+                                <p class="text-sm text-slate-700">
+                                    စက်ဝိုင်းပတ်လမ်းကြောင်းအတိုင်း <strong>ကိန်းသေအမြန်နှုန်း (constant speed, $v$)</strong> ဖြင့် ရွေ့လျားနေခြင်း ဖြစ်ပါတယ်။ အမြန်နှုန်းပမာဏ မပြောင်းသော်လည်း <strong>ဦးတည်ရာ (direction)</strong> အဆက်မပြတ် ပြောင်းလဲနေသောကြောင့် ဗဟိုချက် (centre) ဆီသို့ ဦးတည်သော <strong>Centripetal Acceleration ($\vec{a}_c$)</strong> ဖြစ်ပေါ်ပါတယ်။
+                                </p>
+                                <div class="bg-white p-3.5 rounded-xl border border-blue-200 text-center">
+                                    $$a_c = \frac{v^2}{r} = r\omega^2$$
+                                    <span class="text-xs text-slate-500 block mt-1">$\vec{a}_c$ သည် $\vec{v}$ နှင့် အမှတ်တိုင်းတွင် ထောင့်မှန် ($90^\circ$) ကျနေပါတယ်။</span>
+                                </div>
+                            </div>
+
+                            <!-- Nonuniform Circular Motion -->
+                            <div class="p-5 rounded-2xl bg-rose-50/60 border border-rose-200/80 space-y-3">
+                                <h3 class="font-bold text-slate-900 text-base sm:text-lg">
+                                    2. Nonuniform Circular Motion & $\vec{a}$
+                                </h3>
+                                <p class="text-sm text-slate-700">
+                                    စက်ဝိုင်းပတ်လမ်းကြောင်းအတိုင်း ရွေ့လျားနေစဉ် <strong>အမြန်နှုန်းပမာဏ (speed) ပါ ပြောင်းလဲနေပါက</strong> ဗဟိုချဉ်းအရှိန် ($\vec{a}_c$) အပြင် ထိမျဉ်းအရှိန် ($\vec{a}_T$) ပါ တစ်ပြိုင်နက် ရှိနေပါတယ်။ ထိုထောင့်မှန်ကျ vector နှစ်ခု၏ ပေါင်းလဒ်မှာ <strong>Resultant Acceleration ($\vec{a}$)</strong> ဖြစ်ပါတယ်။
+                                </p>
+                                <div class="bg-white p-3.5 rounded-xl border border-rose-200 text-center">
+                                    $$a = \sqrt{a_c^2 + a_T^2} \quad , \quad \tan \phi = \frac{a_T}{a_c}$$
+                                    <span class="text-xs text-slate-500 block mt-1">$\phi$ သည် $\vec{a}$ နှင့် $\vec{a}_c$ (radius) ကြားရှိ ထောင့်ဖြစ်သည်။</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Important Erratum Callout -->
+                        <div class="p-4 rounded-xl bg-amber-50 border-l-4 border-amber-500 flex items-start gap-3">
+                            <svg class="w-6 h-6 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            <div class="text-xs sm:text-sm text-amber-950">
+                                <span class="font-bold">အရေးကြီး မှတ်သားရန် (Formula Sheet Erratum):</span>
+                                ပူးတွဲပါ Formula စာရွက် စာမျက်နှာ ၁၊ အမှတ်စဉ် ၆ တွင် $\tan \phi = \frac{v^2}{rg}$ ဟု ပုံနှိပ်မှားယွင်းနေပါသဖြင့် <strong>$\tan \phi = \frac{a_T}{a_c}$</strong> ဟု ပြင်ဆင်မှတ်သားထားရန် လိုအပ်ပါသည်။
+                            </div>
+                        </div>
+
+                        <!-- INTERACTIVE 3D SIMULATION FOR 1.3 -->
+                        <div class="rounded-2xl border border-slate-200 bg-slate-900 p-4 sm:p-5 shadow-md">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Interactive 3D Lab 1.3</span>
+                                    <h4 class="text-white font-bold text-sm sm:text-base">Centripetal ($\vec{a}_c$), Tangential ($\vec{a}_T$) & Resultant ($\vec{a}$) Vectors</h4>
+                                </div>
+                                <div class="flex gap-1.5 bg-slate-800 p-1 rounded-xl">
+                                    <button id="sim3-uniform-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition">Uniform ($a_T = 0$)</button>
+                                    <button id="sim3-nonuniform-btn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition">Nonuniform ($a_T \neq 0$)</button>
+                                </div>
+                            </div>
+
+                            <div id="canvas-1-3" class="canvas-container border border-slate-700/80">
+                                <!-- Legend & Live Calculation Overlays (Toggled by ရှင်းလင်းချက် switch) -->
+                                <div class="cv-ov absolute top-12 sm:top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none z-10">
+                                    <div class="font-bold text-white border-b border-slate-800 pb-1">Acceleration Vectors</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span> $\vec{v}$ Tangential Velocity</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-400 inline-block"></span> $\vec{a}_c$ Centripetal Accel (to Center)</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> $\vec{a}_T$ Tangential Accel</div>
+                                    <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span> $\vec{a} = \vec{a}_c + \vec{a}_T$ Resultant Accel</div>
+                                </div>
+
+                                <div class="cv-ov absolute bottom-10 sm:bottom-3 left-3 bg-slate-950/85 border border-slate-700/80 rounded-xl p-2.5 text-xs text-slate-200 flex flex-wrap gap-x-4 gap-y-1 pointer-events-none z-10">
+                                    <span>$a_c =$ <strong id="sim3-ac-val" class="font-mono text-sky-400">4.00</strong> m/s²</span>
+                                    <span>$a_T =$ <strong id="sim3-at-val" class="font-mono text-amber-400">3.00</strong> m/s²</span>
+                                    <span>$a =$ <strong id="sim3-a-val" class="font-mono text-rose-400">5.00</strong> m/s²</span>
+                                    <span>$\phi =$ <strong id="sim3-phi-val" class="font-mono text-indigo-300">36.9°</strong></span>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                                <div>
+                                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                                        <label for="sim3-ac-slider">Centripetal Accel ($a_c = v^2/r$):</label>
+                                        <span id="sim3-ac-label" class="font-mono text-sky-400">4.0 m/s²</span>
+                                    </div>
+                                    <input id="sim3-ac-slider" type="range" min="1.0" max="8.0" step="0.5" value="4.0" class="w-full accent-sky-500 cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                                        <label for="sim3-at-slider">Tangential Accel ($a_T = r\alpha$):</label>
+                                        <span id="sim3-at-label" class="font-mono text-amber-400">3.0 m/s²</span>
+                                    </div>
+                                    <input id="sim3-at-slider" type="range" min="0.0" max="6.0" step="0.5" value="3.0" class="w-full accent-amber-500 cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ARTICLE PRACTICE & FORMULA SUMMARY -->
+                <section id="art-practice" class="article-section bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden">
+                    <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-amber-50/70 to-white">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full mb-2">
+                            Summary & Self-Check
+                        </span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+                            Chapter 1 Quick Quiz (နားလည်မှု စစ်ဆေးရန် မေးခွန်းများ)
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            အဖြေတစ်ခုချင်းစီကို နှိပ်၍ ချက်ချင်း စစ်ဆေးနိုင်ပါသည်။
+                        </p>
+                    </div>
+
+                    <div id="quiz-container" class="p-6 md:p-8 space-y-6">
+                        <!-- Quiz questions injected via JS -->
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- PLACEHOLDER / OVERVIEW FOR CHAPTERS 2 TO 13 -->
+            <div id="other-chapter-content" class="hidden flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 md:px-10 py-12">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-10 text-center space-y-5">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto text-2xl font-extrabold">
+                        <span id="other-ch-num">Ch 2</span>
+                    </div>
+                    <h2 id="other-ch-title" class="text-2xl sm:text-3xl font-bold text-slate-900">
+                        Chapter 2: Fluid Dynamics
+                    </h2>
+                    <p id="other-ch-myanmar" class="text-indigo-600 font-semibold text-base">
+                        အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု
+                    </p>
+                    <p id="other-ch-desc" class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                        ဤအခန်း၏ အသေးစိတ် Article များနှင့် 3D သင်ခန်းစာများကို ဆက်လက်ဖြည့်သွင်းပေးသွားပါမည်။ လက်ရှိတွင် Chapter 1 (Rotational Motion) ၏ သင်ခန်းစာအပြည့်အစုံနှင့် 3D Simulations များကို အပြည့်အဝ လေ့လာနိုင်ပါပြီ။
+                    </p>
+                    <div class="pt-2">
+                        <button id="back-to-ch1-btn" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition">
+                            ← Chapter 1: Rotational Motion သို့ ပြန်သွားမည်
                         </button>
+                    </div>
+                </div>
+            </div>
 
-                        <span class="dock-sep"></span>
+            <!-- STICKY BOTTOM NAVIGATION DOCK (CHAPTER & ARTICLE SWITCHER) -->
+            <div class="dock" role="navigation" aria-label="Bottom Chapter and Article Switcher">
+                <div class="dock-in">
+                    <!-- Chapter Switcher -->
+                    <div class="dock-grp">
+                        <span class="dock-lbl">အခန်း</span>
+                        <button type="button" class="dock-b" id="dock-ch-prev" aria-label="အရင်အခန်း (Previous Chapter)" title="အရင်အခန်း">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                            <span class="dock-btn-text">အရင်</span>
+                        </button>
+                        <span class="dock-v" id="dock-ch-val">1 / 13</span>
+                        <button type="button" class="dock-b" id="dock-ch-next" aria-label="နောက်အခန်း (Next Chapter)" title="နောက်အခန်း">
+                            <span class="dock-btn-text">နောက်</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
 
-                        <!-- Chapter Switcher -->
-                        <div class="dock-group">
-                            <span class="dock-label">အခန်း</span>
-                            <button type="button" class="dock-btn" id="dock-ch-prev" aria-label="အရင်အခန်း (Previous Chapter)" title="အရင်အခန်း">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-                                <span class="dock-btn-text">အရင်</span>
-                            </button>
-                            <span class="dock-value" id="dock-ch-val">1 / 13</span>
-                            <button type="button" class="dock-btn" id="dock-ch-next" aria-label="နောက်အခန်း (Next Chapter)" title="နောက်အခန်း">
-                                <span class="dock-btn-text">နောက်</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
+                    <span class="dock-sep"></span>
 
-                        <span class="dock-sep"></span>
-
-                        <!-- Article Switcher -->
-                        <div class="dock-group" id="dock-art-group">
-                            <span class="dock-label">Article</span>
-                            <button type="button" class="dock-btn" id="dock-art-prev" aria-label="အရင် Article (Previous Article)" title="အရင် Article">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-                                <span class="dock-btn-text">အရင်</span>
-                            </button>
-                            <span class="dock-value" id="dock-art-val">All</span>
-                            <button type="button" class="dock-btn" id="dock-art-next" aria-label="နောက် Article (Next Article)" title="နောက် Article">
-                                <span class="dock-btn-text">နောက်</span>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-                            </button>
-                        </div>
+                    <!-- Article Switcher -->
+                    <div class="dock-grp" id="dock-art-group">
+                        <span class="dock-lbl">Article</span>
+                        <button type="button" class="dock-b" id="dock-art-prev" aria-label="အရင် Article (Previous Article)" title="အရင် Article">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                            <span class="dock-btn-text">အရင်</span>
+                        </button>
+                        <span class="dock-v" id="dock-art-val">အားလုံး</span>
+                        <button type="button" class="dock-b" id="dock-art-next" aria-label="နောက် Article (Next Article)" title="နောက် Article">
+                            <span class="dock-btn-text">နောက်</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -776,126 +1047,22 @@
     <!-- APPLICATION LOGIC & THREE.JS 3D SIMULATIONS -->
     <script>
         // ==========================================
-        // 1. CURRICULUM DATA (MYANMAR GRADE 12 PHYSICS - CHAPTERS 1 TO 13)
+        // 1. CURRICULUM DATA (CHAPTERS 1 TO 13)
         // ==========================================
         const chaptersData = [
-            {
-                id: 1,
-                en: "Chapter 1: Rotational Motion",
-                my: "လည်ပတ်ရွေ့လျားမှု",
-                cat: "mechanics",
-                catLabel: "Mechanics",
-                ready: true,
-                topics: ["1.1 Constant Angular Acceleration", "1.2 Linear & Angular Relations", "1.3 Centripetal Acceleration"]
-            },
-            {
-                id: 2,
-                en: "Chapter 2: Forces in Circular Motion",
-                my: "စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ",
-                cat: "mechanics",
-                catLabel: "Mechanics",
-                ready: false,
-                topics: ["2.1 Centripetal Force", "2.2 Banking of Roads", "2.3 Centrifugal Force"]
-            },
-            {
-                id: 3,
-                en: "Chapter 3: Fluid Dynamics",
-                my: "အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု",
-                cat: "mechanics",
-                catLabel: "Mechanics",
-                ready: false,
-                topics: ["3.1 Continuity Equation", "3.2 Bernoulli's Equation", "3.3 Viscosity & Stokes' Law"]
-            },
-            {
-                id: 4,
-                en: "Chapter 4: Sources of Energy and Environmental Impacts",
-                my: "စွမ်းအင်အရင်းအမြစ်များနှင့် ပတ်ဝန်းကျင်ဆိုင်ရာ သက်ရောက်မှုများ",
-                cat: "thermal",
-                catLabel: "Energy & Thermal",
-                ready: false,
-                topics: ["4.1 Renewable & Non-renewable Energy", "4.2 Solar, Wind & Hydro Power", "4.3 Environmental Impacts"]
-            },
-            {
-                id: 5,
-                en: "Chapter 5: Heat Transfer and Thermodynamics",
-                my: "အပူကူးပြောင်းခြင်းနှင့် သာမိုဒိုင်းနမစ်",
-                cat: "thermal",
-                catLabel: "Energy & Thermal",
-                ready: false,
-                topics: ["5.1 Conduction, Convection & Radiation", "5.2 First Law of Thermodynamics", "5.3 Heat Engines & Carnot Cycle"]
-            },
-            {
-                id: 6,
-                en: "Chapter 6: Effects and Characteristics of Sound",
-                my: "အသံ၏ အကျိုးသက်ရောက်မှုများနှင့် ဂုဏ်သတ္တိများ",
-                cat: "waves",
-                catLabel: "Sound & Optics",
-                ready: false,
-                topics: ["6.1 Speed of Sound & Echo", "6.2 Intensity & Decibel Level", "6.3 Doppler Effect & Pitch"]
-            },
-            {
-                id: 7,
-                en: "Chapter 7: Applications of Light and Optical Instruments",
-                my: "အလင်း၏ အသုံးချမှုများနှင့် အလင်းဆိုင်ရာ ကိရိယာများ",
-                cat: "waves",
-                catLabel: "Sound & Optics",
-                ready: false,
-                topics: ["7.1 Camera & Human Eye", "7.2 Microscope & Telescope", "7.3 Optical Fibres & Lasers"]
-            },
-            {
-                id: 8,
-                en: "Chapter 8: Interference and Diffraction of Light",
-                my: "အလင်းလှိုင်း ထပ်ခြင်းနှင့် ကွေ့ခြင်း",
-                cat: "waves",
-                catLabel: "Sound & Optics",
-                ready: false,
-                topics: ["8.1 Huygens' Principle", "8.2 Young's Double-Slit Interference", "8.3 Diffraction Grating"]
-            },
-            {
-                id: 9,
-                en: "Chapter 9: Capacitor and Capacitance",
-                my: "လျှပ်သိုနှင့် လျှပ်သိုသတ္တိ",
-                cat: "electricity",
-                catLabel: "Electricity & Magnetism",
-                ready: false,
-                topics: ["9.1 Parallel-Plate Capacitor", "9.2 Dielectrics & Energy Stored", "9.3 Series & Parallel Combinations"]
-            },
-            {
-                id: 10,
-                en: "Chapter 10: Electrical Energy, Power and Heating Effect",
-                my: "လျှပ်စစ်စွမ်းအင်၊ စွမ်းအားနှင့် အပူသက်ရောက်မှု",
-                cat: "electricity",
-                catLabel: "Electricity & Magnetism",
-                ready: false,
-                topics: ["10.1 Electromotive Force & Circuits", "10.2 Joule's Law of Heating", "10.3 Electrical Power & Safety"]
-            },
-            {
-                id: 11,
-                en: "Chapter 11: Electromagnetic Induction & AC Distribution",
-                my: "လျှပ်စစ်သံလိုက်ညှို့ယူခြင်းနှင့် လျှပ်စစ်ဓာတ်အား ဖြန့်ဖြူးခြင်း",
-                cat: "electricity",
-                catLabel: "Electricity & Magnetism",
-                ready: false,
-                topics: ["11.1 Faraday's & Lenz's Laws", "11.2 AC Generators & Transformers", "11.3 Power Transmission & House Wiring"]
-            },
-            {
-                id: 12,
-                en: "Chapter 12: Electronics and Digital Systems",
-                my: "အီလက်ထရွန်းနစ်နှင့် ဒစ်ဂျစ်တယ်စနစ်များ",
-                cat: "modern",
-                catLabel: "Electronics & Modern",
-                ready: false,
-                topics: ["12.1 Semiconductor Diodes & LEDs", "12.2 Transistors & Sensors", "12.3 Logic Gates & Digital Circuits"]
-            },
-            {
-                id: 13,
-                en: "Chapter 13: Modern Physics",
-                my: "ခေတ်သစ်ရူပဗေဒ",
-                cat: "modern",
-                catLabel: "Electronics & Modern",
-                ready: false,
-                topics: ["13.1 Radioactivity & Half-Life", "13.2 Nuclear Energy & Wave-Particle Duality", "13.3 Special Relativity"]
-            }
+            { id: 1, en: "Chapter 1: Rotational Motion", my: "လည်ပတ်ရွေ့လျားမှု", ready: true },
+            { id: 2, en: "Chapter 2: Fluid Dynamics", my: "အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု", ready: false },
+            { id: 3, en: "Chapter 3: Heat Engines & Thermodynamics", my: "အပူစွမ်းအင်သုံး အင်ဂျင်များနှင့် သာမိုဒိုင်းနမစ်", ready: false },
+            { id: 4, en: "Chapter 4: Wave Phenomena & Sound", my: "လှိုင်းဖြစ်စဉ်များနှင့် အသံ", ready: false },
+            { id: 5, en: "Chapter 5: Light & Optical Instruments", my: "အလင်းနှင့် အလင်းဆိုင်ရာ ကိရိယာများ", ready: false },
+            { id: 6, en: "Chapter 6: Capacitors & Dielectrics", my: "လျှပ်သိုများနှင့် ဒိုင်အီလက်ထရစ်များ", ready: false },
+            { id: 7, en: "Chapter 7: Electric Current & Circuits", my: "လျှပ်စီးကြောင်းနှင့် လျှပ်စစ်ပတ်လမ်းများ", ready: false },
+            { id: 8, en: "Chapter 8: Electromagnetism", my: "လျှပ်စစ်သံလိုက်ပညာ", ready: false },
+            { id: 9, en: "Chapter 9: Electromagnetic Induction", my: "လျှပ်စစ်သံလိုက် ညှို့ယူခြင်း", ready: false },
+            { id: 10, en: "Chapter 10: Alternating Current (AC)", my: "ပြန်လှန်လျှပ်စီးကြောင်း", ready: false },
+            { id: 11, en: "Chapter 11: Modern Physics & Quantum", my: "ခေတ်သစ်ရူပဗေဒနှင့် ကွမ်တမ်ဖြစ်စဉ်များ", ready: false },
+            { id: 12, en: "Chapter 12: Nuclear Physics", my: "နျူကလီးယား ရူပဗေဒနှင့် ရေဒီယိုသတ္တိကြွခြင်း", ready: false },
+            { id: 13, en: "Chapter 13: Electronics & Digital Logic", my: "အီလက်ထရွန်းနစ်နှင့် ဒစ်ဂျစ်တယ် လော့ဂျစ်", ready: false }
         ];
 
         const articlesOrder = ['all', 'art-1-1', 'art-1-2', 'art-1-3', 'art-practice'];
@@ -904,7 +1071,7 @@
             'art-1-1': '1.1',
             'art-1-2': '1.2',
             'art-1-3': '1.3',
-            'art-practice': '★ Quiz'
+            'art-practice': '★ လေ့ကျင့်'
         };
 
         const quizQuestions = [
@@ -944,110 +1111,11 @@
         ];
 
         // ==========================================
-        // 2. NAVIGATION STATE, TABLE OF CONTENTS & UI SYNC
+        // 2. NAVIGATION STATE & UI SYNC
         // ==========================================
-        let currentView = 'toc'; // 'toc' (Table of Contents) or 'chapter'
         let currentChapterId = 1;
         let currentArticleId = 'all';
-        let activeTocCategory = 'all';
-        let tocSearchQuery = '';
         const renderersToResize = [];
-
-        function renderTocCards() {
-            const grid = document.getElementById('toc-cards-grid');
-            const countBadge = document.getElementById('toc-count-badge');
-            grid.innerHTML = '';
-
-            const q = tocSearchQuery.trim().toLowerCase();
-            const filtered = chaptersData.filter(ch => {
-                const matchCat = activeTocCategory === 'all' || ch.cat === activeTocCategory;
-                const matchQuery = !q
-                    || String(ch.id) === q
-                    || `chapter ${ch.id}`.includes(q)
-                    || ch.en.toLowerCase().includes(q)
-                    || ch.my.toLowerCase().includes(q)
-                    || ch.topics.some(t => t.toLowerCase().includes(q));
-                return matchCat && matchQuery;
-            });
-
-            countBadge.textContent = `ပြသထားသော အခန်း: ${filtered.length} / ${chaptersData.length}`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full bg-white rounded-2xl p-8 border border-slate-200 text-center text-slate-500 text-sm">
-                        ရှာဖွေထားသော အခန်း မတွေ့ရှိပါ။ ရှာဖွေမှုစာသားကို ပြန်လည်စစ်ဆေးပါ။
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(ch => {
-                const card = document.createElement('button');
-                card.type = 'button';
-                card.className = `toc-card text-left bg-white rounded-2xl p-5 sm:p-6 border ${
-                    ch.ready ? 'border-indigo-200 ring-1 ring-indigo-500/10' : 'border-slate-200/90'
-                } shadow-xs flex flex-col justify-between gap-4 cursor-pointer`;
-
-                const topicPills = ch.topics.map(t =>
-                    `<span class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-medium">${t}</span>`
-                ).join('');
-
-                card.innerHTML = `
-                    <div class="space-y-3 w-full">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full ${
-                                ch.ready ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700'
-                            }">
-                                Chapter ${String(ch.id).padStart(2, '0')}
-                            </span>
-                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
-                                ch.ready
-                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                    : 'bg-slate-50 text-slate-500 border border-slate-200'
-                            }">
-                                ${ch.ready ? '★ 3D Interactive Ready' : ch.catLabel}
-                            </span>
-                        </div>
-                        <div>
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
-                                ${ch.en.replace(`Chapter ${ch.id}: `, '')}
-                            </h3>
-                            <p class="text-sm font-semibold text-indigo-700 mt-0.5">
-                                (${ch.my})
-                            </p>
-                        </div>
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            ${topicPills}
-                        </div>
-                    </div>
-                    <div class="w-full pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold ${
-                        ch.ready ? 'text-indigo-600' : 'text-slate-500'
-                    }">
-                        <span>${ch.ready ? 'သင်ခန်းစာနှင့် 3D ဖွင့်ကြည့်မည်' : 'အခန်းမိတ်ဆက် ကြည့်မည်'}</span>
-                        <span>→</span>
-                    </div>
-                `;
-
-                card.addEventListener('click', () => selectChapter(ch.id));
-                grid.appendChild(card);
-            });
-        }
-
-        function showTableOfContents(updateHash = true) {
-            currentView = 'toc';
-            document.getElementById('toc-view').classList.remove('hidden');
-            document.getElementById('chapter-workspace').classList.add('hidden');
-            document.getElementById('mobile-header-subtitle').textContent = 'မာတိကာ (Chapters 1 – 13)';
-
-            const tocBtn = document.getElementById('sidebar-toc-btn');
-            tocBtn.className = "w-full px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-between shadow-md hover:bg-indigo-500 transition";
-
-            document.querySelectorAll('.chp-tile').forEach(tile => tile.classList.remove('on'));
-            if (updateHash && window.location.hash !== '#toc') {
-                history.replaceState(null, '', '#toc');
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
         function updateBottomDock() {
             const chPrev = document.getElementById('dock-ch-prev');
@@ -1069,19 +1137,14 @@
             artGroup.classList.toggle('dim', !isCh1);
             artPrev.disabled = !isCh1 || artIdx <= 0;
             artNext.disabled = !isCh1 || artIdx >= articlesOrder.length - 1;
-            artVal.textContent = isCh1 ? (articleLabels[currentArticleId] || 'All') : '—';
+            artVal.textContent = isCh1 ? (articleLabels[currentArticleId] || 'အားလုံး') : '—';
         }
 
         function syncChapterSidebarUI(chapterId) {
             const ch = chaptersData.find(c => c.id === chapterId) || chaptersData[0];
             document.querySelectorAll('.chp-tile').forEach(tile => {
-                tile.classList.toggle('on', currentView === 'chapter' && parseInt(tile.dataset.id, 10) === ch.id);
+                tile.classList.toggle('on', parseInt(tile.dataset.id, 10) === ch.id);
             });
-
-            const tocBtn = document.getElementById('sidebar-toc-btn');
-            if (currentView === 'chapter') {
-                tocBtn.className = "w-full px-3.5 py-2.5 rounded-xl bg-slate-800/90 text-slate-200 border border-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-between hover:bg-slate-700 hover:text-white transition";
-            }
 
             const nowCard = document.getElementById('chapter-now-card');
             nowCard.innerHTML = `
@@ -1091,14 +1154,10 @@
             `;
         }
 
-        function selectChapter(chapterId, updateHash = true) {
+        function selectChapter(chapterId) {
             const clampedId = Math.max(1, Math.min(chaptersData.length, chapterId));
-            const changed = currentView !== 'chapter' || clampedId !== currentChapterId;
-            currentView = 'chapter';
+            const changed = clampedId !== currentChapterId;
             currentChapterId = clampedId;
-
-            document.getElementById('toc-view').classList.add('hidden');
-            document.getElementById('chapter-workspace').classList.remove('hidden');
 
             const ch = chaptersData.find(c => c.id === currentChapterId) || chaptersData[0];
             document.getElementById('mobile-header-subtitle').textContent = ch.en;
@@ -1125,16 +1184,10 @@
                 document.getElementById('other-ch-num').textContent = `Ch ${ch.id}`;
                 document.getElementById('other-ch-title').textContent = ch.en;
                 document.getElementById('other-ch-myanmar').textContent = ch.my;
-                document.getElementById('other-ch-topics').innerHTML = ch.topics.map(t =>
-                    `<span class="text-xs px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-medium border border-indigo-100">${t}</span>`
-                ).join('');
                 document.getElementById('banner-desc').textContent = `${ch.en} (${ch.my}) အတွက် သင်ခန်းစာ မိတ်ဆက်`;
             }
 
             updateBottomDock();
-            if (updateHash) {
-                history.replaceState(null, '', `#chapter-${ch.id}`);
-            }
             if (changed) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -1144,7 +1197,7 @@
             if (!articlesOrder.includes(articleId)) return;
             currentArticleId = articleId;
 
-            if (currentView !== 'chapter' || currentChapterId !== 1) {
+            if (currentChapterId !== 1) {
                 selectChapter(1);
             }
 
@@ -1176,6 +1229,21 @@
         function initNavigation() {
             const grid = document.getElementById('chapter-tile-grid');
 
+            // Mobile Sidebar Toggle
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const closeMobileSidebar = () => {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            };
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            });
+            document.getElementById('close-sidebar-btn').addEventListener('click', closeMobileSidebar);
+            backdrop.addEventListener('click', closeMobileSidebar);
+
+            // Populate Chapter 1–13 Tiles
             chaptersData.forEach(ch => {
                 const tile = document.createElement('button');
                 tile.type = 'button';
@@ -1191,37 +1259,6 @@
                 grid.appendChild(tile);
             });
 
-            // Table of Contents (မာတိကာ) buttons
-            document.getElementById('sidebar-toc-btn').addEventListener('click', () => {
-                showTableOfContents();
-                closeMobileSidebar();
-            });
-            document.getElementById('mobile-home-btn').addEventListener('click', () => showTableOfContents());
-            document.getElementById('mobile-toc-btn').addEventListener('click', () => showTableOfContents());
-            document.getElementById('banner-back-toc-btn').addEventListener('click', () => showTableOfContents());
-            document.getElementById('other-back-toc-btn').addEventListener('click', () => showTableOfContents());
-            document.getElementById('dock-toc-btn').addEventListener('click', () => showTableOfContents());
-            document.getElementById('toc-start-ch1-btn').addEventListener('click', () => selectChapter(1));
-
-            // TOC Search & Category Filters
-            document.getElementById('toc-search-input').addEventListener('input', (e) => {
-                tocSearchQuery = e.target.value;
-                renderTocCards();
-            });
-
-            document.querySelectorAll('#toc-filter-bar .toc-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    activeTocCategory = pill.dataset.cat;
-                    document.querySelectorAll('#toc-filter-bar .toc-pill').forEach(p => {
-                        const isActive = p.dataset.cat === activeTocCategory;
-                        p.className = isActive
-                            ? 'toc-pill active px-3.5 py-1.5 rounded-full text-xs font-semibold border border-slate-200 transition'
-                            : 'toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition';
-                    });
-                    renderTocCards();
-                });
-            });
-
             document.getElementById('back-to-ch1-btn').addEventListener('click', () => selectChapter(1));
 
             // Sidebar Article buttons
@@ -1232,7 +1269,7 @@
                 });
             });
 
-            // Bottom Dock Buttons
+            // Bottom Dock Chapter & Article Switcher Buttons
             document.getElementById('dock-ch-prev').addEventListener('click', () => selectChapter(currentChapterId - 1));
             document.getElementById('dock-ch-next').addEventListener('click', () => selectChapter(currentChapterId + 1));
 
@@ -1245,27 +1282,13 @@
                 if (idx < articlesOrder.length - 1) selectArticle(articlesOrder[idx + 1]);
             });
 
-            // Mobile Sidebar Toggle
-            const sidebar = document.getElementById('sidebar');
-            const backdrop = document.getElementById('sidebar-backdrop');
-            const closeMobileSidebar = () => {
-                sidebar.classList.add('-translate-x-full');
-                backdrop.classList.add('hidden');
-            // Initial UI Sync: Start on Table of Contents (မာတိကာ) unless URL hash specifies a chapter
-            renderTocCards();
+            // Initial UI Sync
             syncChapterSidebarUI(1);
             updateBottomDock();
-
-            const hashMatch = window.location.hash.match(/^#chapter-(\d+)$/);
-            if (hashMatch) {
-                selectChapter(parseInt(hashMatch[1], 10), false);
-            } else {
-                showTableOfContents(false);
-            }
         }
 
         // ==========================================
-        // 3. 3D CANVAS TOOLBAR (OVERLAY TOGGLE SWITCH & ZOOM)
+        // 3. 3D CANVAS TOOLBAR (EXPLANATION OVERLAY TOGGLE SWITCH & ZOOM)
         // ==========================================
         function initCanvasToolbars() {
             const icons = {
@@ -1281,7 +1304,7 @@
                 const bar = document.createElement('div');
                 bar.className = 'cv-tools';
 
-                // Overlay Explanation Text Toggle Switch (ရှင်းလင်းချက် ပြ/ဖျောက်)
+                // Toggle Switch to Show/Hide Floating Explanation Cards on 3D Canvas
                 const toggleSwitch = document.createElement('button');
                 toggleSwitch.type = 'button';
                 toggleSwitch.className = 'cv-btn';
@@ -1299,7 +1322,7 @@
                 });
                 bar.appendChild(toggleSwitch);
 
-                // Zoom In, Zoom Out, Reset Buttons
+                // Zoom In, Zoom Out, Reset View Buttons
                 const makeBtn = (html, title, onClick) => {
                     const b = document.createElement('button');
                     b.type = 'button';
@@ -1333,7 +1356,7 @@
                 box.appendChild(hint);
 
                 box.addEventListener('orbit-used', () => hint.classList.add('off'), true);
-                setTimeout(() => hint.classList.add('off'), 8000);
+                setTimeout(() => hint.classList.add('off'), 8500);
             });
         }
 
@@ -1382,7 +1405,7 @@
         }
 
         // ==========================================
-        // 5. HELPER: MOUSE & TOUCH CAMERA ORBIT
+        // 5. HELPER: MOUSE & TOUCH CAMERA ORBIT + ZOOM
         // ==========================================
         function attachOrbitControls(domElement, camera, radius = 7.5, initialPolar = 0.95, initialAzimuth = 0.5) {
             let isDragging = false, prevX = 0, prevY = 0, pinchDist = 0;
