@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="my" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 12 Physics - မာတိကာ (Table of Contents) & Interactive 3D</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Noto Sans Myanmar for crisp bilingual typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Mathematical Equations -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Three.js for 3D Interactive Physics Simulations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --ink: #0a1022;
+            --ink2: #111a35;
+            --amber: #fbbf24;
+            --cyan: #38bdf8;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.75;
+            background: #f3f5fb radial-gradient(circle, #dfe4f3 1px, transparent 1.3px) 0 0 / 22px 22px;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--amber);
+            outline-offset: 2px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Sidebar Styling */
+        #sidebar {
+            background: linear-gradient(180deg, #0a1022 0%, #0f1830 55%, #121b3a 100%);
+            box-shadow: 8px 0 40px -18px rgba(10, 16, 34, 0.7);
+        }
+
+        .article-btn {
+            position: relative;
+            border: 1px solid transparent;
+        }
+        .article-btn.active-art {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            box-shadow: 0 10px 24px -10px rgba(99, 102, 241, 0.85);
+        }
+        .article-btn:not(.active-art):hover {
+            border-color: rgba(129, 140, 248, 0.25);
+        }
+
+        /* Hero Banner Decorative Rotational Wheel */
+        .hero-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(110deg, #0a1022 0%, #1b1a4d 60%, #0a1022 100%);
+        }
+        .hero-banner > * {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-banner::after {
+            content: "";
+            position: absolute;
+            right: -140px;
+            top: 50%;
+            width: 480px;
+            height: 480px;
+            margin-top: -240px;
+            border-radius: 50%;
+            pointer-events: none;
+            background:
+                repeating-conic-gradient(rgba(251, 191, 36, 0.28) 0 1.5deg, transparent 1.5deg 22.5deg),
+                repeating-radial-gradient(circle, transparent 0 46px, rgba(129, 140, 248, 0.28) 47px 48px);
+            -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+            mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+            animation: wheelSpin 80s linear infinite;
+        }
+        @keyframes wheelSpin {
+            to { transform: rotate(360deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-banner::after { animation: none; }
+        }
+
+        /* Article Cards */
+        .article-section {
+            border-radius: 1.4rem;
+            border-color: #e2e7f4;
+            box-shadow: 0 1px 2px rgba(10, 16, 34, 0.05), 0 18px 40px -22px rgba(30, 27, 75, 0.35);
+        }
+
+        /* 3D Canvas Container & Toolbar */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 390px;
+            border-radius: 1.15rem;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 35%, #1f2a4d 0%, #0a1022 80%);
+            box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.14), 0 22px 44px -24px rgba(2, 6, 23, 0.8);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 460px;
+            }
+        }
+        .canvas-container canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Top-Right 3D Toolbar (Overlay Toggle Switch + Zoom Controls) */
+        .cv-tools {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 15;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .cv-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 34px;
+            min-width: 34px;
+            padding: 0 10px;
+            justify-content: center;
+            border-radius: 10px;
+            font: 600 12px/1 'Inter', 'Noto Sans Myanmar', sans-serif;
+            color: #e2e8f0;
+            background: rgba(10, 16, 34, 0.82);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .cv-btn:hover {
+            background: rgba(51, 65, 110, 0.9);
+            border-color: rgba(165, 180, 252, 0.65);
+        }
+        .cv-btn svg {
+            width: 15px;
+            height: 15px;
+            flex: none;
+        }
+
+        /* Toggle Switch Pill inside 3D Toolbar */
+        .cv-sw {
+            position: relative;
+            width: 30px;
+            height: 17px;
+            border-radius: 99px;
+            background: #475569;
+            transition: background 0.2s;
+            flex: none;
+        }
+        .cv-sw::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #ffffff;
+            transition: transform 0.2s;
+        }
+        .cv-btn[aria-checked="true"] .cv-sw {
+            background: #34d399;
+        }
+        .cv-btn[aria-checked="true"] .cv-sw::after {
+            transform: translateX(13px);
+        }
+
+        /* Smooth Fade Out when Overlay Text Toggle is OFF */
+        .cv-ov {
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+        .cv-ov.cv-off {
+            opacity: 0 !important;
+            transform: translateY(-6px);
+            pointer-events: none !important;
+        }
+
+        /* Subtle Interaction Hint Pill */
+        .cv-hint {
+            position: absolute;
+            right: 12px;
+            bottom: 10px;
+            z-index: 10;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            line-height: 1.4;
+            color: #cbd5e1;
+            background: rgba(10, 16, 34, 0.72);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            pointer-events: none;
+            white-space: nowrap;
+            transition: opacity 0.5s;
+        }
+        .cv-hint.off {
+            opacity: 0;
+        }
+
+        /* Sidebar Chapter Tile Grid (Chapters 1 - 13) */
+        .chp-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+            padding: 0 2px;
+        }
+        .chp-head b {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        .chp-head span {
+            font-size: 11px;
+            color: #64748b;
+        }
+        .chp-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 7px;
+        }
+        .chp-tile {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #64748b;
+            background: #141d3a;
+            border: 1px solid #1f2a4d;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .chp-tile:hover {
+            color: #e2e8f0;
+            border-color: #4f5bd5;
+            transform: translateY(-1px);
+        }
+        .chp-tile.ready {
+            color: #c7d2fe;
+        }
+        .chp-tile.ready::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #34d399;
+        }
+        .chp-tile.on {
+            color: #ffffff;
+            border-color: transparent;
+            background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+            box-shadow: 0 10px 22px -8px rgba(124, 58, 237, 0.9);
+        }
+        .chp-now {
+            margin-top: 12px;
+            padding: 11px 13px;
+            border-radius: 14px;
+            background: #0d1530;
+            border: 1px solid #1f2a4d;
+        }
+        .chp-now div:first-child {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+        .chp-now div:nth-child(2) {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+        .chp-now em {
+            display: inline-block;
+            margin-top: 8px;
+            font-style: normal;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 9px;
+            border-radius: 999px;
+        }
+        .chp-now em.y {
+            color: #6ee7b7;
+            background: rgba(16, 185, 129, 0.14);
+        }
+        .chp-now em.n {
+            color: #94a3b8;
+            background: rgba(148, 163, 184, 0.12);
+        }
+
+        /* Floating Bottom Navigation Dock (Chapter & Article Switcher) */
+        .bottom-dock {
+            position: sticky;
+            bottom: 14px;
+            z-index: 35;
+            display: flex;
+            justify-content: center;
+            margin: 0 12px 16px;
+            pointer-events: none;
+        }
+        .dock-inner {
+            pointer-events: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px 14px;
+            padding: 8px 14px;
+            border-radius: 18px;
+            background: rgba(10, 16, 34, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            box-shadow: 0 18px 40px -12px rgba(2, 6, 23, 0.8);
+        }
+        .dock-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s;
+        }
+        .dock-group.dim {
+            opacity: 0.4;
+        }
+        .dock-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-right: 2px;
+        }
+        .dock-value {
+            min-width: 64px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .dock-sep {
+            width: 1px;
+            height: 24px;
+            background: rgba(148, 163, 184, 0.25);
+        }
+        .dock-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #e2e8f0;
+            background: #1a2548;
+            border: 1px solid #27345f;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .dock-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-color: transparent;
+            transform: translateY(-1px);
+        }
+        .dock-btn:disabled {
+            opacity: 0.32;
+            cursor: not-allowed;
+        }
+        .dock-btn svg {
+            width: 15px;
+            height: 15px;
+        }
+        @media (max-width: 560px) {
+            .dock-btn-text { display: none; }
+            .dock-sep { display: none; }
+            .dock-value { min-width: 52px; font-size: 12px; }
+        }
+
+        .katex-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.4rem 0;
+        }
+
+        /* Table of Contents (မာတိကာ) Landing View Styling */
+        .toc-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .toc-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 38px -20px rgba(30, 27, 75, 0.35);
+            border-color: #818cf8;
+        }
+        .toc-pill.active {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 8px 20px -8px rgba(79, 70, 229, 0.75);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <button type="button" id="mobile-home-btn" class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm" title="မာတိကာ (13 Chapters)">
+                G12
+            </button>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p id="mobile-header-subtitle" class="text-xs text-indigo-600 font-medium">မာတိကာ (Chapters 1 – 13)</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" id="mobile-toc-btn" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-200 hover:bg-indigo-100 transition">
+                မာတိကာ
+            </button>
+            <button id="mobile-menu-btn" aria-label="Open Navigation Menu" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Backdrop Overlay -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- LEFT SIDEBAR / TASK BAR -->
+        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-80 text-slate-200 flex flex-col border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shrink-0">
+            
+            <!-- Brand / Title Header -->
+            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-extrabold text-lg shadow-lg">
+                        Φ
+                    </div>
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-indigo-400 font-semibold block">Myanmar Curriculum</span>
+                        <h2 class="text-base font-bold text-white leading-snug">Grade 12 Physics</h2>
+                    </div>
+                </div>
+                <button id="close-sidebar-btn" aria-label="Close Menu" class="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- TABLE OF CONTENTS (မာတိကာ) HOME BUTTON -->
+            <div class="px-4 pt-3.5 pb-1">
+                <button type="button" id="sidebar-toc-btn" class="w-full px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-between shadow-md hover:bg-indigo-500 transition">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+                        </svg>
+                        <span>မာတိကာ (All 13 Chapters)</span>
+                    </span>
+                    <span class="text-[11px] bg-white/20 px-2 py-0.5 rounded-full">Home</span>
+                </button>
+            </div>
+
+            <!-- CHAPTER 1 TO 13 TILE PICKER -->
+            <div class="p-4 border-b border-slate-800 bg-slate-900/60">
+                <div class="chp-head">
+                    <b>အခန်းရွေးရန်</b>
+                    <span>Chapters 1 – 13</span>
+                </div>
+                <div id="chapter-tile-grid" class="chp-grid">
+                    <!-- Tiles 1 to 13 populated dynamically via JS -->
+                </div>
+                <div id="chapter-now-card" class="chp-now">
+                    <!-- Active chapter summary populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- TASK BAR ARTICLE NAVIGATION LIST -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-5">
+                <div id="chapter1-nav-section">
+                    <div class="flex items-center justify-between mb-2.5 px-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Chapter 1 Articles</span>
+                        <span class="text-[11px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-medium">3D Enabled</span>
+                    </div>
+                    <nav class="space-y-1.5" aria-label="Chapter 1 Articles">
+                        <button data-article="all" class="article-btn active-art w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition">
+                            <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">All</span>
+                            <div>
+                                <div class="text-sm font-semibold">အခန်း (၁) အပြည့်အစုံ</div>
+                                <div class="text-xs text-indigo-200">Full Chapter Overview</div>
+                            </div>
+                        </button>
+
+                        <button data-article="art-1-1" class="article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-indigo-400 shrink-0 mt-0.5">1.1</span>
+                            <div>
+                                <div class="text-sm font-semibold">Constant Angular Acceleration</div>
+                                <div class="text-xs text-slate-400">ကိန်းသေ ထောင့်ပြောင်းနှုန်းအရှိန်</div>
+                            </div>
+                        </button>
+
+                        <button data-article="art-1-2" class="article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-emerald-400 shrink-0 mt-0.5">1.2</span>
+                            <div>
+                                <div class="text-sm font-semibold">Linear & Angular Relations</div>
+                                <div class="text-xs text-slate-400">မျဉ်းဖြောင့်နှင့် ထောင့်ပြောင်းနှုန်း ဆက်သွယ်ချက်</div>
+                            </div>
+                        </button>
+
+                        <button data-article="art-1-3" class="article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-rose-400 shrink-0 mt-0.5">1.3</span>
+                            <div>
+                                <div class="text-sm font-semibold">Centripetal Acceleration</div>
+                                <div class="text-xs text-slate-400">ဗဟိုချဉ်းအရှိန်နှင့် ရလဒ်အရှိန်</div>
+                            </div>
+                        </button>
+
+                        <button data-article="art-practice" class="article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-amber-400 shrink-0 mt-0.5">★</span>
+                            <div>
+                                <div class="text-sm font-semibold">Formula Sheet & Self-Check</div>
+                                <div class="text-xs text-slate-400">ပုံသေနည်းချုပ်နှင့် လေ့ကျင့်ခန်းများ</div>
+                            </div>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                <span>Interactive 3D Physics Lab</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">G12 Ready</span>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 min-w-0 flex flex-col">
+
+            <!-- ========================================== -->
+            <!-- LANDING VIEW: 13-CHAPTER TABLE OF CONTENTS -->
+            <!-- ========================================== -->
+            <section id="toc-view" class="flex-1 flex flex-col">
+                <!-- Table of Contents Hero Header -->
+                <div class="hero-banner text-white px-6 py-10 md:px-10 md:py-12 border-b border-slate-800">
+                    <div class="max-w-5xl mx-auto space-y-4">
+                        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-300">
+                            <span class="bg-indigo-500/20 border border-indigo-400/30 px-3 py-1 rounded-full">Myanmar Grade 12 Curriculum</span>
+                            <span>•</span>
+                            <span class="text-emerald-300">13 Chapters Directory</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                            Grade 12 Physics — မာတိကာ
+                            <span class="block sm:inline sm:ml-2 text-lg sm:text-2xl font-bold text-indigo-300">(Table of Contents)</span>
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+                            ဒွါဒသမတန်း ရူပဗေဒ သင်ရိုးသစ် အခန်း (၁) မှ အခန်း (၁၃) အထိ မိမိလေ့လာလိုသော အခန်းကို အောက်ပါ မာတိကာကတ်ပြားများမှ ရွေးချယ်နှိပ်၍ ဝင်ရောက်လေ့လာနိုင်ပါသည်။
+                        </p>
+                        <div class="pt-2 flex flex-wrap items-center gap-3">
+                            <button type="button" id="toc-start-ch1-btn" class="px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white font-bold text-xs sm:text-sm shadow-lg transition flex items-center gap-2">
+                                <span>Chapter 1: Rotational Motion (3D Lab) ဖွင့်မည်</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                </svg>
+                            </button>
+                            <span class="text-xs text-slate-400">
+                                စုစုပေါင်း ၁၃ ခန်း • အခန်း (၁) တွင် Interactive 3D Simulations ၃ ခု ပါဝင်သည်
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Category Filter Controls -->
+                <div class="max-w-5xl w-full mx-auto px-4 sm:px-6 md:px-10 pt-7 pb-12 space-y-6">
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs space-y-4">
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                            <div class="relative flex-1">
+                                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+                                </svg>
+                                <input id="toc-search-input" type="text" placeholder="အခန်းနံပါတ် သို့မဟုတ် ခေါင်းစဉ် ရှာရန် (ဥပမာ - Rotational, Light, Capacitor, 1)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                            </div>
+                            <div id="toc-count-badge" class="text-xs font-semibold text-slate-500 px-3 py-2 rounded-xl bg-slate-100 text-center shrink-0">
+                                ပြသထားသော အခန်း: 13 / 13
+                            </div>
+                        </div>
+
+                        <!-- Category Filter Pills -->
+                        <div id="toc-filter-bar" class="flex flex-wrap gap-2">
+                            <button type="button" data-cat="all" class="toc-pill active px-3.5 py-1.5 rounded-full text-xs font-semibold border border-slate-200 transition">
+                                အားလုံး (13)
+                            </button>
+                            <button type="button" data-cat="mechanics" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                                Mechanics (Ch 1–3)
+                            </button>
+                            <button type="button" data-cat="thermal" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                                Energy & Thermal (Ch 4–5)
+                            </button>
+                            <button type="button" data-cat="waves" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                                Sound & Optics (Ch 6–8)
+                            </button>
+                            <button type="button" data-cat="electricity" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                                Electricity & Magnetism (Ch 9–11)
+                            </button>
+                            <button type="button" data-cat="modern" class="toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition">
+                                Electronics & Modern (Ch 12–13)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 13 Chapters Cards Grid -->
+                    <div id="toc-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- CHAPTER WORKSPACE VIEW (CHAPTERS 1 TO 13)  -->
+            <!-- ========================================== -->
+            <div id="chapter-workspace" class="hidden flex-1 flex flex-col">
+                <!-- Top Hero Banner -->
+                <div class="hero-banner text-white px-6 py-8 md:px-10 md:py-10 border-b border-slate-800">
+                    <div class="max-w-5xl mx-auto">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-300">
+                                <span id="banner-chapter-badge" class="bg-indigo-500/20 border border-indigo-400/30 px-2.5 py-1 rounded-full">Chapter 1 of 13</span>
+                                <span>•</span>
+                                <span>Grade 12 Physics</span>
+                            </div>
+                            <button type="button" id="banner-back-toc-btn" class="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7"/>
+                                </svg>
+                                <span>မာတိကာ (13 Chapters) သို့</span>
+                            </button>
+                        </div>
+                        <h1 id="banner-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
+                            Rotational Motion <span class="text-indigo-300 font-bold block sm:inline sm:ml-2 text-xl sm:text-2xl">(လည်ပတ်ရွေ့လျားမှု)</span>
+                        </h1>
+                        <p id="banner-desc" class="mt-3 text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+                            ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီနှင့် အခန်းများကို ပြောင်းလဲကြည့်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများကို Toggle Switch ဖြင့် အဖွင့်/အပိတ် ပြုလုပ်နိုင်ပါသည်။
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CHAPTER 1 FULL INTERACTIVE CONTENT -->
+                <div id="chapter1-content" class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 md:px-10 py-8 space-y-10">
+                                </div>
+                            </div>
+
+                <!-- PLACEHOLDER / OVERVIEW FOR CHAPTERS 2 TO 13 -->
+                <div id="other-chapter-content" class="hidden flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 md:px-10 py-12">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-10 text-center space-y-5">
+                        <div class="w-16 h-16 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto text-2xl font-extrabold">
+                            <span id="other-ch-num">Ch 2</span>
+                        </div>
+                        <h2 id="other-ch-title" class="text-2xl sm:text-3xl font-bold text-slate-900">
+                            Chapter 2: Forces in Circular Motion
+                        </h2>
+                        <p id="other-ch-myanmar" class="text-indigo-600 font-semibold text-base">
+                            စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ
+                        </p>
+                        <div id="other-ch-topics" class="flex flex-wrap justify-center gap-2 max-w-xl mx-auto"></div>
+                        <p id="other-ch-desc" class="text-slate-600 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                            ဤအခန်း၏ အသေးစိတ် Article များနှင့် 3D သင်ခန်းစာများကို ဆက်လက်ဖြည့်သွင်းပေးသွားပါမည်။ လက်ရှိတွင် Chapter 1 (Rotational Motion) ၏ သင်ခန်းစာအပြည့်အစုံနှင့် 3D Simulations များကို အပြည့်အဝ လေ့လာနိုင်ပါပြီ။
+                        </p>
+                        <div class="pt-2 flex flex-wrap justify-center gap-3">
+                            <button type="button" id="other-back-toc-btn" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm transition">
+                                ← မာတိကာ (13 Chapters) သို့
+                            </button>
+                            <button type="button" id="back-to-ch1-btn" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition">
+                                Chapter 1: Rotational Motion (3D) ဖွင့်မည် →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STICKY BOTTOM NAVIGATION DOCK (CHAPTER & ARTICLE SWITCHER) -->
+                <div class="bottom-dock" role="navigation" aria-label="Bottom Chapter and Article Switcher">
+                    <div class="dock-inner">
+                        <!-- Back to Table of Contents -->
+                        <button type="button" class="dock-btn" id="dock-toc-btn" aria-label="မာတိကာ (Table of Contents)" title="မာတိကာ (13 Chapters)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                            <span class="dock-btn-text">မာတိကာ</span>
+                        </button>
+
+                        <span class="dock-sep"></span>
+
+                        <!-- Chapter Switcher -->
+                        <div class="dock-group">
+                            <span class="dock-label">အခန်း</span>
+                            <button type="button" class="dock-btn" id="dock-ch-prev" aria-label="အရင်အခန်း (Previous Chapter)" title="အရင်အခန်း">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                                <span class="dock-btn-text">အရင်</span>
+                            </button>
+                            <span class="dock-value" id="dock-ch-val">1 / 13</span>
+                            <button type="button" class="dock-btn" id="dock-ch-next" aria-label="နောက်အခန်း (Next Chapter)" title="နောက်အခန်း">
+                                <span class="dock-btn-text">နောက်</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+
+                        <span class="dock-sep"></span>
+
+                        <!-- Article Switcher -->
+                        <div class="dock-group" id="dock-art-group">
+                            <span class="dock-label">Article</span>
+                            <button type="button" class="dock-btn" id="dock-art-prev" aria-label="အရင် Article (Previous Article)" title="အရင် Article">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+                                <span class="dock-btn-text">အရင်</span>
+                            </button>
+                            <span class="dock-value" id="dock-art-val">All</span>
+                            <button type="button" class="dock-btn" id="dock-art-next" aria-label="နောက် Article (Next Article)" title="နောက် Article">
+                                <span class="dock-btn-text">နောက်</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- APPLICATION LOGIC & THREE.JS 3D SIMULATIONS -->
+    <script>
+        // ==========================================
+        // 1. CURRICULUM DATA (MYANMAR GRADE 12 PHYSICS - CHAPTERS 1 TO 13)
+        // ==========================================
+        const chaptersData = [
+            {
+                id: 1,
+                en: "Chapter 1: Rotational Motion",
+                my: "လည်ပတ်ရွေ့လျားမှု",
+                cat: "mechanics",
+                catLabel: "Mechanics",
+                ready: true,
+                topics: ["1.1 Constant Angular Acceleration", "1.2 Linear & Angular Relations", "1.3 Centripetal Acceleration"]
+            },
+            {
+                id: 2,
+                en: "Chapter 2: Forces in Circular Motion",
+                my: "စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ",
+                cat: "mechanics",
+                catLabel: "Mechanics",
+                ready: false,
+                topics: ["2.1 Centripetal Force", "2.2 Banking of Roads", "2.3 Centrifugal Force"]
+            },
+            {
+                id: 3,
+                en: "Chapter 3: Fluid Dynamics",
+                my: "အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု",
+                cat: "mechanics",
+                catLabel: "Mechanics",
+                ready: false,
+                topics: ["3.1 Continuity Equation", "3.2 Bernoulli's Equation", "3.3 Viscosity & Stokes' Law"]
+            },
+            {
+                id: 4,
+                en: "Chapter 4: Sources of Energy and Environmental Impacts",
+                my: "စွမ်းအင်အရင်းအမြစ်များနှင့် ပတ်ဝန်းကျင်ဆိုင်ရာ သက်ရောက်မှုများ",
+                cat: "thermal",
+                catLabel: "Energy & Thermal",
+                ready: false,
+                topics: ["4.1 Renewable & Non-renewable Energy", "4.2 Solar, Wind & Hydro Power", "4.3 Environmental Impacts"]
+            },
+            {
+                id: 5,
+                en: "Chapter 5: Heat Transfer and Thermodynamics",
+                my: "အပူကူးပြောင်းခြင်းနှင့် သာမိုဒိုင်းနမစ်",
+                cat: "thermal",
+                catLabel: "Energy & Thermal",
+                ready: false,
+                topics: ["5.1 Conduction, Convection & Radiation", "5.2 First Law of Thermodynamics", "5.3 Heat Engines & Carnot Cycle"]
+            },
+            {
+                id: 6,
+                en: "Chapter 6: Effects and Characteristics of Sound",
+                my: "အသံ၏ အကျိုးသက်ရောက်မှုများနှင့် ဂုဏ်သတ္တိများ",
+                cat: "waves",
+                catLabel: "Sound & Optics",
+                ready: false,
+                topics: ["6.1 Speed of Sound & Echo", "6.2 Intensity & Decibel Level", "6.3 Doppler Effect & Pitch"]
+            },
+            {
+                id: 7,
+                en: "Chapter 7: Applications of Light and Optical Instruments",
+                my: "အလင်း၏ အသုံးချမှုများနှင့် အလင်းဆိုင်ရာ ကိရိယာများ",
+                cat: "waves",
+                catLabel: "Sound & Optics",
+                ready: false,
+                topics: ["7.1 Camera & Human Eye", "7.2 Microscope & Telescope", "7.3 Optical Fibres & Lasers"]
+            },
+            {
+                id: 8,
+                en: "Chapter 8: Interference and Diffraction of Light",
+                my: "အလင်းလှိုင်း ထပ်ခြင်းနှင့် ကွေ့ခြင်း",
+                cat: "waves",
+                catLabel: "Sound & Optics",
+                ready: false,
+                topics: ["8.1 Huygens' Principle", "8.2 Young's Double-Slit Interference", "8.3 Diffraction Grating"]
+            },
+            {
+                id: 9,
+                en: "Chapter 9: Capacitor and Capacitance",
+                my: "လျှပ်သိုနှင့် လျှပ်သိုသတ္တိ",
+                cat: "electricity",
+                catLabel: "Electricity & Magnetism",
+                ready: false,
+                topics: ["9.1 Parallel-Plate Capacitor", "9.2 Dielectrics & Energy Stored", "9.3 Series & Parallel Combinations"]
+            },
+            {
+                id: 10,
+                en: "Chapter 10: Electrical Energy, Power and Heating Effect",
+                my: "လျှပ်စစ်စွမ်းအင်၊ စွမ်းအားနှင့် အပူသက်ရောက်မှု",
+                cat: "electricity",
+                catLabel: "Electricity & Magnetism",
+                ready: false,
+                topics: ["10.1 Electromotive Force & Circuits", "10.2 Joule's Law of Heating", "10.3 Electrical Power & Safety"]
+            },
+            {
+                id: 11,
+                en: "Chapter 11: Electromagnetic Induction & AC Distribution",
+                my: "လျှပ်စစ်သံလိုက်ညှို့ယူခြင်းနှင့် လျှပ်စစ်ဓာတ်အား ဖြန့်ဖြူးခြင်း",
+                cat: "electricity",
+                catLabel: "Electricity & Magnetism",
+                ready: false,
+                topics: ["11.1 Faraday's & Lenz's Laws", "11.2 AC Generators & Transformers", "11.3 Power Transmission & House Wiring"]
+            },
+            {
+                id: 12,
+                en: "Chapter 12: Electronics and Digital Systems",
+                my: "အီလက်ထရွန်းနစ်နှင့် ဒစ်ဂျစ်တယ်စနစ်များ",
+                cat: "modern",
+                catLabel: "Electronics & Modern",
+                ready: false,
+                topics: ["12.1 Semiconductor Diodes & LEDs", "12.2 Transistors & Sensors", "12.3 Logic Gates & Digital Circuits"]
+            },
+            {
+                id: 13,
+                en: "Chapter 13: Modern Physics",
+                my: "ခေတ်သစ်ရူပဗေဒ",
+                cat: "modern",
+                catLabel: "Electronics & Modern",
+                ready: false,
+                topics: ["13.1 Radioactivity & Half-Life", "13.2 Nuclear Energy & Wave-Particle Duality", "13.3 Special Relativity"]
+            }
+        ];
+
+        const articlesOrder = ['all', 'art-1-1', 'art-1-2', 'art-1-3', 'art-practice'];
+        const articleLabels = {
+            'all': 'အားလုံး',
+            'art-1-1': '1.1',
+            'art-1-2': '1.2',
+            'art-1-3': '1.3',
+            'art-practice': '★ Quiz'
+        };
+
+        const quizQuestions = [
+            {
+                q: "1. Rigid body တစ်ခု လည်ပတ်နေစဉ် ၎င်းတွင်ပါဝင်သော အမှုန်အားလုံးအတွက် မည်သည့်တန်ဖိုး တူညီသနည်း။",
+                options: [
+                    "Tangential velocity (v)",
+                    "Angular velocity (ω)",
+                    "Centripetal acceleration (ac)",
+                    "Linear displacement (s)"
+                ],
+                answer: 1,
+                explanation: "Rigid body တစ်ခုလုံးသည် ဘုံဝင်ရိုးတစ်ခုတည်းကို ဗဟိုပြုလည်ပတ်သောကြောင့် အမှုန်တိုင်း၏ Angular velocity (ω) တူညီပါသည်။ Linear တန်ဖိုးများမှာမူ အချင်းဝက် (r) ပေါ်မူတည်၍ ကွာခြားပါသည်။"
+            },
+            {
+                q: "2. လည်ပတ်နေသော အရာဝတ္ထုတစ်ခု အရှိန်လျော့ကျသွား (slowing down) သောအခါ angular velocity vector (ω) နှင့် angular acceleration vector (α) တို့၏ ဦးတည်ရာ မည်သို့ရှိသနည်း။",
+                options: [
+                    "ဦးတည်ရာ တူညီသည် (Same direction)",
+                    "ထောင့်မှန်ကျသည် (Perpendicular)",
+                    "ဦးတည်ရာ ဆန့်ကျင်ဘက်ဖြစ်သည် (Opposite direction)",
+                    "တန်ဖိုး သုညဖြစ်သည်"
+                ],
+                answer: 2,
+                explanation: "အရှိန်မြန်လာလျှင် (speeding up) ω နှင့် α ဦးတည်ရာ တူညီပြီး၊ အရှိန်လျော့သွားလျှင် (slowing down) ဦးတည်ရာ ဆန့်ကျင်ဘက် ဖြစ်ပါသည်။"
+            },
+            {
+                q: "3. Uniform circular motion တွင် အမြန်နှုန်း (speed) ကိန်းသေဖြစ်သော်လည်း အရှိန် (centripetal acceleration) ဖြစ်ပေါ်ရခြင်း အကြောင်းရင်းမှာ အဘယ်နည်း။",
+                options: [
+                    "အလျင် (velocity) ၏ ပမာဏ ပြောင်းလဲသောကြောင့်",
+                    "အလျင် (velocity) ၏ ဦးတည်ရာ (direction) အဆက်မပြတ် ပြောင်းလဲသောကြောင့်",
+                    "အချင်းဝက် (radius) ပြောင်းလဲသောကြောင့်",
+                    "Tangential acceleration ရှိသောကြောင့်"
+                ],
+                answer: 1,
+                explanation: "Velocity သည် vector ဖြစ်သဖြင့် speed (ပမာဏ) မပြောင်းလဲသော်လည်း direction (ဦးတည်ရာ) အဆက်မပြတ် ပြောင်းလဲနေခြင်းကြောင့် ဗဟိုချက်သို့ ဦးတည်သော centripetal acceleration ဖြစ်ပေါ်ပါသည်။"
+            }
+        ];
+
+        // ==========================================
+        // 2. NAVIGATION STATE, TABLE OF CONTENTS & UI SYNC
+        // ==========================================
+        let currentView = 'toc'; // 'toc' (Table of Contents) or 'chapter'
+        let currentChapterId = 1;
+        let currentArticleId = 'all';
+        let activeTocCategory = 'all';
+        let tocSearchQuery = '';
+        const renderersToResize = [];
+
+        function renderTocCards() {
+            const grid = document.getElementById('toc-cards-grid');
+            const countBadge = document.getElementById('toc-count-badge');
+            grid.innerHTML = '';
+
+            const q = tocSearchQuery.trim().toLowerCase();
+            const filtered = chaptersData.filter(ch => {
+                const matchCat = activeTocCategory === 'all' || ch.cat === activeTocCategory;
+                const matchQuery = !q
+                    || String(ch.id) === q
+                    || `chapter ${ch.id}`.includes(q)
+                    || ch.en.toLowerCase().includes(q)
+                    || ch.my.toLowerCase().includes(q)
+                    || ch.topics.some(t => t.toLowerCase().includes(q));
+                return matchCat && matchQuery;
+            });
+
+            countBadge.textContent = `ပြသထားသော အခန်း: ${filtered.length} / ${chaptersData.length}`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white rounded-2xl p-8 border border-slate-200 text-center text-slate-500 text-sm">
+                        ရှာဖွေထားသော အခန်း မတွေ့ရှိပါ။ ရှာဖွေမှုစာသားကို ပြန်လည်စစ်ဆေးပါ။
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(ch => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = `toc-card text-left bg-white rounded-2xl p-5 sm:p-6 border ${
+                    ch.ready ? 'border-indigo-200 ring-1 ring-indigo-500/10' : 'border-slate-200/90'
+                } shadow-xs flex flex-col justify-between gap-4 cursor-pointer`;
+
+                const topicPills = ch.topics.map(t =>
+                    `<span class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-medium">${t}</span>`
+                ).join('');
+
+                card.innerHTML = `
+                    <div class="space-y-3 w-full">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full ${
+                                ch.ready ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700'
+                            }">
+                                Chapter ${String(ch.id).padStart(2, '0')}
+                            </span>
+                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
+                                ch.ready
+                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                    : 'bg-slate-50 text-slate-500 border border-slate-200'
+                            }">
+                                ${ch.ready ? '★ 3D Interactive Ready' : ch.catLabel}
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+                                ${ch.en.replace(`Chapter ${ch.id}: `, '')}
+                            </h3>
+                            <p class="text-sm font-semibold text-indigo-700 mt-0.5">
+                                (${ch.my})
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            ${topicPills}
+                        </div>
+                    </div>
+                    <div class="w-full pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold ${
+                        ch.ready ? 'text-indigo-600' : 'text-slate-500'
+                    }">
+                        <span>${ch.ready ? 'သင်ခန်းစာနှင့် 3D ဖွင့်ကြည့်မည်' : 'အခန်းမိတ်ဆက် ကြည့်မည်'}</span>
+                        <span>→</span>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => selectChapter(ch.id));
+                grid.appendChild(card);
+            });
+        }
+
+        function showTableOfContents(updateHash = true) {
+            currentView = 'toc';
+            document.getElementById('toc-view').classList.remove('hidden');
+            document.getElementById('chapter-workspace').classList.add('hidden');
+            document.getElementById('mobile-header-subtitle').textContent = 'မာတိကာ (Chapters 1 – 13)';
+
+            const tocBtn = document.getElementById('sidebar-toc-btn');
+            tocBtn.className = "w-full px-3.5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-between shadow-md hover:bg-indigo-500 transition";
+
+            document.querySelectorAll('.chp-tile').forEach(tile => tile.classList.remove('on'));
+            if (updateHash && window.location.hash !== '#toc') {
+                history.replaceState(null, '', '#toc');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateBottomDock() {
+            const chPrev = document.getElementById('dock-ch-prev');
+            const chNext = document.getElementById('dock-ch-next');
+            const chVal = document.getElementById('dock-ch-val');
+
+            const artGroup = document.getElementById('dock-art-group');
+            const artPrev = document.getElementById('dock-art-prev');
+            const artNext = document.getElementById('dock-art-next');
+            const artVal = document.getElementById('dock-art-val');
+
+            chPrev.disabled = currentChapterId <= 1;
+            chNext.disabled = currentChapterId >= chaptersData.length;
+            chVal.textContent = `${currentChapterId} / ${chaptersData.length}`;
+
+            const isCh1 = currentChapterId === 1;
+            const artIdx = articlesOrder.indexOf(currentArticleId);
+
+            artGroup.classList.toggle('dim', !isCh1);
+            artPrev.disabled = !isCh1 || artIdx <= 0;
+            artNext.disabled = !isCh1 || artIdx >= articlesOrder.length - 1;
+            artVal.textContent = isCh1 ? (articleLabels[currentArticleId] || 'All') : '—';
+        }
+
+        function syncChapterSidebarUI(chapterId) {
+            const ch = chaptersData.find(c => c.id === chapterId) || chaptersData[0];
+            document.querySelectorAll('.chp-tile').forEach(tile => {
+                tile.classList.toggle('on', currentView === 'chapter' && parseInt(tile.dataset.id, 10) === ch.id);
+            });
+
+            const tocBtn = document.getElementById('sidebar-toc-btn');
+            if (currentView === 'chapter') {
+                tocBtn.className = "w-full px-3.5 py-2.5 rounded-xl bg-slate-800/90 text-slate-200 border border-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-between hover:bg-slate-700 hover:text-white transition";
+            }
+
+            const nowCard = document.getElementById('chapter-now-card');
+            nowCard.innerHTML = `
+                <div>${ch.en}</div>
+                <div>${ch.my}</div>
+                <em class="${ch.ready ? 'y' : 'n'}">${ch.ready ? '3D Interactive ရရှိနိုင်' : 'မကြာမီ ထည့်သွင်းမည်'}</em>
+            `;
+        }
+
+        function selectChapter(chapterId, updateHash = true) {
+            const clampedId = Math.max(1, Math.min(chaptersData.length, chapterId));
+            const changed = currentView !== 'chapter' || clampedId !== currentChapterId;
+            currentView = 'chapter';
+            currentChapterId = clampedId;
+
+            document.getElementById('toc-view').classList.add('hidden');
+            document.getElementById('chapter-workspace').classList.remove('hidden');
+
+            const ch = chaptersData.find(c => c.id === currentChapterId) || chaptersData[0];
+            document.getElementById('mobile-header-subtitle').textContent = ch.en;
+            document.getElementById('banner-chapter-badge').textContent = `Chapter ${ch.id} of 13`;
+            document.getElementById('banner-title').innerHTML = `${ch.en.replace(`Chapter ${ch.id}: `, '')} <span class="text-indigo-300 font-bold block sm:inline sm:ml-2 text-xl sm:text-2xl">(${ch.my})</span>`;
+
+            syncChapterSidebarUI(ch.id);
+
+            const ch1Content = document.getElementById('chapter1-content');
+            const otherContent = document.getElementById('other-chapter-content');
+            const ch1Nav = document.getElementById('chapter1-nav-section');
+
+            if (ch.id === 1) {
+                ch1Content.classList.remove('hidden');
+                otherContent.classList.add('hidden');
+                ch1Nav.classList.remove('opacity-50');
+                document.getElementById('banner-desc').textContent = "ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီနှင့် အခန်းများကို ပြောင်းလဲကြည့်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများကို Toggle Switch ဖြင့် အဖွင့်/အပိတ် ပြုလုပ်နိုင်ပါသည်။";
+                requestAnimationFrame(resizeAllThreeCanvases);
+                setTimeout(resizeAllThreeCanvases, 60);
+            } else {
+                ch1Content.classList.add('hidden');
+                otherContent.classList.remove('hidden');
+                ch1Nav.classList.add('opacity-50');
+                document.getElementById('other-ch-num').textContent = `Ch ${ch.id}`;
+                document.getElementById('other-ch-title').textContent = ch.en;
+                document.getElementById('other-ch-myanmar').textContent = ch.my;
+                document.getElementById('other-ch-topics').innerHTML = ch.topics.map(t =>
+                    `<span class="text-xs px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-medium border border-indigo-100">${t}</span>`
+                ).join('');
+                document.getElementById('banner-desc').textContent = `${ch.en} (${ch.my}) အတွက် သင်ခန်းစာ မိတ်ဆက်`;
+            }
+
+            updateBottomDock();
+            if (updateHash) {
+                history.replaceState(null, '', `#chapter-${ch.id}`);
+            }
+            if (changed) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function selectArticle(articleId) {
+            if (!articlesOrder.includes(articleId)) return;
+            currentArticleId = articleId;
+
+            if (currentView !== 'chapter' || currentChapterId !== 1) {
+                selectChapter(1);
+            }
+
+            // Update active styling in sidebar
+            document.querySelectorAll('.article-btn').forEach(btn => {
+                const isMatch = btn.dataset.article === articleId;
+                if (isMatch) {
+                    btn.className = "article-btn active-art w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition";
+                } else {
+                    btn.className = "article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white";
+                }
+            });
+
+            // Filter sections
+            document.querySelectorAll('.article-section').forEach(sec => {
+                if (articleId === 'all' || sec.id === articleId) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+
+            updateBottomDock();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            requestAnimationFrame(resizeAllThreeCanvases);
+            setTimeout(resizeAllThreeCanvases, 60);
+        }
+
+        function initNavigation() {
+            const grid = document.getElementById('chapter-tile-grid');
+
+            chaptersData.forEach(ch => {
+                const tile = document.createElement('button');
+                tile.type = 'button';
+                tile.className = `chp-tile${ch.ready ? ' ready' : ''}`;
+                tile.textContent = ch.id;
+                tile.dataset.id = ch.id;
+                tile.title = ch.en;
+                tile.setAttribute('aria-label', ch.en);
+                tile.addEventListener('click', () => {
+                    selectChapter(ch.id);
+                    closeMobileSidebar();
+                });
+                grid.appendChild(tile);
+            });
+
+            // Table of Contents (မာတိကာ) buttons
+            document.getElementById('sidebar-toc-btn').addEventListener('click', () => {
+                showTableOfContents();
+                closeMobileSidebar();
+            });
+            document.getElementById('mobile-home-btn').addEventListener('click', () => showTableOfContents());
+            document.getElementById('mobile-toc-btn').addEventListener('click', () => showTableOfContents());
+            document.getElementById('banner-back-toc-btn').addEventListener('click', () => showTableOfContents());
+            document.getElementById('other-back-toc-btn').addEventListener('click', () => showTableOfContents());
+            document.getElementById('dock-toc-btn').addEventListener('click', () => showTableOfContents());
+            document.getElementById('toc-start-ch1-btn').addEventListener('click', () => selectChapter(1));
+
+            // TOC Search & Category Filters
+            document.getElementById('toc-search-input').addEventListener('input', (e) => {
+                tocSearchQuery = e.target.value;
+                renderTocCards();
+            });
+
+            document.querySelectorAll('#toc-filter-bar .toc-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    activeTocCategory = pill.dataset.cat;
+                    document.querySelectorAll('#toc-filter-bar .toc-pill').forEach(p => {
+                        const isActive = p.dataset.cat === activeTocCategory;
+                        p.className = isActive
+                            ? 'toc-pill active px-3.5 py-1.5 rounded-full text-xs font-semibold border border-slate-200 transition'
+                            : 'toc-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition';
+                    });
+                    renderTocCards();
+                });
+            });
+
+            document.getElementById('back-to-ch1-btn').addEventListener('click', () => selectChapter(1));
+
+            // Sidebar Article buttons
+            document.querySelectorAll('.article-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectArticle(btn.dataset.article);
+                    closeMobileSidebar();
+                });
+            });
+
+            // Bottom Dock Buttons
+            document.getElementById('dock-ch-prev').addEventListener('click', () => selectChapter(currentChapterId - 1));
+            document.getElementById('dock-ch-next').addEventListener('click', () => selectChapter(currentChapterId + 1));
+
+            document.getElementById('dock-art-prev').addEventListener('click', () => {
+                const idx = articlesOrder.indexOf(currentArticleId);
+                if (idx > 0) selectArticle(articlesOrder[idx - 1]);
+            });
+            document.getElementById('dock-art-next').addEventListener('click', () => {
+                const idx = articlesOrder.indexOf(currentArticleId);
+                if (idx < articlesOrder.length - 1) selectArticle(articlesOrder[idx + 1]);
+            });
+
+            // Mobile Sidebar Toggle
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const closeMobileSidebar = () => {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            // Initial UI Sync: Start on Table of Contents (မာတိကာ) unless URL hash specifies a chapter
+            renderTocCards();
+            syncChapterSidebarUI(1);
+            updateBottomDock();
+
+            const hashMatch = window.location.hash.match(/^#chapter-(\d+)$/);
+            if (hashMatch) {
+                selectChapter(parseInt(hashMatch[1], 10), false);
+            } else {
+                showTableOfContents(false);
+            }
+        }
+
+        // ==========================================
+        // 3. 3D CANVAS TOOLBAR (OVERLAY TOGGLE SWITCH & ZOOM)
+        // ==========================================
+        function initCanvasToolbars() {
+            const icons = {
+                plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+                minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>',
+                reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>'
+            };
+
+            document.querySelectorAll('.canvas-container').forEach(box => {
+                const getCanvas = () => box.querySelector('canvas');
+                const overlays = Array.from(box.querySelectorAll('.cv-ov'));
+
+                const bar = document.createElement('div');
+                bar.className = 'cv-tools';
+
+                // Overlay Explanation Text Toggle Switch (ရှင်းလင်းချက် ပြ/ဖျောက်)
+                const toggleSwitch = document.createElement('button');
+                toggleSwitch.type = 'button';
+                toggleSwitch.className = 'cv-btn';
+                toggleSwitch.setAttribute('role', 'switch');
+                toggleSwitch.setAttribute('aria-checked', 'true');
+                toggleSwitch.title = '3D ပေါ်ရှိ ရှင်းလင်းချက်စာသားများ ပြ / ဖျောက်';
+                toggleSwitch.setAttribute('aria-label', '3D ပေါ်ရှိ ရှင်းလင်းချက်စာသားများ ပြ / ဖျောက်');
+                toggleSwitch.innerHTML = '<span class="cv-sw"></span><span>ရှင်းလင်းချက်</span>';
+
+                toggleSwitch.addEventListener('click', () => {
+                    const isCurrentlyOn = toggleSwitch.getAttribute('aria-checked') === 'true';
+                    const nextState = !isCurrentlyOn;
+                    toggleSwitch.setAttribute('aria-checked', String(nextState));
+                    overlays.forEach(ov => ov.classList.toggle('cv-off', !nextState));
+                });
+                bar.appendChild(toggleSwitch);
+
+                // Zoom In, Zoom Out, Reset Buttons
+                const makeBtn = (html, title, onClick) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'cv-btn';
+                    b.title = title;
+                    b.setAttribute('aria-label', title);
+                    b.innerHTML = html;
+                    b.addEventListener('click', onClick);
+                    bar.appendChild(b);
+                };
+
+                makeBtn(icons.plus, 'ချဲ့ရန် (Zoom In)', () => {
+                    const c = getCanvas();
+                    if (c && c.__orbit) c.__orbit.zoom(0.82);
+                });
+                makeBtn(icons.minus, 'ချုံ့ရန် (Zoom Out)', () => {
+                    const c = getCanvas();
+                    if (c && c.__orbit) c.__orbit.zoom(1.22);
+                });
+                makeBtn(icons.reset, 'မူလအနေအထားသို့ (Reset View)', () => {
+                    const c = getCanvas();
+                    if (c && c.__orbit) c.__orbit.reset();
+                });
+
+                box.appendChild(bar);
+
+                // Subtle Camera Hint
+                const hint = document.createElement('div');
+                hint.className = 'cv-hint';
+                hint.textContent = 'ဆွဲ၍ လှည့်ပါ · Scroll / လက်နှစ်ချောင်းဖြင့် ချဲ့ချုံ့ပါ';
+                box.appendChild(hint);
+
+                box.addEventListener('orbit-used', () => hint.classList.add('off'), true);
+                setTimeout(() => hint.classList.add('off'), 8000);
+            });
+        }
+
+        // ==========================================
+        // 4. QUIZ INITIALIZATION
+        // ==========================================
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            quizQuestions.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3";
+                
+                const title = document.createElement('h4');
+                title.className = "font-bold text-slate-900 text-sm sm:text-base";
+                title.textContent = item.q;
+                card.appendChild(title);
+
+                const optsGrid = document.createElement('div');
+                optsGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2.5";
+
+                const feedback = document.createElement('div');
+                feedback.className = "hidden text-xs sm:text-sm p-3 rounded-lg border";
+
+                item.options.forEach((optText, oIdx) => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-left p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 text-xs sm:text-sm font-medium text-slate-700 transition";
+                    btn.textContent = optText;
+                    btn.addEventListener('click', () => {
+                        const isCorrect = oIdx === item.answer;
+                        feedback.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900');
+                        if (isCorrect) {
+                            feedback.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                            feedback.innerHTML = `<strong>မှန်ကန်ပါသည်!</strong> ${item.explanation}`;
+                        } else {
+                            feedback.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                            feedback.innerHTML = `<strong>ပြန်လည်စဉ်းစားကြည့်ပါ:</strong> ${item.explanation}`;
+                        }
+                    });
+                    optsGrid.appendChild(btn);
+                });
+
+                card.appendChild(optsGrid);
+                card.appendChild(feedback);
+                container.appendChild(card);
+            });
+        }
+
+        // ==========================================
+        // 5. HELPER: MOUSE & TOUCH CAMERA ORBIT
+        // ==========================================
+        function attachOrbitControls(domElement, camera, radius = 7.5, initialPolar = 0.95, initialAzimuth = 0.5) {
+            let isDragging = false, prevX = 0, prevY = 0, pinchDist = 0;
+            let azimuth = initialAzimuth, polar = initialPolar;
+            const initialRadius = radius;
+            const minR = radius * 0.35;
+            const maxR = radius * 2.2;
+
+            const updateCamera = () => {
+                camera.position.x = radius * Math.sin(polar) * Math.sin(azimuth);
+                camera.position.y = radius * Math.cos(polar);
+                camera.position.z = radius * Math.sin(polar) * Math.cos(azimuth);
+                camera.lookAt(0, 0, 0);
+            };
+            updateCamera();
+
+            const zoom = (factor) => {
+                radius = Math.max(minR, Math.min(maxR, radius * factor));
+                updateCamera();
+            };
+
+            domElement.__orbit = {
+                zoom,
+                reset() {
+                    radius = initialRadius;
+                    polar = initialPolar;
+                    azimuth = initialAzimuth;
+                    updateCamera();
+                }
+            };
+
+            const onStart = (x, y) => {
+                isDragging = true;
+                prevX = x;
+                prevY = y;
+                domElement.dispatchEvent(new Event('orbit-used'));
+            };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                azimuth -= (x - prevX) * 0.01;
+                polar = Math.max(0.25, Math.min(Math.PI - 0.25, polar - (y - prevY) * 0.01));
+                prevX = x;
+                prevY = y;
+                updateCamera();
+            };
+            const onEnd = () => { isDragging = false; };
+            const getTouchDist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+            domElement.addEventListener('mousedown', e => onStart(e.clientX, e.clientY));
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onEnd);
+            domElement.addEventListener('wheel', e => {
+                e.preventDefault();
+                zoom(Math.exp(e.deltaY * 0.0015));
+                domElement.dispatchEvent(new Event('orbit-used'));
+            }, { passive: false });
+
+            domElement.addEventListener('touchstart', e => {
+                if (e.touches.length === 1) {
+                    onStart(e.touches[0].clientX, e.touches[0].clientY);
+                } else if (e.touches.length === 2) {
+                    isDragging = false;
+                    pinchDist = getTouchDist(e.touches);
+                }
+            }, { passive: true });
+            domElement.addEventListener('touchmove', e => {
+                if (e.touches.length === 1) {
+                    onMove(e.touches[0].clientX, e.touches[0].clientY);
+                } else if (e.touches.length === 2 && pinchDist) {
+                    const d = getTouchDist(e.touches);
+                    zoom(pinchDist / d);
+                    pinchDist = d;
+                }
+            }, { passive: true });
+            domElement.addEventListener('touchend', () => {
+                onEnd();
+                pinchDist = 0;
+            });
+        }
+
+        // ==========================================
+        // 6. THREE.JS 3D SCENE 1 (ARTICLE 1.1)
+        // ==========================================
+        function setupSim1() {
+            const container = document.getElementById('canvas-1-1');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+            renderersToResize.push({ container, camera, renderer });
+
+            attachOrbitControls(renderer.domElement, camera, 8.2, 0.9, 0.4);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight.position.set(5, 10, 7);
+            scene.add(dirLight);
+
+            const grid = new THREE.GridHelper(10, 10, 0x334155, 0x1e293b);
+            grid.position.y = -1.8;
+            scene.add(grid);
+
+            // Group A: Rotational Motion (Rigid Body Disc)
+            const rotGroup = new THREE.Group();
+            scene.add(rotGroup);
+
+            const axisMesh = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.1, 0.1, 3.8, 16),
+                new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.6, roughness: 0.3 })
+            );
+            rotGroup.add(axisMesh);
+
+            const discGroup = new THREE.Group();
+            rotGroup.add(discGroup);
+
+            const discMesh = new THREE.Mesh(
+                new THREE.CylinderGeometry(2.6, 2.6, 0.2, 48),
+                new THREE.MeshStandardMaterial({ color: 0x4f46e5, transparent: true, opacity: 0.38, roughness: 0.4 })
+            );
+            discGroup.add(discMesh);
+
+            const rimGeom = new THREE.TorusGeometry(2.6, 0.06, 16, 64);
+            rimGeom.rotateX(Math.PI / 2);
+            discGroup.add(new THREE.Mesh(rimGeom, new THREE.MeshStandardMaterial({ color: 0x818cf8 })));
+
+            const spokeGeom = new THREE.BoxGeometry(2.6, 0.06, 0.06);
+            spokeGeom.translate(1.3, 0.12, 0);
+            discGroup.add(new THREE.Mesh(spokeGeom, new THREE.MeshStandardMaterial({ color: 0xfbbf24 })));
+
+            const p1 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0xf43f5e }));
+            p1.position.set(1.1, 0.18, 0);
+            discGroup.add(p1);
+
+            const p2 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 24, 24), new THREE.MeshStandardMaterial({ color: 0x22d3ee }));
+            p2.position.set(2.3, 0.18, 0);
+            discGroup.add(p2);
+
+            // Group B: Circular Motion (Orbiting Satellite)
+            const cirGroup = new THREE.Group();
+            cirGroup.visible = false;
+            scene.add(cirGroup);
+
+            const planet = new THREE.Mesh(
+                new THREE.SphereGeometry(0.75, 32, 32),
+                new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.4 })
+            );
+            cirGroup.add(planet);
+
+            const orbitRing = new THREE.Mesh(
+                new THREE.TorusGeometry(2.6, 0.03, 12, 64).rotateX(Math.PI / 2),
+                new THREE.MeshBasicMaterial({ color: 0x64748b })
+            );
+            cirGroup.add(orbitRing);
+
+            const satelliteHolder = new THREE.Group();
+            cirGroup.add(satelliteHolder);
+            const satellite = new THREE.Mesh(
+                new THREE.SphereGeometry(0.24, 24, 24),
+                new THREE.MeshStandardMaterial({ color: 0xfbbf24 })
+            );
+            satellite.position.set(2.6, 0, 0);
+            satelliteHolder.add(satellite);
+
+            let theta = 0, omega = 1.5, alpha = 0.2, paused = false;
+
+            const slider = document.getElementById('sim1-alpha-slider');
+            const sliderLabel = document.getElementById('sim1-slider-label');
+            const toggleBtn = document.getElementById('sim1-toggle-btn');
+            const resetBtn = document.getElementById('sim1-reset-btn');
+            const modeRotBtn = document.getElementById('sim1-mode-rot');
+            const modeCirBtn = document.getElementById('sim1-mode-cir');
+
+            slider.addEventListener('input', () => {
+                alpha = parseFloat(slider.value);
+                const desc = alpha > 0 ? "(Speeding up)" : alpha < 0 ? "(Slowing down)" : "(Constant ω)";
+                sliderLabel.textContent = `${alpha >= 0 ? '+' : ''}${alpha.toFixed(2)} rad/s² ${desc}`;
+            });
+
+            toggleBtn.addEventListener('click', () => {
+                paused = !paused;
+                toggleBtn.textContent = paused ? "Resume" : "Pause";
+                toggleBtn.className = paused
+                    ? "px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition"
+                    : "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition";
+            });
+
+            resetBtn.addEventListener('click', () => {
+                theta = 0;
+                omega = 1.5;
+            });
+
+            modeRotBtn.addEventListener('click', () => {
+                rotGroup.visible = true;
+                cirGroup.visible = false;
+                modeRotBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition";
+                modeCirBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+            });
+
+            modeCirBtn.addEventListener('click', () => {
+                rotGroup.visible = false;
+                cirGroup.visible = true;
+                modeCirBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
+                modeRotBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+            });
+
+            return (dt) => {
+                if (!paused) {
+                    omega += alpha * dt;
+                    omega = Math.max(-8, Math.min(8, omega));
+                    theta += omega * dt;
+                }
+                discGroup.rotation.y = theta;
+                satelliteHolder.rotation.y = theta;
+
+                document.getElementById('sim1-theta').textContent = theta.toFixed(2);
+                document.getElementById('sim1-omega').textContent = omega.toFixed(2);
+                document.getElementById('sim1-alpha-val').textContent = alpha.toFixed(2);
+
+                renderer.render(scene, camera);
+            };
+        }
+
+        // ==========================================
+        // 7. THREE.JS 3D SCENE 2 (ARTICLE 1.2)
+        // ==========================================
+        function setupSim2() {
+            const container = document.getElementById('canvas-1-2');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+            renderersToResize.push({ container, camera, renderer });
+
+            attachOrbitControls(renderer.domElement, camera, 8.6, 0.92, 0.55);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight.position.set(5, 8, 5);
+            scene.add(dirLight);
+
+            const platformGroup = new THREE.Group();
+            scene.add(platformGroup);
+
+            const baseDisc = new THREE.Mesh(
+                new THREE.CylinderGeometry(2.7, 2.7, 0.16, 48),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.2 })
+            );
+            platformGroup.add(baseDisc);
+
+            [1.1, 2.2].forEach(r => {
+                const ring = new THREE.Mesh(
+                    new THREE.TorusGeometry(r, 0.025, 12, 64).rotateX(Math.PI / 2),
+                    new THREE.MeshBasicMaterial({ color: 0x475569 })
+                );
+                ring.position.y = 0.09;
+                platformGroup.add(ring);
+            });
+
+            const pt1 = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 20), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+            pt1.position.set(1.1, 0.16, 0);
+            platformGroup.add(pt1);
+
+            const pt2 = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 20), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+            pt2.position.set(2.2, 0.16, 0);
+            platformGroup.add(pt2);
+
+            const v1Arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), pt1.position, 1.0, 0x34d399, 0.25, 0.16);
+            const v2Arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), pt2.position, 2.0, 0x34d399, 0.3, 0.18);
+            platformGroup.add(v1Arrow, v2Arrow);
+
+            const aT1Arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(1.1, 0.34, 0), 0.65, 0xfbbf24, 0.22, 0.14);
+            const aT2Arrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(2.2, 0.34, 0), 1.3, 0xfbbf24, 0.26, 0.16);
+            platformGroup.add(aT1Arrow, aT2Arrow);
+
+            const omegaArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0.1, 0), 2.3, 0x22d3ee, 0.35, 0.22);
+            const alphaArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0.28, 0.1, 0), 1.6, 0xe879f9, 0.32, 0.2);
+            scene.add(omegaArrow, alphaArrow);
+
+            let spinSign = 1;
+            let isSpeedingUp = true;
+            let angle = 0;
+            let omegaMag = 2.0;
+
+            const dirBtn = document.getElementById('sim2-dir-btn');
+            const speedUpBtn = document.getElementById('sim2-speedup-btn');
+            const slowDownBtn = document.getElementById('sim2-slowdown-btn');
+            const statusText = document.getElementById('sim2-status-text');
+
+            function updateArrows() {
+                omegaArrow.setDirection(new THREE.Vector3(0, spinSign, 0));
+                omegaArrow.position.set(0, spinSign > 0 ? 0.1 : -0.1, 0);
+
+                const alphaSign = isSpeedingUp ? spinSign : -spinSign;
+                alphaArrow.setDirection(new THREE.Vector3(0, alphaSign, 0));
+                alphaArrow.position.set(0.3, alphaSign > 0 ? 0.1 : -0.1, 0);
+
+                const vDir = new THREE.Vector3(0, 0, -spinSign);
+                const aTDir = new THREE.Vector3(0, 0, -alphaSign);
+                v1Arrow.setDirection(vDir);
+                v2Arrow.setDirection(vDir);
+                aT1Arrow.setDirection(aTDir);
+                aT2Arrow.setDirection(aTDir);
+
+                statusText.textContent = isSpeedingUp
+                    ? "Status: Speeding Up (ω & α point same direction)"
+                    : "Status: Slowing Down (ω & α point opposite directions)";
+            }
+
+            dirBtn.addEventListener('click', () => {
+                spinSign *= -1;
+                dirBtn.textContent = spinSign > 0 ? "Spin: Counter-Clockwise (CCW)" : "Spin: Clockwise (CW)";
+                updateArrows();
+            });
+
+            speedUpBtn.addEventListener('click', () => {
+                isSpeedingUp = true;
+                speedUpBtn.className = "px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold transition";
+                slowDownBtn.className = "px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold transition";
+                updateArrows();
+            });
+
+            slowDownBtn.addEventListener('click', () => {
+                isSpeedingUp = false;
+                slowDownBtn.className = "px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold transition";
+                speedUpBtn.className = "px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold transition";
+                updateArrows();
+            });
+
+            updateArrows();
+
+            return (dt) => {
+                if (isSpeedingUp) {
+                    omegaMag += 0.45 * dt;
+                    if (omegaMag > 3.2) omegaMag = 1.2;
+                } else {
+                    omegaMag -= 0.45 * dt;
+                    if (omegaMag < 0.8) omegaMag = 3.0;
+                }
+
+                angle += spinSign * omegaMag * dt;
+                platformGroup.rotation.y = angle;
+
+                const vScale = omegaMag * 0.55;
+                v1Arrow.setLength(Math.max(0.4, vScale), 0.22, 0.14);
+                v2Arrow.setLength(Math.max(0.8, vScale * 2), 0.28, 0.17);
+
+                document.getElementById('sim2-v1').textContent = (1.0 * omegaMag).toFixed(1);
+                document.getElementById('sim2-v2').textContent = (2.0 * omegaMag).toFixed(1);
+
+                renderer.render(scene, camera);
+            };
+        }
+
+        // ==========================================
+        // 8. THREE.JS 3D SCENE 3 (ARTICLE 1.3)
+        // ==========================================
+        function setupSim3() {
+            const container = document.getElementById('canvas-1-3');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+            renderersToResize.push({ container, camera, renderer });
+
+            attachOrbitControls(renderer.domElement, camera, 8.2, 0.72, 0.35);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight.position.set(4, 10, 6);
+            scene.add(dirLight);
+
+            const trackRadius = 2.5;
+            const trackRing = new THREE.Mesh(
+                new THREE.TorusGeometry(trackRadius, 0.05, 16, 72).rotateX(Math.PI / 2),
+                new THREE.MeshStandardMaterial({ color: 0x475569 })
+            );
+            scene.add(trackRing);
+
+            const centerDot = new THREE.Mesh(
+                new THREE.SphereGeometry(0.14, 16, 16),
+                new THREE.MeshStandardMaterial({ color: 0x94a3b8 })
+            );
+            scene.add(centerDot);
+
+            const holder = new THREE.Group();
+            scene.add(holder);
+
+            const bodyMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(0.22, 24, 24),
+                new THREE.MeshStandardMaterial({ color: 0xffffff })
+            );
+            bodyMesh.position.set(trackRadius, 0, 0);
+            holder.add(bodyMesh);
+
+            const origin = new THREE.Vector3(trackRadius, 0, 0);
+            const vArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), origin, 1.5, 0x34d399, 0.25, 0.15);
+            const acArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, 0), origin, 1.6, 0x38bdf8, 0.28, 0.16);
+            const aTArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), origin, 1.2, 0xfbbf24, 0.25, 0.15);
+            const aResArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, -1).normalize(), origin, 2.0, 0xf43f5e, 0.32, 0.18);
+            holder.add(vArrow, acArrow, aTArrow, aResArrow);
+
+            let acVal = 4.0;
+            let aTVal = 3.0;
+            let theta = 0;
+
+            const acSlider = document.getElementById('sim3-ac-slider');
+            const aTSlider = document.getElementById('sim3-at-slider');
+            const acLabel = document.getElementById('sim3-ac-label');
+            const aTLabel = document.getElementById('sim3-at-label');
+            const uniformBtn = document.getElementById('sim3-uniform-btn');
+            const nonuniformBtn = document.getElementById('sim3-nonuniform-btn');
+
+            function updateAccelerationVectors() {
+                acLabel.textContent = `${acVal.toFixed(1)} m/s²`;
+                aTLabel.textContent = `${aTVal.toFixed(1)} m/s²`;
+
+                const aRes = Math.sqrt(acVal * acVal + aTVal * aTVal);
+                const phiRad = Math.atan2(aTVal, acVal);
+                const phiDeg = (phiRad * 180) / Math.PI;
+
+                document.getElementById('sim3-ac-val').textContent = acVal.toFixed(2);
+                document.getElementById('sim3-at-val').textContent = aTVal.toFixed(2);
+                document.getElementById('sim3-a-val').textContent = aRes.toFixed(2);
+                document.getElementById('sim3-phi-val').textContent = `${phiDeg.toFixed(1)}°`;
+
+                const scale = 0.34;
+                acArrow.setLength(Math.max(0.3, acVal * scale), 0.26, 0.15);
+
+                if (aTVal <= 0.01) {
+                    aTArrow.visible = false;
+                    aResArrow.setDirection(new THREE.Vector3(-1, 0, 0));
+                    aResArrow.setLength(Math.max(0.3, acVal * scale), 0.3, 0.17);
+                } else {
+                    aTArrow.visible = true;
+                    aTArrow.setLength(aTVal * scale, 0.24, 0.14);
+                    const resDir = new THREE.Vector3(-acVal, 0, -aTVal).normalize();
+                    aResArrow.setDirection(resDir);
+                    aResArrow.setLength(aRes * scale, 0.3, 0.17);
+                }
+            }
+
+            acSlider.addEventListener('input', () => {
+                acVal = parseFloat(acSlider.value);
+                updateAccelerationVectors();
+            });
+
+            aTSlider.addEventListener('input', () => {
+                aTVal = parseFloat(aTSlider.value);
+                if (aTVal === 0) {
+                    uniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
+                    nonuniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+                } else {
+                    nonuniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition";
+                    uniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+                }
+                updateAccelerationVectors();
+            });
+
+            uniformBtn.addEventListener('click', () => {
+                aTVal = 0.0;
+                aTSlider.value = "0.0";
+                uniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
+                nonuniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+                updateAccelerationVectors();
+            });
+
+            nonuniformBtn.addEventListener('click', () => {
+                if (aTVal === 0) {
+                    aTVal = 3.0;
+                    aTSlider.value = "3.0";
+                }
+                nonuniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition";
+                uniformBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
+                updateAccelerationVectors();
+            });
+
+            updateAccelerationVectors();
+
+            return (dt) => {
+                const angularSpeed = 0.65 * Math.sqrt(acVal);
+                theta += angularSpeed * dt;
+                holder.rotation.y = theta;
+                renderer.render(scene, camera);
+            };
+        }
+
+        // ==========================================
+        // 9. RESIZE HANDLER & MAIN ANIMATION LOOP
+        // ==========================================
+        function resizeAllThreeCanvases() {
+            renderersToResize.forEach(({ container, camera, renderer }) => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                if (w > 0 && h > 0) {
+                    camera.aspect = w / h;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(w, h);
+                }
+            });
+        }
+
+        window.addEventListener('resize', resizeAllThreeCanvases);
+
+        window.onload = function () {
+            try {
+                if (typeof renderMathInElement === 'function') {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false }
+                        ],
+                        throwOnError: false
+                    });
+                }
+
+                initNavigation();
+                initCanvasToolbars();
+                initQuiz();
+
+                const updateSim1 = setupSim1();
+                const updateSim2 = setupSim2();
+                const updateSim3 = setupSim3();
+
+                let lastTime = performance.now();
+                function animateLoop(now) {
+                    const dt = Math.min((now - lastTime) / 1000, 0.05);
+                    lastTime = now;
+
+                    updateSim1(dt);
+                    updateSim2(dt);
+                    updateSim3(dt);
+
+                    requestAnimationFrame(animateLoop);
+                }
+                requestAnimationFrame(animateLoop);
+            } catch (err) {
+                console.error("Initialization error:", err);
+            }
+        };
+    </script>
+</body>
+</html>
