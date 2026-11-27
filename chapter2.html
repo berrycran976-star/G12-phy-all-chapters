@@ -132,7 +132,7 @@
         .canvas-container {
             position: relative;
             width: 100%;
-            height: 390px;
+            height: 410px;
             border-radius: 1.15rem;
             overflow: hidden;
             background: radial-gradient(ellipse at 50% 35%, #1f2a4d 0%, #0a1022 80%);
@@ -141,7 +141,7 @@
         }
         @media (min-width: 768px) {
             .canvas-container {
-                height: 460px;
+                height: 480px;
             }
         }
         .canvas-container canvas {
@@ -150,13 +150,15 @@
             height: 100% !important;
         }
 
-        /* Top-Right 3D Toolbar (Overlay Toggle Switch + Zoom Controls) */
+        /* Top-Right 3D Toolbar (Overlay Toggle Switch, Play/Pause & Zoom Controls) */
         .cv-tools {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 15;
             display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
             gap: 6px;
             align-items: center;
         }
@@ -171,15 +173,20 @@
             border-radius: 10px;
             font: 600 12px/1 'Inter', 'Noto Sans Myanmar', sans-serif;
             color: #e2e8f0;
-            background: rgba(10, 16, 34, 0.82);
+            background: rgba(10, 16, 34, 0.84);
             border: 1px solid rgba(148, 163, 184, 0.3);
             backdrop-filter: blur(8px);
             cursor: pointer;
             transition: background 0.15s, border-color 0.15s, color 0.15s;
         }
         .cv-btn:hover {
-            background: rgba(51, 65, 110, 0.9);
+            background: rgba(51, 65, 110, 0.92);
             border-color: rgba(165, 180, 252, 0.65);
+        }
+        .cv-btn.is-paused {
+            background: rgba(217, 119, 6, 0.88);
+            border-color: rgba(251, 191, 36, 0.75);
+            color: #ffffff;
         }
         .cv-btn svg {
             width: 15px;
@@ -236,7 +243,7 @@
             font-size: 11px;
             line-height: 1.4;
             color: #cbd5e1;
-            background: rgba(10, 16, 34, 0.72);
+            background: rgba(10, 16, 34, 0.78);
             border: 1px solid rgba(148, 163, 184, 0.2);
             pointer-events: none;
             white-space: nowrap;
@@ -421,6 +428,7 @@
             .dock-btn-text { display: none; }
             .dock-sep { display: none; }
             .dock-value { min-width: 52px; font-size: 12px; }
+            .cv-btn-text { display: none; }
         }
 
         .katex-display {
@@ -433,7 +441,7 @@
 <body class="text-slate-800 antialiased selection:bg-indigo-100 selection:text-indigo-900">
 
     <!-- Mobile Top Header -->
-    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-2.5">
             <a href="index.html" class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-sm" title="မာတိကာ (13 Chapters)">
                 G12
@@ -456,7 +464,7 @@
     </header>
 
     <!-- Mobile Backdrop Overlay -->
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"></div>
 
     <div class="flex min-h-screen">
         <!-- LEFT SIDEBAR / TASK BAR -->
@@ -544,8 +552,8 @@
                         <button data-article="art-practice" class="article-btn w-full text-left px-3.5 py-3 rounded-xl flex items-start gap-3 transition text-slate-300 hover:bg-slate-800/90 hover:text-white">
                             <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-amber-400 shrink-0 mt-0.5">★</span>
                             <div>
-                                <div class="text-sm font-semibold">Formula Sheet &amp; Self-Check</div>
-                                <div class="text-xs text-slate-400">ပုံသေနည်းချုပ်နှင့် လေ့ကျင့်ခန်းများ</div>
+                                <div class="text-sm font-semibold">Formulas, Examples &amp; Quiz</div>
+                                <div class="text-xs text-slate-400">ပုံသေနည်း၊ တွက်စာဥပမာနှင့် လေ့ကျင့်ခန်း</div>
                             </div>
                         </button>
                     </nav>
@@ -583,7 +591,7 @@
                         <span class="text-indigo-300 font-bold block sm:inline sm:ml-2 text-xl sm:text-2xl">(စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ)</span>
                     </h1>
                     <p class="mt-3 text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-                        ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီကို ရွေးချယ်ဖတ်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများကို Toggle Switch ဖြင့် အဖွင့်/အပိတ် ပြုလုပ်နိုင်ပါသည်။
+                        ဘေးဘက် Task Bar သို့မဟုတ် အောက်ဖက်ခြမ်းရှိ ခလုတ်များမှတစ်ဆင့် Article တစ်ခုချင်းစီကို ရွေးချယ်ဖတ်ရှုနိုင်ပြီး 3D မြင်ကွင်းပေါ်ရှိ စာသားများနှင့် လှုပ်ရှားမှုများကို ထိန်းချုပ်လေ့လာနိုင်ပါသည်။
                     </p>
                 </div>
             </div>
@@ -701,20 +709,33 @@
                                     <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Interactive 3D Lab 2.1</span>
                                     <h4 class="text-white font-bold text-sm sm:text-base">Horizontal &amp; Vertical Circular Motion Forces (3D)</h4>
                                 </div>
-                                <div class="flex gap-1.5 bg-slate-800 p-1 rounded-xl">
-                                    <button id="sim1-mode-horiz" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition">Horizontal Circle</button>
-                                    <button id="sim1-mode-vert" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition">Vertical Circle</button>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <!-- Quick Position Presets for Vertical Circle -->
+                                    <div id="sim1-vert-presets" class="hidden items-center gap-1 bg-slate-800/90 p-1 rounded-xl border border-slate-700">
+                                        <button type="button" data-angle="1.5708" class="sim1-preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold text-rose-300 hover:bg-slate-700 transition">Top</button>
+                                        <button type="button" data-angle="0" class="sim1-preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold text-sky-300 hover:bg-slate-700 transition">Side</button>
+                                        <button type="button" data-angle="-1.5708" class="sim1-preset-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold text-emerald-300 hover:bg-slate-700 transition">Bottom</button>
+                                    </div>
+                                    <div class="flex gap-1.5 bg-slate-800 p-1 rounded-xl">
+                                        <button id="sim1-mode-horiz" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition">Horizontal Circle</button>
+                                        <button id="sim1-mode-vert" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition">Vertical Circle</button>
+                                    </div>
                                 </div>
                             </div>
 
                             <div id="canvas-2-1" class="canvas-container border border-slate-700/80">
                                 <!-- Live HUD Overlay -->
-                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none max-w-[250px] sm:max-w-none">
+                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-sm border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none max-w-[235px] sm:max-w-none">
                                     <div class="font-bold text-white border-b border-slate-800 pb-1">Force Vectors &amp; Telemetry</div>
-                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> $\vec{T}$ Tension Force: <strong id="sim1-t-val" class="font-mono text-sky-300">18.0</strong> N</div>
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> $\vec{T}$ Tension Force: <strong id="sim1-t-val" class="font-mono text-sky-300">21.3</strong> N</div>
                                     <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> $m\vec{g}$ Weight: <strong id="sim1-w-val" class="font-mono text-amber-300">19.6</strong> N</div>
-                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> $\vec{F}_c$ Centripetal Force: <strong id="sim1-fc-val" class="font-mono text-rose-400">18.0</strong> N</div>
-                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> $\vec{v}$ Velocity: <strong id="sim1-v-val" class="font-mono text-emerald-400">3.0</strong> m/s</div>
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> $\vec{F}_c$ Centripetal Force: <strong id="sim1-fc-val" class="font-mono text-rose-400">21.3</strong> N</div>
+                                    <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> $\vec{v}$ Velocity: <strong id="sim1-v-val" class="font-mono text-emerald-400">4.0</strong> m/s</div>
+                                </div>
+
+                                <!-- Slack Warning Badge -->
+                                <div id="sim1-slack-badge" class="cv-ov hidden absolute bottom-3 left-3 bg-rose-950/90 border border-rose-500/70 text-rose-200 rounded-xl px-3 py-1.5 text-xs font-semibold pointer-events-none">
+                                    ⚠️ String Slack! ($v &lt; \sqrt{rg} = $ <span id="sim1-vmin-val" class="font-mono">3.83</span> m/s)
                                 </div>
                             </div>
 
@@ -737,7 +758,7 @@
                                 <div>
                                     <div class="flex justify-between text-xs text-slate-300 mb-1">
                                         <label for="sim1-r-slider">Radius ($r$):</label>
-                                        <span id="sim1-r-label" class="font-mono text-sky-300">1.5 m</span>
+                                        <span id="sim1-r-label" class="font-mono text-sky-300">1.50 m</span>
                                     </div>
                                     <input id="sim1-r-slider" type="range" min="1.0" max="2.5" step="0.25" value="1.5" class="w-full accent-sky-500 cursor-pointer">
                                 </div>
@@ -765,7 +786,7 @@
                                     <div class="text-xs font-semibold text-slate-500 mb-1">Horizontal Centripetal Force</div>
                                     $$F_N \sin\theta = \frac{mv^2}{r}$$
                                 </div>
-                                <div class="bg-white p-3.5 rounded-xl border border-emerald-300 text-center shadow-2xs">
+                                <div class="bg-white p-3.5 rounded-xl border border-emerald-300 text-center shadow-sm">
                                     <div class="text-xs font-bold text-emerald-700 mb-1">Banking Angle Formula</div>
                                     $$\tan\theta = \frac{v^2}{rg}$$
                                 </div>
@@ -786,7 +807,7 @@
 
                             <div id="canvas-2-2" class="canvas-container border border-slate-700/80">
                                 <!-- Overlay Legend -->
-                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none max-w-[250px] sm:max-w-none">
+                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-sm border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1 pointer-events-none max-w-[235px] sm:max-w-none">
                                     <div class="font-bold text-white border-b border-slate-800 pb-1">Banked Curve Force Breakdown</div>
                                     <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> $\vec{F}_N$ Normal Force (Perpendicular to Road)</div>
                                     <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> $F_N\sin\theta = \frac{mv^2}{r}$ (Centripetal Force)</div>
@@ -904,7 +925,7 @@
 
                             <div id="canvas-2-3" class="canvas-container border border-slate-700/80">
                                 <!-- Overlay Legend -->
-                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-xs border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1.5 pointer-events-none max-w-[260px] sm:max-w-none">
+                                <div class="cv-ov absolute top-3 left-3 bg-slate-950/85 backdrop-blur-sm border border-slate-700/80 rounded-xl p-3 text-xs text-slate-200 space-y-1.5 pointer-events-none max-w-[240px] sm:max-w-none">
                                     <div class="font-bold text-white border-b border-slate-800 pb-1">3D Force &amp; Inertia Vectors</div>
                                     <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> $\vec{F}_c$ Real Centripetal Force (Inward)</div>
                                     <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span> $\vec{F}_{cf}$ Apparent Centrifugal Force (Outward)</div>
@@ -953,22 +974,22 @@
                 </section>
 
                 <!-- ========================================== -->
-                <!-- ARTICLE PRACTICE: FORMULA SUMMARY & QUIZ -->
+                <!-- ARTICLE PRACTICE: FORMULA SUMMARY, WORKED EXAMPLES & QUIZ -->
                 <!-- ========================================== -->
                 <section id="art-practice" class="article-section bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden">
                     <div class="p-6 md:p-8 border-b border-slate-100 bg-gradient-to-r from-amber-50/70 to-white">
                         <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full mb-2">
-                            Summary &amp; Self-Check
+                            Summary, Examples &amp; Self-Check
                         </span>
                         <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
-                            Chapter 2 Formula Summary &amp; Quick Quiz
+                            Chapter 2 Formulas, Worked Examples &amp; Quick Quiz
                         </h2>
                         <p class="text-sm text-slate-600 mt-1">
-                            အခန်း (၂) အဓိက ပုံသေနည်းများနှင့် နားလည်မှု စစ်ဆေးရန် မေးခွန်းများ
+                            အခန်း (၂) အဓိက ပုံသေနည်းများ၊ တွက်စာဥပမာများနှင့် နားလည်မှု စစ်ဆေးရန် မေးခွန်းများ
                         </p>
                     </div>
 
-                    <div class="p-6 md:p-8 space-y-6">
+                    <div class="p-6 md:p-8 space-y-8">
                         <!-- Formula Summary Grid -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-center">
                             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -989,9 +1010,70 @@
                             </div>
                         </div>
 
+                        <!-- Worked Examples Section -->
+                        <div class="space-y-4">
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                                Worked Examples (အခန်း ၂ တွက်စာ ဥပမာများ)
+                            </h3>
+
+                            <!-- Example 1 -->
+                            <details class="group rounded-xl border border-slate-200 bg-slate-50/70 open:bg-white transition" open>
+                                <summary class="cursor-pointer list-none p-4 sm:p-5 flex items-center justify-between gap-3 font-bold text-slate-900 text-sm sm:text-base">
+                                    <span>Example 1: Vertical Circular Motion Tension (ဒေါင်လိုက်စက်ဝိုင်းပတ် ကြိုးတင်းအား)</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-700 group-open:hidden">ဖြေရှင်းချက်ကြည့်ရန်</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hidden group-open:inline">ပိတ်ရန်</span>
+                                </summary>
+                                <div class="px-4 sm:px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-700 space-y-2.5">
+                                    <p>
+                                        <strong>ပုစ္ဆာ:</strong> ဒြပ်ထု $0.5\text{ kg}$ ရှိသော ဘောလုံးတစ်လုံးကို အရှည် $1.0\text{ m}$ ရှိသော ကြိုးဖြင့်ချည်၍ ဒေါင်လိုက်စက်ဝိုင်းပတ်လမ်းကြောင်းအတိုင်း အမြန်နှုန်း $5\text{ m s}^{-1}$ ဖြင့် လှည့်ပတ်နေသည်။ စက်ဝိုင်း၏ (a) အမြင့်ဆုံးအမှတ် (top) နှင့် (b) အနိမ့်ဆုံးအမှတ် (bottom) တို့ရှိ ကြိုးတင်းအား ($T$) ကို ရှာပါ။ ($g = 9.8\text{ m s}^{-2}$)
+                                    </p>
+                                    <div class="bg-indigo-50/60 p-3.5 rounded-xl border border-indigo-100 space-y-1.5">
+                                        <div><strong>Given:</strong> $m = 0.5\text{ kg}$, $\; r = 1.0\text{ m}$, $\; v = 5\text{ m s}^{-1}$, $\; g = 9.8\text{ m s}^{-2}$</div>
+                                        <div>$$F_c = \frac{mv^2}{r} = \frac{0.5 \times 5^2}{1.0} = 12.5\text{ N}, \qquad mg = 0.5 \times 9.8 = 4.9\text{ N}$$</div>
+                                        <div><strong>(a) At the top:</strong> $T_{\text{top}} = \frac{mv^2}{r} - mg = 12.5 - 4.9 = \mathbf{7.6\text{ N}}$</div>
+                                        <div><strong>(b) At the bottom:</strong> $T_{\text{bottom}} = \frac{mv^2}{r} + mg = 12.5 + 4.9 = \mathbf{17.4\text{ N}}$</div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <!-- Example 2 -->
+                            <details class="group rounded-xl border border-slate-200 bg-slate-50/70 open:bg-white transition">
+                                <summary class="cursor-pointer list-none p-4 sm:p-5 flex items-center justify-between gap-3 font-bold text-slate-900 text-sm sm:text-base">
+                                    <span>Example 2: Banking Angle of a Curved Road (ကားလမ်းအကွေ့ စောင်းထောင့် ရှာခြင်း)</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-700 group-open:hidden">ဖြေရှင်းချက်ကြည့်ရန်</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hidden group-open:inline">ပိတ်ရန်</span>
+                                </summary>
+                                <div class="px-4 sm:px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-700 space-y-2.5">
+                                    <p>
+                                        <strong>ပုစ္ဆာ:</strong> အချင်းဝက် $100\text{ m}$ ရှိသော ကားလမ်းအကွေ့တစ်ခုပေါ်တွင် ကားတစ်စီးသည် အမြန်နှုန်း $20\text{ m s}^{-1}$ ဖြင့် ပွတ်မှုအား မလိုအပ်ဘဲ ဘေးကင်းစွာ ကွေ့နိုင်ရန် လမ်းကို မည်မျှစောင်းထောင့် ($\theta$) ဖြင့် တည်ဆောက်ရမည်နည်း။ ($g = 9.8\text{ m s}^{-2}$)
+                                    </p>
+                                    <div class="bg-emerald-50/60 p-3.5 rounded-xl border border-emerald-100 space-y-1.5">
+                                        <div><strong>Given:</strong> $r = 100\text{ m}$, $\; v = 20\text{ m s}^{-1}$, $\; g = 9.8\text{ m s}^{-2}$</div>
+                                        <div>$$\tan\theta = \frac{v^2}{rg} = \frac{20^2}{100 \times 9.8} = \frac{400}{980} \approx 0.4082$$</div>
+                                        <div>$$\theta = \tan^{-1}(0.4082) \approx \mathbf{22.2^\circ}$$</div>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+
                         <!-- Interactive Quiz Container -->
-                        <div id="quiz-container" class="space-y-5">
-                            <!-- Quiz questions injected via JS -->
+                        <div class="space-y-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <h3 class="text-base sm:text-lg font-bold text-slate-900">
+                                    Self-Check Quiz (နားလည်မှု စစ်ဆေးရန် မေးခွန်းများ)
+                                </h3>
+                                <div class="flex items-center gap-2">
+                                    <span id="quiz-score-badge" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-200">
+                                        ရမှတ်: 0 / 4
+                                    </span>
+                                    <button type="button" id="quiz-reset-btn" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition">
+                                        ပြန်ဖြေရန်
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="quiz-container" class="space-y-5">
+                                <!-- Quiz questions injected via JS -->
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -1075,7 +1157,7 @@
 
         const quizQuestions = [
             {
-                q: "1. ကြိုးဖြင့်ချည်ထားသော ဘောလုံးတစ်လုံးကို ဒေါင်လိုက်စက်ဝိုင်းပတ်လမ်းကြောင်း (vertical circle) အတိုင်း လှည့်ပတ်သောအခါ မည်သည့်အမှတ်တွင် ကြိုးတင်းအား (Tension, T) အကြီးဆုံး ဖြစ်သနည်း။",
+                q: "1. ကြိုးဖြင့်ချည်ထားသော ဘောလုံးတစ်လုံးကို ဒေါင်လိုက်စက်ဝိုင်းပတ်လမ်းကြောင်း (vertical circle) အတိုင်း လှည့်ပတ်သောအခါ မည်သည့်အမှတ်တွင် ကြိုးတင်းအား ($T$) အကြီးဆုံး ဖြစ်သနည်း။",
                 options: [
                     "စက်ဝိုင်း၏ အမြင့်ဆုံးအမှတ် (At the top)",
                     "စက်ဝိုင်း၏ အနိမ့်ဆုံးအမှတ် (At the bottom)",
@@ -1083,18 +1165,18 @@
                     "အမှတ်တိုင်းတွင် တူညီသည်"
                 ],
                 answer: 1,
-                explanation: "အနိမ့်ဆုံးအမှတ် (bottom) တွင် T - mg = mv²/r ဖြစ်သောကြောင့် T = mv²/r + mg ဖြစ်ပြီး ကြိုးတင်းအား (T) အကြီးဆုံး ဖြစ်ပါသည်။"
+                explanation: "အနိမ့်ဆုံးအမှတ် (bottom) တွင် $T - mg = \\frac{mv^2}{r}$ ဖြစ်သောကြောင့် $T = \\frac{mv^2}{r} + mg$ ဖြစ်ပြီး ကြိုးတင်းအား ($T$) အကြီးဆုံး ဖြစ်ပါသည်။"
             },
             {
-                q: "2. ကားလမ်းအကွေ့များတွင် လမ်းစောင်းပြုလုပ်ထားခြင်း (Banking of roads) ၌ ပွတ်မှုအား မလိုအပ်ဘဲ ကွေ့နိုင်သော စံပြစောင်းထောင့် (Banking angle, θ) ပုံသေနည်းမှာ အဘယ်နည်း။",
+                q: "2. ကားလမ်းအကွေ့များတွင် လမ်းစောင်းပြုလုပ်ထားခြင်း (Banking of roads) ၌ ပွတ်မှုအား မလိုအပ်ဘဲ ကွေ့နိုင်သော စံပြစောင်းထောင့် (Banking angle, $\\theta$) ပုံသေနည်းမှာ အဘယ်နည်း။",
                 options: [
-                    "sin θ = v² / rg",
-                    "cos θ = rg / v²",
-                    "tan θ = v² / rg",
-                    "tan θ = rg / v²"
+                    "$\\sin\\theta = \\frac{v^2}{rg}$",
+                    "$\\cos\\theta = \\frac{rg}{v^2}$",
+                    "$\\tan\\theta = \\frac{v^2}{rg}$",
+                    "$\\tan\\theta = \\frac{rg}{v^2}$"
                 ],
                 answer: 2,
-                explanation: "Normal force အစိတ်အပိုင်းများမှ FN sinθ = mv²/r နှင့် FN cosθ = mg တို့ကို အချိုးချလျှင် tanθ = v² / rg ကို ရရှိပါသည်။"
+                explanation: "Normal force အစိတ်အပိုင်းများမှ $F_N \\sin\\theta = \\frac{mv^2}{r}$ နှင့် $F_N \\cos\\theta = mg$ တို့ကို အချိုးချလျှင် $\\tan\\theta = \\frac{v^2}{rg}$ ကို ရရှိပါသည်။"
             },
             {
                 q: "3. Centrifugal force (ဗဟိုခွာအား) နှင့် ပတ်သက်၍ အောက်ပါတို့အနက် မည်သည့်အချက် မှန်ကန်သနည်း။",
@@ -1106,6 +1188,17 @@
                 ],
                 answer: 1,
                 explanation: "Centrifugal force သည် အားအစစ်မဟုတ်ဘဲ အင်နားရှား (Inertia) သက်ရောက်မှုကြောင့် စက်ဝိုင်းဗဟိုမှ အပြင်ဘက်သို့ တွန်းထုတ်ခံရသကဲ့သို့ ခံစားရသော Fictitious force ဖြစ်ပါသည်။"
+            },
+            {
+                q: "4. ဒေါင်လိုက်စက်ဝိုင်းပတ်လမ်းကြောင်း (radius $r$) အတိုင်း လှည့်ပတ်နေသော ဘောလုံးတစ်လုံး အမြင့်ဆုံးအမှတ် (top) တွင် ကြိုးမလျော့စေရန် အနည်းဆုံး ရှိရမည့် အမြန်နှုန်း ($v_{\\min}$) မှာ အဘယ်နည်း။",
+                options: [
+                    "$v_{\\min} = rg$",
+                    "$v_{\\min} = \\sqrt{rg}$",
+                    "$v_{\\min} = \\frac{g}{r}$",
+                    "$v_{\\min} = 2\\sqrt{rg}$"
+                ],
+                answer: 1,
+                explanation: "အမြင့်ဆုံးအမှတ်တွင် ကြိုးတင်းအား $T = 0$ ဖြစ်ချိန်၌ $mg = \\frac{mv_{\\min}^2}{r}$ ဖြစ်သဖြင့် $v_{\\min} = \\sqrt{rg}$ ကို ရရှိပါသည်။"
             }
         ];
 
@@ -1114,6 +1207,18 @@
         // ==========================================
         let currentArticleId = 'all';
         const renderersToResize = [];
+
+        function renderKatexIn(element) {
+            if (typeof renderMathInElement === 'function' && element) {
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
 
         function updateBottomDock() {
             const artPrev = document.getElementById('dock-art-prev');
@@ -1126,7 +1231,7 @@
             artVal.textContent = articleLabels[currentArticleId] || 'အားလုံး';
         }
 
-        function selectArticle(articleId) {
+        function selectArticle(articleId, updateHash = true) {
             if (!articlesOrder.includes(articleId)) return;
             currentArticleId = articleId;
 
@@ -1144,6 +1249,11 @@
                     sec.classList.add('hidden');
                 }
             });
+
+            if (updateHash && history.replaceState) {
+                const newHash = articleId === 'all' ? window.location.pathname + window.location.search : `#${articleId}`;
+                history.replaceState(null, '', newHash);
+            }
 
             updateBottomDock();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1201,14 +1311,54 @@
             document.getElementById('close-sidebar-btn').addEventListener('click', closeMobileSidebar);
             backdrop.addEventListener('click', closeMobileSidebar);
 
-            updateBottomDock();
+            // Check URL hash on load
+            const initialHash = window.location.hash.replace('#', '');
+            if (articlesOrder.includes(initialHash) && initialHash !== 'all') {
+                selectArticle(initialHash, false);
+            } else {
+                updateBottomDock();
+            }
         }
 
         // ==========================================
-        // 3. 3D CANVAS TOOLBAR (OVERLAY TOGGLE SWITCH & ZOOM)
+        // 3. 3D CANVAS TOOLBAR (PLAY/PAUSE, OVERLAY TOGGLE & ZOOM)
         // ==========================================
+        function make3DLabel(text, color = '#ffffff', bg = 'rgba(10, 16, 34, 0.82)') {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 256;
+            canvas.height = 96;
+
+            ctx.fillStyle = bg;
+            ctx.beginPath();
+            ctx.roundRect(16, 16, 224, 64, 20);
+            ctx.fill();
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.font = 'bold 34px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, 128, 49);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+                depthTest: false
+            });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(0.95, 0.36, 1);
+            return sprite;
+        }
+
         function initCanvasToolbars() {
             const icons = {
+                pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+                play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
                 plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
                 minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg>',
                 reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>'
@@ -1221,7 +1371,30 @@
                 const bar = document.createElement('div');
                 bar.className = 'cv-tools';
 
-                // Overlay Explanation Text Toggle Switch (ရှင်းလင်းချက် ပြ/ဖျောက်)
+                // Play / Pause Button
+                const playPauseBtn = document.createElement('button');
+                playPauseBtn.type = 'button';
+                playPauseBtn.className = 'cv-btn';
+                playPauseBtn.title = 'ရပ်တန့်ရန် / ဆက်လက်လှုပ်ရှားရန် (Pause / Play)';
+                playPauseBtn.setAttribute('aria-label', 'Pause or Play Simulation');
+                playPauseBtn.innerHTML = `${icons.pause}<span class="cv-btn-text">Pause</span>`;
+
+                box.__updatePauseUI = (paused) => {
+                    playPauseBtn.classList.toggle('is-paused', paused);
+                    playPauseBtn.innerHTML = paused
+                        ? `${icons.play}<span class="cv-btn-text">Play</span>`
+                        : `${icons.pause}<span class="cv-btn-text">Pause</span>`;
+                };
+
+                playPauseBtn.addEventListener('click', () => {
+                    if (typeof box.__togglePause === 'function') {
+                        const paused = box.__togglePause();
+                        box.__updatePauseUI(paused);
+                    }
+                });
+                bar.appendChild(playPauseBtn);
+
+                // Overlay Explanation Text & 3D Label Toggle Switch (ရှင်းလင်းချက် ပြ/ဖျောက်)
                 const toggleSwitch = document.createElement('button');
                 toggleSwitch.type = 'button';
                 toggleSwitch.className = 'cv-btn';
@@ -1229,13 +1402,16 @@
                 toggleSwitch.setAttribute('aria-checked', 'true');
                 toggleSwitch.title = '3D ပေါ်ရှိ ရှင်းလင်းချက်စာသားများ ပြ / ဖျောက်';
                 toggleSwitch.setAttribute('aria-label', '3D ပေါ်ရှိ ရှင်းလင်းချက်စာသားများ ပြ / ဖျောက်');
-                toggleSwitch.innerHTML = '<span class="cv-sw"></span><span>ရှင်းလင်းချက်</span>';
+                toggleSwitch.innerHTML = '<span class="cv-sw"></span><span class="cv-btn-text">ရှင်းလင်းချက်</span>';
 
                 toggleSwitch.addEventListener('click', () => {
                     const isCurrentlyOn = toggleSwitch.getAttribute('aria-checked') === 'true';
                     const nextState = !isCurrentlyOn;
                     toggleSwitch.setAttribute('aria-checked', String(nextState));
                     overlays.forEach(ov => ov.classList.toggle('cv-off', !nextState));
+                    if (Array.isArray(box.__labels3D)) {
+                        box.__labels3D.forEach(lbl => { lbl.visible = nextState; });
+                    }
                 });
                 bar.appendChild(toggleSwitch);
 
@@ -1276,47 +1452,88 @@
         }
 
         // ==========================================
-        // 4. QUIZ INITIALIZATION
+        // 4. QUIZ INITIALIZATION (WITH SCORE & RESET)
         // ==========================================
         function initQuiz() {
             const container = document.getElementById('quiz-container');
-            quizQuestions.forEach((item) => {
-                const card = document.createElement('div');
-                card.className = "p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3";
-                
-                const title = document.createElement('h4');
-                title.className = "font-bold text-slate-900 text-sm sm:text-base";
-                title.textContent = item.q;
-                card.appendChild(title);
+            const scoreBadge = document.getElementById('quiz-score-badge');
+            const resetBtn = document.getElementById('quiz-reset-btn');
+            const total = quizQuestions.length;
+            const answeredState = new Array(total).fill(null);
 
-                const optsGrid = document.createElement('div');
-                optsGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2.5";
+            function updateScore() {
+                const correctCount = answeredState.filter(v => v === true).length;
+                scoreBadge.textContent = `ရမှတ်: ${correctCount} / ${total}`;
+            }
 
-                const feedback = document.createElement('div');
-                feedback.className = "hidden text-xs sm:text-sm p-3 rounded-lg border";
+            function buildQuiz() {
+                container.innerHTML = '';
+                answeredState.fill(null);
+                updateScore();
 
-                item.options.forEach((optText, oIdx) => {
-                    const btn = document.createElement('button');
-                    btn.className = "text-left p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 text-xs sm:text-sm font-medium text-slate-700 transition";
-                    btn.textContent = optText;
-                    btn.addEventListener('click', () => {
-                        const isCorrect = oIdx === item.answer;
-                        feedback.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900');
-                        if (isCorrect) {
-                            feedback.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
-                            feedback.innerHTML = `<strong>မှန်ကန်ပါသည်!</strong> ${item.explanation}`;
-                        } else {
-                            feedback.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
-                            feedback.innerHTML = `<strong>ပြန်လည်စဉ်းစားကြည့်ပါ:</strong> ${item.explanation}`;
-                        }
+                quizQuestions.forEach((item, qIdx) => {
+                    const card = document.createElement('div');
+                    card.className = "p-5 rounded-xl bg-slate-50 border border-slate-200 space-y-3";
+                    
+                    const title = document.createElement('h4');
+                    title.className = "font-bold text-slate-900 text-sm sm:text-base";
+                    title.innerHTML = item.q;
+                    card.appendChild(title);
+
+                    const optsGrid = document.createElement('div');
+                    optsGrid.className = "grid grid-cols-1 sm:grid-cols-2 gap-2.5";
+
+                    const feedback = document.createElement('div');
+                    feedback.className = "hidden text-xs sm:text-sm p-3 rounded-lg border";
+
+                    const optionButtons = [];
+
+                    item.options.forEach((optText, oIdx) => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = "text-left p-3 rounded-xl bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 text-xs sm:text-sm font-medium text-slate-700 transition";
+                        btn.innerHTML = optText;
+                        optionButtons.push(btn);
+
+                        btn.addEventListener('click', () => {
+                            const isCorrect = oIdx === item.answer;
+                            answeredState[qIdx] = isCorrect;
+                            updateScore();
+
+                            optionButtons.forEach((b, idx) => {
+                                b.className = "text-left p-3 rounded-xl border text-xs sm:text-sm font-medium transition ";
+                                if (idx === item.answer) {
+                                    b.className += "bg-emerald-50 border-emerald-400 text-emerald-900 font-bold";
+                                } else if (idx === oIdx && !isCorrect) {
+                                    b.className += "bg-rose-50 border-rose-400 text-rose-900";
+                                } else {
+                                    b.className += "bg-white border-slate-200 text-slate-500 opacity-75";
+                                }
+                            });
+
+                            feedback.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900');
+                            if (isCorrect) {
+                                feedback.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                                feedback.innerHTML = `<strong>မှန်ကန်ပါသည်!</strong> ${item.explanation}`;
+                            } else {
+                                feedback.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                                feedback.innerHTML = `<strong>ပြန်လည်စဉ်းစားကြည့်ပါ:</strong> ${item.explanation}`;
+                            }
+                            renderKatexIn(feedback);
+                        });
+                        optsGrid.appendChild(btn);
                     });
-                    optsGrid.appendChild(btn);
+
+                    card.appendChild(optsGrid);
+                    card.appendChild(feedback);
+                    container.appendChild(card);
                 });
 
-                card.appendChild(optsGrid);
-                card.appendChild(feedback);
-                container.appendChild(card);
-            });
+                renderKatexIn(container);
+            }
+
+            resetBtn.addEventListener('click', buildQuiz);
+            buildQuiz();
         }
 
         // ==========================================
@@ -1414,16 +1631,24 @@
             container.appendChild(renderer.domElement);
             renderersToResize.push({ container, camera, renderer });
 
-            attachOrbitControls(renderer.domElement, camera, 8.2, 0.95, 0.45);
+            attachOrbitControls(renderer.domElement, camera, 8.4, 0.95, 0.45);
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
             dirLight.position.set(5, 10, 7);
             scene.add(dirLight);
 
             const grid = new THREE.GridHelper(10, 10, 0x334155, 0x1e293b);
-            grid.position.y = -2.4;
+            grid.position.y = -2.45;
             scene.add(grid);
+
+            // Translucent Horizontal Surface Table (shown in Horizontal Mode)
+            const tableDisk = new THREE.Mesh(
+                new THREE.CylinderGeometry(2.5, 2.5, 0.05, 48),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, transparent: true, opacity: 0.55, roughness: 0.4 })
+            );
+            tableDisk.position.y = -0.27;
+            scene.add(tableDisk);
 
             // Pivot & Orbit Ring
             const pivotMesh = new THREE.Mesh(
@@ -1433,14 +1658,14 @@
             scene.add(pivotMesh);
 
             const trackGeom = new THREE.TorusGeometry(2.0, 0.03, 12, 64);
-            const trackMesh = new THREE.Mesh(trackGeom, new THREE.MeshBasicMaterial({ color: 0x475569 }));
+            const trackMesh = new THREE.Mesh(trackGeom, new THREE.MeshBasicMaterial({ color: 0x64748b }));
             trackMesh.rotation.x = Math.PI / 2;
             scene.add(trackMesh);
 
             // Ball & String
             const ballMesh = new THREE.Mesh(
                 new THREE.SphereGeometry(0.24, 24, 24),
-                new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 })
+                new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.25 })
             );
             scene.add(ballMesh);
 
@@ -1448,12 +1673,23 @@
             const stringMesh = new THREE.Mesh(stringGeom, new THREE.MeshStandardMaterial({ color: 0xcbd5e1 }));
             scene.add(stringMesh);
 
-            // Force & Velocity Arrows in World Space
+            // Force & Velocity Arrows
             const tensionArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, 0), new THREE.Vector3(), 1.2, 0x38bdf8, 0.25, 0.15);
             const weightArrow = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), new THREE.Vector3(), 1.0, 0xfbbf24, 0.25, 0.15);
             const fcArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, 0), new THREE.Vector3(), 1.2, 0xf43f5e, 0.28, 0.17);
             const velArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), new THREE.Vector3(), 1.2, 0x34d399, 0.24, 0.14);
             scene.add(tensionArrow, weightArrow, fcArrow, velArrow);
+
+            // 3D Floating Sprite Labels
+            const lblT = make3DLabel('T (Tension)', '#38bdf8');
+            const lblW = make3DLabel('mg (Weight)', '#fbbf24');
+            const lblFc = make3DLabel('Fc (Net)', '#fb7185');
+            const lblV = make3DLabel('v (Velocity)', '#34d399');
+            scene.add(lblT, lblW, lblFc, lblV);
+            container.__labels3D = [lblT, lblW, lblFc, lblV];
+
+            let isPaused = false;
+            container.__togglePause = () => { isPaused = !isPaused; return isPaused; };
 
             let mode = 'horiz'; // 'horiz' or 'vert'
             let mass = 2.0, speed = 4.0, radius = 1.5;
@@ -1465,6 +1701,9 @@
             const rSlider = document.getElementById('sim1-r-slider');
             const horizBtn = document.getElementById('sim1-mode-horiz');
             const vertBtn = document.getElementById('sim1-mode-vert');
+            const vertPresets = document.getElementById('sim1-vert-presets');
+            const slackBadge = document.getElementById('sim1-slack-badge');
+            const vminVal = document.getElementById('sim1-vmin-val');
 
             function updateLabels() {
                 document.getElementById('sim1-m-label').textContent = `${mass.toFixed(1)} kg`;
@@ -1478,6 +1717,10 @@
 
             horizBtn.addEventListener('click', () => {
                 mode = 'horiz';
+                tableDisk.visible = true;
+                vertPresets.classList.add('hidden');
+                vertPresets.classList.remove('flex');
+                slackBadge.classList.add('hidden');
                 trackMesh.rotation.set(Math.PI / 2, 0, 0);
                 horizBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
                 vertBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
@@ -1485,19 +1728,34 @@
 
             vertBtn.addEventListener('click', () => {
                 mode = 'vert';
+                tableDisk.visible = false;
+                vertPresets.classList.remove('hidden');
+                vertPresets.classList.add('flex');
                 trackMesh.rotation.set(0, 0, 0);
                 vertBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition";
                 horizBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
             });
 
+            document.querySelectorAll('.sim1-preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    angle = parseFloat(btn.dataset.angle);
+                    isPaused = true;
+                    if (typeof container.__updatePauseUI === 'function') {
+                        container.__updatePauseUI(true);
+                    }
+                });
+            });
+
             updateLabels();
 
             return (dt) => {
-                const visualR = 1.2 + (radius - 1.0) * 0.75;
+                const visualR = 1.25 + (radius - 1.0) * 0.72;
                 trackMesh.scale.set(visualR / 2.0, visualR / 2.0, 1);
 
                 const omega = speed / radius;
-                angle += omega * 0.55 * dt;
+                if (!isPaused) {
+                    angle += omega * 0.55 * dt;
+                }
 
                 const pos = new THREE.Vector3();
                 const velDir = new THREE.Vector3();
@@ -1522,35 +1780,50 @@
                 let tensionMag = fcMag;
 
                 if (mode === 'vert') {
-                    // At angle (measured from +X horizontal, +pi/2 is top, -pi/2 is bottom):
-                    // Radial inward component of gravity is mg * sin(angle)
-                    // So T + mg * sin(angle) = Fc => T = Fc - mg * sin(angle)
-                    tensionMag = Math.max(0, fcMag - weightMag * Math.sin(angle));
+                    const rawT = fcMag - weightMag * Math.sin(angle);
+                    tensionMag = Math.max(0, rawT);
+                    const vMin = Math.sqrt(radius * g);
+                    if (speed < vMin) {
+                        slackBadge.classList.remove('hidden');
+                        vminVal.textContent = vMin.toFixed(2);
+                    } else {
+                        slackBadge.classList.add('hidden');
+                    }
                 }
 
                 const inwardDir = pos.clone().negate().normalize();
                 const scaleF = 0.032;
 
-                // Tension arrow (sky blue, slightly offset if needed)
+                // Tension arrow (sky blue)
                 tensionArrow.position.copy(pos);
                 tensionArrow.setDirection(inwardDir);
-                tensionArrow.setLength(Math.max(0.25, Math.min(2.2, tensionMag * scaleF)), 0.22, 0.14);
+                const tLen = tensionMag > 0.05 ? Math.max(0.28, Math.min(2.2, tensionMag * scaleF)) : 0.001;
+                tensionArrow.visible = tensionMag > 0.05;
+                tensionArrow.setLength(tLen, 0.22, 0.14);
+                lblT.visible = tensionArrow.visible && (lblFc.visible);
+                lblT.position.copy(pos).addScaledVector(inwardDir, tLen + 0.28).add(new THREE.Vector3(0, -0.18, 0));
 
                 // Weight arrow (amber, straight down)
+                const wLen = Math.max(0.32, Math.min(2.0, weightMag * scaleF));
                 weightArrow.position.copy(pos);
                 weightArrow.setDirection(new THREE.Vector3(0, -1, 0));
-                weightArrow.setLength(Math.max(0.3, Math.min(2.0, weightMag * scaleF)), 0.22, 0.14);
+                weightArrow.setLength(wLen, 0.22, 0.14);
+                lblW.position.copy(pos).add(new THREE.Vector3(0, -(wLen + 0.28), 0));
 
-                // Net Centripetal Force Fc arrow (rose, slightly offset perpendicular so both T and Fc are visible)
-                const offset = mode === 'horiz' ? new THREE.Vector3(0, 0.16, 0) : new THREE.Vector3(0, 0, 0.18);
+                // Net Centripetal Force Fc arrow (rose, slightly offset so both T and Fc are visible)
+                const offset = mode === 'horiz' ? new THREE.Vector3(0, 0.18, 0) : new THREE.Vector3(0, 0, 0.2);
+                const fcLen = Math.max(0.32, Math.min(2.3, fcMag * scaleF));
                 fcArrow.position.copy(pos).add(offset);
                 fcArrow.setDirection(inwardDir);
-                fcArrow.setLength(Math.max(0.3, Math.min(2.3, fcMag * scaleF)), 0.25, 0.15);
+                fcArrow.setLength(fcLen, 0.25, 0.15);
+                lblFc.position.copy(pos).add(offset).addScaledVector(inwardDir, fcLen + 0.28).add(new THREE.Vector3(0, 0.18, 0));
 
                 // Tangential Velocity arrow (emerald)
+                const vLen = 0.55 + speed * 0.16;
                 velArrow.position.copy(pos);
                 velArrow.setDirection(velDir);
-                velArrow.setLength(0.55 + speed * 0.16, 0.22, 0.13);
+                velArrow.setLength(vLen, 0.22, 0.13);
+                lblV.position.copy(pos).addScaledVector(velDir, vLen + 0.32);
 
                 document.getElementById('sim1-t-val').textContent = tensionMag.toFixed(1);
                 document.getElementById('sim1-w-val').textContent = weightMag.toFixed(1);
@@ -1574,27 +1847,50 @@
             container.appendChild(renderer.domElement);
             renderersToResize.push({ container, camera, renderer });
 
-            attachOrbitControls(renderer.domElement, camera, 7.6, 1.15, 0.35);
+            attachOrbitControls(renderer.domElement, camera, 7.8, 1.15, 0.35);
 
             scene.add(new THREE.AmbientLight(0xffffff, 0.8));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
             dirLight.position.set(5, 10, 6);
             scene.add(dirLight);
 
-            // Horizontal Ground Reference Line
+            // Horizontal Ground Reference Grid
             const groundGrid = new THREE.GridHelper(10, 10, 0x334155, 0x1e293b);
-            groundGrid.position.y = -1.4;
+            groundGrid.position.y = -1.45;
             scene.add(groundGrid);
 
             // Center of Curvature Indicator on the Left (-X)
             const centerPost = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.06, 0.06, 2.2, 12),
+                new THREE.CylinderGeometry(0.06, 0.06, 2.3, 12),
                 new THREE.MeshStandardMaterial({ color: 0x38bdf8 })
             );
-            centerPost.position.set(-2.9, -0.3, 0);
+            centerPost.position.set(-2.95, -0.3, 0);
             scene.add(centerPost);
 
-            // Banked Road Slab Group (pivots around center of car contact)
+            // Horizontal Reference Line from Pivot (0,0,0) toward Outer Edge (+X)
+            const horizRefGeom = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-2.1, 0, 1.62),
+                new THREE.Vector3(2.35, 0, 1.62)
+            ]);
+            const horizRefLine = new THREE.Line(
+                horizRefGeom,
+                new THREE.LineDashedMaterial({ color: 0x94a3b8, dashSize: 0.16, gapSize: 0.1 })
+            );
+            horizRefLine.computeLineDistances();
+            scene.add(horizRefLine);
+
+            // Dynamic Banking Angle Wedge Mesh on Front Face
+            const angleWedgeMat = new THREE.MeshBasicMaterial({
+                color: 0xfbbf24,
+                transparent: true,
+                opacity: 0.32,
+                side: THREE.DoubleSide
+            });
+            const angleWedgeMesh = new THREE.Mesh(new THREE.CircleGeometry(1.45, 24, 0, 0.4), angleWedgeMat);
+            angleWedgeMesh.position.set(0, 0, 1.62);
+            scene.add(angleWedgeMesh);
+
+            // Banked Road Slab Group
             const bankGroup = new THREE.Group();
             scene.add(bankGroup);
 
@@ -1604,6 +1900,21 @@
             );
             roadMesh.position.y = -0.11;
             bankGroup.add(roadMesh);
+
+            // Road Edge Curbs (Inner = sky, Outer = rose)
+            const innerCurb = new THREE.Mesh(
+                new THREE.BoxGeometry(0.14, 0.28, 3.22),
+                new THREE.MeshStandardMaterial({ color: 0x38bdf8 })
+            );
+            innerCurb.position.set(-2.05, -0.08, 0);
+            bankGroup.add(innerCurb);
+
+            const outerCurb = new THREE.Mesh(
+                new THREE.BoxGeometry(0.14, 0.28, 3.22),
+                new THREE.MeshStandardMaterial({ color: 0xf43f5e })
+            );
+            outerCurb.position.set(2.05, -0.08, 0);
+            bankGroup.add(outerCurb);
 
             // Road Center Dashed Stripe
             const stripeMesh = new THREE.Mesh(
@@ -1618,26 +1929,49 @@
             bankGroup.add(carGroup);
 
             const chassis = new THREE.Mesh(
-                new THREE.BoxGeometry(1.3, 0.42, 2.1),
+                new THREE.BoxGeometry(1.3, 0.4, 2.1),
                 new THREE.MeshStandardMaterial({ color: 0x4f46e5, roughness: 0.3, metalness: 0.2 })
             );
-            chassis.position.y = 0.28;
+            chassis.position.y = 0.32;
             carGroup.add(chassis);
 
             const cabin = new THREE.Mesh(
-                new THREE.BoxGeometry(1.05, 0.36, 1.15),
+                new THREE.BoxGeometry(1.05, 0.35, 1.15),
                 new THREE.MeshStandardMaterial({ color: 0xc7d2fe, roughness: 0.2 })
             );
-            cabin.position.set(0, 0.64, -0.1);
+            cabin.position.set(0, 0.66, -0.1);
             carGroup.add(cabin);
 
+            // 4 Wheels
+            const wheelGeom = new THREE.CylinderGeometry(0.18, 0.18, 0.14, 18);
+            wheelGeom.rotateZ(Math.PI / 2);
+            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.8 });
+            [[-0.64, 0.18, 0.65], [0.64, 0.18, 0.65], [-0.64, 0.18, -0.65], [0.64, 0.18, -0.65]].forEach(([wx, wy, wz]) => {
+                const w = new THREE.Mesh(wheelGeom, wheelMat);
+                w.position.set(wx, wy, wz);
+                carGroup.add(w);
+            });
+
             // Force Vectors Originating at Car Center of Mass
-            const origin = new THREE.Vector3(0, 0.4, 0);
+            const origin = new THREE.Vector3(0, 0.45, 0);
             const fnArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), origin, 1.8, 0x34d399, 0.28, 0.16);
             const fnSinArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, 0), origin, 1.0, 0x38bdf8, 0.26, 0.15);
             const fnCosArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), origin, 1.4, 0x818cf8, 0.25, 0.15);
             const mgArrow = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), origin, 1.4, 0xfbbf24, 0.26, 0.15);
             scene.add(fnArrow, fnSinArrow, fnCosArrow, mgArrow);
+
+            // 3D Floating Labels
+            const lblFn = make3DLabel('FN', '#34d399');
+            const lblFnSin = make3DLabel('FN sinθ (Fc)', '#38bdf8');
+            const lblFnCos = make3DLabel('FN cosθ', '#a5b4fc');
+            const lblMg = make3DLabel('mg', '#fbbf24');
+            const lblTheta = make3DLabel('θ', '#fbbf24');
+            lblTheta.scale.set(0.55, 0.28, 1);
+            scene.add(lblFn, lblFnSin, lblFnCos, lblMg, lblTheta);
+            container.__labels3D = [lblFn, lblFnSin, lblFnCos, lblMg, lblTheta];
+
+            let isPaused = false;
+            container.__togglePause = () => { isPaused = !isPaused; return isPaused; };
 
             let speed = 15, radius = 50;
             const g = 9.8;
@@ -1656,26 +1990,35 @@
                 document.getElementById('sim2-r-val').textContent = radius;
                 document.getElementById('sim2-theta-val').textContent = `${thetaDeg.toFixed(1)}°`;
 
-                // Tilt outer edge (+X) higher than inner edge (-X) => positive rotation around +Z
+                // Tilt outer edge (+X) higher than inner edge (-X)
                 bankGroup.rotation.z = thetaRad;
+
+                // Update Angle Wedge geometry
+                angleWedgeMesh.geometry.dispose();
+                angleWedgeMesh.geometry = new THREE.CircleGeometry(1.55, 24, 0, thetaRad);
+                lblTheta.position.set(1.82 * Math.cos(thetaRad * 0.5), 1.82 * Math.sin(thetaRad * 0.5), 1.65);
 
                 // Normal force direction tilted inward (-X) by thetaRad from +Y
                 const fnDir = new THREE.Vector3(-Math.sin(thetaRad), Math.cos(thetaRad), 0).normalize();
-                const verticalLen = 1.35; // represents mg = FN cos(theta)
-                const fnLen = verticalLen / Math.cos(thetaRad);
-                const horizLen = verticalLen * Math.tan(thetaRad);
+                const verticalLen = 1.35;
+                const fnLen = Math.min(2.6, verticalLen / Math.cos(thetaRad));
+                const horizLen = Math.max(0.28, Math.min(2.2, verticalLen * Math.tan(thetaRad)));
 
                 fnArrow.setDirection(fnDir);
-                fnArrow.setLength(Math.min(2.6, fnLen), 0.26, 0.15);
+                fnArrow.setLength(fnLen, 0.26, 0.15);
+                lblFn.position.copy(origin).addScaledVector(fnDir, fnLen + 0.28);
 
                 fnSinArrow.setDirection(new THREE.Vector3(-1, 0, 0));
-                fnSinArrow.setLength(Math.max(0.25, Math.min(2.2, horizLen)), 0.25, 0.14);
+                fnSinArrow.setLength(horizLen, 0.25, 0.14);
+                lblFnSin.position.copy(origin).add(new THREE.Vector3(-(horizLen + 0.45), 0, 0));
 
                 fnCosArrow.setDirection(new THREE.Vector3(0, 1, 0));
                 fnCosArrow.setLength(verticalLen, 0.24, 0.14);
+                lblFnCos.position.copy(origin).add(new THREE.Vector3(0.45, verticalLen + 0.15, 0));
 
                 mgArrow.setDirection(new THREE.Vector3(0, -1, 0));
                 mgArrow.setLength(verticalLen, 0.25, 0.14);
+                lblMg.position.copy(origin).add(new THREE.Vector3(0, -(verticalLen + 0.28), 0));
             }
 
             vSlider.addEventListener('input', () => { speed = parseFloat(vSlider.value); updateBanking(); });
@@ -1684,7 +2027,9 @@
 
             let stripeOffset = 0;
             return (dt) => {
-                stripeOffset = (stripeOffset + speed * 0.08 * dt) % 0.6;
+                if (!isPaused) {
+                    stripeOffset = (stripeOffset + speed * 0.08 * dt) % 0.6;
+                }
                 stripeMesh.position.z = stripeOffset - 0.3;
                 renderer.render(scene, camera);
             };
@@ -1705,24 +2050,38 @@
 
             attachOrbitControls(renderer.domElement, camera, 8.6, 0.85, 0.4);
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
             dirLight.position.set(5, 10, 6);
             scene.add(dirLight);
 
-            // Curved Road Ring
+            // Rotating Track World (rotates backward in Passenger View so car stays in Rotating Frame)
+            const trackWorld = new THREE.Group();
+            scene.add(trackWorld);
+
             const trackR = 2.6;
             const roadRing = new THREE.Mesh(
                 new THREE.RingGeometry(trackR - 0.65, trackR + 0.65, 64).rotateX(-Math.PI / 2),
                 new THREE.MeshStandardMaterial({ color: 0x1e293b, side: THREE.DoubleSide })
             );
-            scene.add(roadRing);
+            trackWorld.add(roadRing);
 
             const centerLine = new THREE.Mesh(
                 new THREE.TorusGeometry(trackR, 0.025, 12, 64).rotateX(Math.PI / 2),
                 new THREE.MeshBasicMaterial({ color: 0x64748b })
             );
-            scene.add(centerLine);
+            trackWorld.add(centerLine);
+
+            // Road markers around track so relative motion is obvious in Passenger View
+            for (let i = 0; i < 12; i++) {
+                const a = (i / 12) * Math.PI * 2;
+                const post = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.04, 0.04, 0.35, 10),
+                    new THREE.MeshStandardMaterial({ color: 0x94a3b8 })
+                );
+                post.position.set((trackR + 0.75) * Math.cos(a), 0.175, (trackR + 0.75) * Math.sin(a));
+                trackWorld.add(post);
+            }
 
             // Center Pillar
             const centerDot = new THREE.Mesh(
@@ -1731,13 +2090,13 @@
             );
             scene.add(centerDot);
 
-            // Rotating Car Holder
+            // Car Holder
             const carHolder = new THREE.Group();
             scene.add(carHolder);
 
             const carBody = new THREE.Mesh(
-                new THREE.BoxGeometry(0.65, 0.34, 1.1),
-                new THREE.MeshStandardMaterial({ color: 0x6366f1, transparent: true, opacity: 0.88 })
+                new THREE.BoxGeometry(0.7, 0.34, 1.15),
+                new THREE.MeshStandardMaterial({ color: 0x6366f1, transparent: true, opacity: 0.85 })
             );
             carBody.position.set(trackR, 0.2, 0);
             carHolder.add(carBody);
@@ -1750,12 +2109,28 @@
             passenger.position.set(trackR, 0.45, 0);
             carHolder.add(passenger);
 
-            // Vectors at Car Position (trackR, 0.35, 0)
+            // Vectors at Car Position
             const vOrigin = new THREE.Vector3(trackR, 0.35, 0);
             const fcArrow = new THREE.ArrowHelper(new THREE.Vector3(-1, 0, 0), vOrigin, 1.5, 0x38bdf8, 0.28, 0.16);
             const fcfArrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), vOrigin, 1.5, 0xf43f5e, 0.28, 0.16);
             const inertiaVelArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, -1), vOrigin, 1.6, 0x34d399, 0.26, 0.15);
             carHolder.add(fcArrow, fcfArrow, inertiaVelArrow);
+
+            // 3D Floating Labels
+            const lblFc = make3DLabel('Fc (Real)', '#38bdf8');
+            lblFc.position.set(trackR - 1.75, 0.62, 0);
+
+            const lblFcf = make3DLabel('Fcf (Inertia)', '#fb7185');
+            lblFcf.position.set(trackR + 1.85, 0.62, 0);
+
+            const lblVel = make3DLabel('v (Tangent)', '#34d399');
+            lblVel.position.set(trackR, 0.62, -1.9);
+
+            carHolder.add(lblFc, lblFcf, lblVel);
+            container.__labels3D = [lblFc, lblFcf, lblVel];
+
+            let isPaused = false;
+            container.__togglePause = () => { isPaused = !isPaused; return isPaused; };
 
             let frameMode = 'ground'; // 'ground' or 'car'
             let theta = 0;
@@ -1765,16 +2140,21 @@
             const caption = document.getElementById('sim3-caption');
 
             function updateFrameMode() {
+                const labelsVisible = container.__labels3D[0].visible;
                 if (frameMode === 'ground') {
                     fcfArrow.visible = false;
+                    lblFcf.visible = false;
                     inertiaVelArrow.visible = true;
-                    caption.textContent = "Ground View: Real inward Centripetal Force (Fc) pulls the car into the curve against straight-line inertia (v).";
+                    lblVel.visible = labelsVisible;
+                    caption.textContent = "Ground View (Inertial Frame): Real inward Centripetal Force (Fc) pulls the car into the curve against straight-line inertia (v).";
                     groundBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-600 text-white transition";
                     carBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
                 } else {
                     fcfArrow.visible = true;
+                    lblFcf.visible = labelsVisible;
                     inertiaVelArrow.visible = false;
-                    caption.textContent = "Passenger View: Inside the turning car, inertia feels like an outward Centrifugal Force (Fcf) opposing Fc.";
+                    lblVel.visible = false;
+                    caption.textContent = "Passenger View (Rotating Frame): Riding inside the turning car, inertia feels like an outward Centrifugal Force (Fcf) pushing against the outer door.";
                     carBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 text-white transition";
                     groundBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition";
                 }
@@ -1785,10 +2165,19 @@
             updateFrameMode();
 
             return (dt) => {
-                theta += 0.9 * dt;
-                carHolder.rotation.y = theta;
-                // Subtle outward lean of passenger in passenger view
-                passenger.position.x = frameMode === 'car' ? trackR + 0.14 : trackR;
+                if (!isPaused) {
+                    theta += 0.9 * dt;
+                }
+                if (frameMode === 'ground') {
+                    carHolder.rotation.y = theta;
+                    trackWorld.rotation.y = 0;
+                    passenger.position.x = trackR;
+                } else {
+                    // Rotating reference frame: car stays locked in view while track rotates underneath
+                    carHolder.rotation.y = 0;
+                    trackWorld.rotation.y = -theta;
+                    passenger.position.x = trackR + 0.18;
+                }
                 renderer.render(scene, camera);
             };
         }
@@ -1812,19 +2201,10 @@
 
         window.onload = function () {
             try {
-                if (typeof renderMathInElement === 'function') {
-                    renderMathInElement(document.body, {
-                        delimiters: [
-                            { left: '$$', right: '$$', display: true },
-                            { left: '$', right: '$', display: false }
-                        ],
-                        throwOnError: false
-                    });
-                }
-
                 initNavigation();
                 initCanvasToolbars();
                 initQuiz();
+                renderKatexIn(document.body);
 
                 const updateSim1 = setupSim1();
                 const updateSim2 = setupSim2();
