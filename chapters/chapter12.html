@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grade 12 Physics - Chapter 12: Electronics and Digital Logic</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D P-N Junction Diode, Half/Full-Wave Rectifier, BJT Transistor & Digital Logic Gate Labs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.85;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 430px;
+            }
+        }
+        .myanmar-text {
+            line-height: 1.98;
+        }
+        .formula-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+        /* 3D Viewer Overlay UI (Matches Chapters 4–11 Structure) */
+        .v3d-ui { position: absolute; inset: 0; pointer-events: none; font-family: 'Inter','Noto Sans Myanmar',sans-serif; }
+        .v3d-btn { position: absolute; top: 8px; right: 10px; pointer-events: auto; font-size: 11px; font-weight: 600; color: #e0e7ff; background: rgba(15,23,42,.75); border: 1px solid rgba(129,140,248,.45); padding: 3px 10px; border-radius: 9999px; cursor: pointer; }
+        .v3d-hint { position: absolute; top: 10px; left: 10px; font-size: 10.5px; color: #cbd5e1; transition: opacity .4s; }
+        .v3d-zoom { position: absolute; right: 10px; top: 38px; display: flex; flex-direction: column; gap: 6px; }
+        .v3d-zoom button { pointer-events: auto; width: 30px; height: 30px; border-radius: 9999px; font-size: 16px; font-weight: 700; line-height: 1; color: #e0e7ff; background: rgba(15,23,42,.78); border: 1px solid rgba(129,140,248,.45); cursor: pointer; }
+        .v3d-labels { position: absolute; inset: 0; }
+        .v3d-label { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; font-size: 11px; line-height: 1.35; font-weight: 600; color: #f8fafc; background: rgba(15,23,42,.84); border: 1px solid #818cf8; border-radius: .6rem; padding: 2px 8px; will-change: transform; }
+        .v3d-info { position: absolute; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.6; color: #e2e8f0; background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14); border-radius: .8rem; padding: 7px 11px; }
+        .v3d-info b { color: #93c5fd; }
+        /* Clean Mathematical Typography */
+        .mx { font-family: 'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif; font-size: 1.1em; font-weight: 500; letter-spacing: .01em; }
+        .mx i { font-style: italic; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-white font-bold shadow">
+                Ch12
+            </div>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p class="text-xs text-slate-500">Electronics & Digital Logic</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Open Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Left Sidebar Taskbar (Matches Chapters 4–11 Structure) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:shadow-none">
+            <!-- Brand Header + Chapter Switcher -->
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/25 text-indigo-200 border border-indigo-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Grade 12 Physics
+                    </span>
+                    <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10" aria-label="Close Navigation">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <h2 class="mt-3 text-lg font-bold tracking-tight leading-snug">Chapter 12: Electronics and Digital Logic</h2>
+                <p class="mt-1 text-xs text-indigo-200/85">Semiconductors, P-N Junction Diodes, Rectifiers, Transistors & Logic Gates</p>
+
+                <!-- Cross-Chapter Page Navigation Bar -->
+                <div class="mt-4 pt-3 border-t border-white/15 grid grid-cols-5 gap-1.5">
+                    <a href="../index.html" class="text-center py-1.5 px-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition" title="Home">🏠</a>
+                    <a href="../chapter1.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 1</a>
+                    <a href="chapter2.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 2</a>
+                    <a href="chapter3.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 3</a>
+                    <a href="chapter4.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 4</a>
+                    <a href="chapter5.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 5</a>
+                    <a href="chapter6.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 6</a>
+                    <a href="chapter7.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 7</a>
+                    <a href="chapter8.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 8</a>
+                    <a href="chapter9.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 9</a>
+                    <a href="chapter10.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 10</a>
+                    <a href="chapter11.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 11</a>
+                    <a href="chapter12.html" class="text-center py-1.5 px-1 rounded-lg bg-indigo-500 text-xs font-semibold text-white shadow-xs">Ch 12</a>
+                    <a href="chapter13.html" class="col-span-2 text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 13</a>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Chapter 12 လေ့လာရန် အပိုင်းများ (6 ခု)
+                </div>
+
+                <button onclick="selectArticle('overview')" id="nav-overview" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">🔌</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">အခန်း (၁၂) မိတ်ဆက် & Formula Table</div>
+                        <div class="text-xs opacity-80 mt-0.5">Electronics & Digital Logic ခြုံငုံရှင်းလင်းချက်နှင့် ဇယားချုပ်</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('12.1')" id="nav-12.1" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">12.1</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Semiconductors & P-N Junction (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Forward Bias vs Reverse Bias Depletion Layer & Barrier Potential</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('12.2')" id="nav-12.2" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">12.2</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Rectifiers, Zener & LED / Photodiode (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Half-Wave & Full-Wave Bridge Rectifier Waveforms, Zener & LED</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('12.3')" id="nav-12.3" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">12.3</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Transistors (NPN / PNP) & Amplifiers (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D BJT Carrier Flow (I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>), Current Gain β & Switch</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('12.4')" id="nav-12.4" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">12.4</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Digital Electronics & Logic Gates (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Interactive Logic Gate Lab (AND, OR, NOT, NAND, NOR, XOR)</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('worked')" id="nav-worked" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">✍️</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Electronics & Logic Simulator & Q&A</div>
+                        <div class="text-xs opacity-80 mt-0.5">Diode / Zener / Transistor / Logic Gate တွက်စက်နှင့် မေးခွန်းအဖြေများ</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Footer Tip -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200/80 text-xs text-indigo-950 flex items-start gap-2.5">
+                    <span class="text-base">💻</span>
+                    <span><strong>Exam Tip:</strong> <strong>NAND</strong> နှင့် <strong>NOR</strong> Gates များကို <strong>Universal Gates</strong> ဟု ခေါ်သည်။ ၎င်းတို့တစ်မျိုးတည်းဖြင့် အခြေခံ Logic Gate (NOT, AND, OR) အားလုံးကို တည်ဆောက်နိုင်သောကြောင့် ဖြစ်သည်။</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+            <div id="content-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-8">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & THREE.JS ENGINE MANAGER
+        // ==========================================
+        let currentArticleId = 'overview';
+        let activeScenes = [];
+        let logicGateState = { gate: 'AND', a: 1, b: 1 };
+
+        function clearActiveScenes() {
+            activeScenes.forEach(item => {
+                if (item.animId) cancelAnimationFrame(item.animId);
+                if (item.renderer) item.renderer.dispose();
+            });
+            activeScenes = [];
+        }
+
+        function init3DViewer(containerId, buildSceneCallback, legendItems = []) {
+            const container = document.getElementById(containerId);
+            if (!container || typeof THREE === 'undefined') return null;
+            container.querySelectorAll('canvas,.v3d-ui').forEach(n => n.remove());
+            activeScenes = activeScenes.filter(r => {
+                if (r.cid === containerId) {
+                    cancelAnimationFrame(r.animId);
+                    r.renderer.dispose();
+                    return false;
+                }
+                return true;
+            });
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 380;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1.4, 7.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const legendHtml = legendItems.length
+                ? `<div class="v3d-legend" style="position:absolute;top:8px;left:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;font-weight:700;color:#e2e8f0;background:rgba(15,23,42,.72);padding:3px 9px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);">
+                    ${legendItems.map(it => `<span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${it.color};margin-right:4px;"></i>${it.text}</span>`).join('')}
+                   </div>`
+                : '';
+
+            const ui = document.createElement('div');
+            ui.className = 'v3d-ui';
+            ui.innerHTML = `
+                ${legendHtml}
+                <button type="button" class="v3d-btn">🏷️ ရှင်းလင်းချက်: ON</button>
+                <div class="v3d-zoom"><button type="button" data-z="in" title="Zoom In">+</button><button type="button" data-z="out" title="Zoom Out">−</button><button type="button" data-z="reset" title="Reset View">⟲</button></div>
+                <div class="v3d-labels"></div>
+                <div class="v3d-hint" style="top:${legendItems.length ? '36px' : '10px'};">👆 ဆွဲ၍လှည့်ပါ · + − ဖြင့် ချုံ့ချဲ့ပါ</div>
+                <div class="v3d-info"></div>`;
+            container.appendChild(ui);
+
+            const labelBox = ui.querySelector('.v3d-labels');
+            const labels = [];
+            const api = {
+                label(text, pos, color = '#818cf8', obj) {
+                    const el = document.createElement('div');
+                    el.className = 'v3d-label';
+                    el.style.borderColor = color;
+                    el.innerHTML = text;
+                    labelBox.appendChild(el);
+                    labels.push({ el, obj, pos: pos.clone ? pos.clone() : new THREE.Vector3(...pos) });
+                },
+                info(html) { ui.querySelector('.v3d-info').innerHTML = html; }
+            };
+
+            const btn = ui.querySelector('.v3d-btn');
+            btn.addEventListener('click', () => {
+                const on = labelBox.style.display === 'none';
+                labelBox.style.display = on ? '' : 'none';
+                btn.textContent = '🏷️ ရှင်းလင်းချက်: ' + (on ? 'ON' : 'OFF');
+            });
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.92);
+            dirLight1.position.set(6, 9, 7);
+            scene.add(dirLight1);
+            const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.5);
+            dirLight2.position.set(-6, -4, -5);
+            scene.add(dirLight2);
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            const customUpdate = buildSceneCallback(rootGroup, camera, scene, api);
+            camera.lookAt(0, 0, 0);
+            const camPos0 = camera.position.clone();
+            let zoom = 1;
+            const setZoom = z => { zoom = Math.max(0.55, Math.min(2.3, z)); };
+
+            ui.querySelector('.v3d-zoom').addEventListener('click', e => {
+                const k = e.target.dataset.z;
+                if (k === 'in') setZoom(zoom * 1.25);
+                else if (k === 'out') setZoom(zoom / 1.25);
+                else if (k === 'reset') { zoom = 1; rootGroup.rotation.set(0, 0, 0); autoRotate = true; }
+            });
+
+            let isDragging = false, prevX = 0, prevY = 0, autoRotate = true;
+            const onDown = (x, y) => { isDragging = true; autoRotate = false; prevX = x; prevY = y; ui.querySelector('.v3d-hint').style.opacity = 0; };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                rootGroup.rotation.y += (x - prevX) * 0.01;
+                rootGroup.rotation.x = Math.max(-1.1, Math.min(1.1, rootGroup.rotation.x + (y - prevY) * 0.01));
+                prevX = x; prevY = y;
+            };
+            const onUp = () => { isDragging = false; };
+
+            const domElem = renderer.domElement;
+            domElem.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+            domElem.addEventListener('wheel', e => { e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onUp);
+            domElem.addEventListener('touchstart', e => { if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchmove', e => { if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchend', onUp);
+
+            window.addEventListener('resize', () => {
+                if (!container.isConnected || !container.clientWidth) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            const sceneRecord = { renderer, animId: null, cid: containerId };
+            activeScenes.push(sceneRecord);
+
+            const clock = new THREE.Clock();
+            const v = new THREE.Vector3();
+            function animate() {
+                sceneRecord.animId = requestAnimationFrame(animate);
+                const elapsed = clock.getElapsedTime();
+                if (autoRotate) rootGroup.rotation.y += 0.0025;
+                if (typeof customUpdate === 'function') customUpdate(elapsed, rootGroup);
+                camera.position.copy(camPos0).multiplyScalar(1 / zoom);
+                renderer.render(scene, camera);
+
+                const W = container.clientWidth, H = container.clientHeight;
+                scene.updateMatrixWorld();
+                labels.forEach(l => {
+                    v.copy(l.pos);
+                    (l.obj || rootGroup).localToWorld(v).project(camera);
+                    l.el.style.opacity = l.obj && !l.obj.visible ? 0 : 1;
+                    const hw = l.el.offsetWidth / 2 + 4;
+                    const x = Math.max(hw, Math.min(W - hw, (v.x * 0.5 + 0.5) * W));
+                    const y = Math.max(14, Math.min(H - 96, (-v.y * 0.5 + 0.5) * H));
+                    l.el.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px)`;
+                });
+            }
+            animate();
+        }
+
+        function createSphere(radius, colorHex, x = 0, y = 0, z = 0) {
+            const geo = new THREE.SphereGeometry(radius, 28, 28);
+            const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.28, metalness: 0.15 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            return mesh;
+        }
+
+        function createWireSegment(p1, p2, colorHex = 0x64748b, radius = 0.032) {
+            const dir = new THREE.Vector3().subVectors(p2, p1);
+            const len = dir.length();
+            const cyl = new THREE.Mesh(
+                new THREE.CylinderGeometry(radius, radius, len, 12),
+                new THREE.MeshBasicMaterial({ color: colorHex })
+            );
+            const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+            cyl.position.copy(mid);
+            cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+            return cyl;
+        }
+
+        // ==========================================
+        // 2. SPECIFIC 3D VISUALIZATIONS FOR CHAPTER 12
+        // ==========================================
+
+        // 3D Viewer 12.1: P-N Junction Diode (Forward Bias vs Reverse Bias)
+        function render3D_12_1(mode) {
+            const isForward = mode === 'forward';
+            init3DViewer('viewer-12-1', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.4, 8.0);
+
+                // P-Type Region (Left, Anode)
+                const pRegion = new THREE.Mesh(
+                    new THREE.BoxGeometry(2.3, 1.9, 1.5),
+                    new THREE.MeshStandardMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.28 })
+                );
+                pRegion.position.set(-1.15, 0.25, 0);
+
+                // N-Type Region (Right, Cathode)
+                const nRegion = new THREE.Mesh(
+                    new THREE.BoxGeometry(2.3, 1.9, 1.5),
+                    new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.28 })
+                );
+                nRegion.position.set(1.15, 0.25, 0);
+
+                // Central Depletion Layer (Narrow in Forward Bias, Wide in Reverse Bias)
+                const depWidth = isForward ? 0.25 : 1.15;
+                const depLayer = new THREE.Mesh(
+                    new THREE.BoxGeometry(depWidth, 1.92, 1.52),
+                    new THREE.MeshStandardMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.42 })
+                );
+                depLayer.position.set(0, 0.25, 0);
+
+                group.add(pRegion, nRegion, depLayer);
+
+                // External Battery Wires
+                group.add(
+                    createWireSegment(new THREE.Vector3(-2.3, 0.25, 0), new THREE.Vector3(-2.9, 0.25, 0), 0x94a3b8),
+                    createWireSegment(new THREE.Vector3(-2.9, 0.25, 0), new THREE.Vector3(-2.9, -1.45, 0), 0x94a3b8),
+                    createWireSegment(new THREE.Vector3(-2.9, -1.45, 0), new THREE.Vector3(2.9, -1.45, 0), 0x94a3b8),
+                    createWireSegment(new THREE.Vector3(2.9, -1.45, 0), new THREE.Vector3(2.9, 0.25, 0), 0x94a3b8),
+                    createWireSegment(new THREE.Vector3(2.9, 0.25, 0), new THREE.Vector3(2.3, 0.25, 0), 0x94a3b8)
+                );
+
+                // Battery Indicator at Bottom
+                const batPos = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.28, 0.28, 0.55, 20).rotateZ(Math.PI / 2),
+                    new THREE.MeshStandardMaterial({ color: 0xef4444 })
+                );
+                batPos.position.set(isForward ? -0.28 : 0.28, -1.45, 0);
+                const batNeg = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.28, 0.28, 0.55, 20).rotateZ(Math.PI / 2),
+                    new THREE.MeshStandardMaterial({ color: 0x1e293b })
+                );
+                batNeg.position.set(isForward ? 0.28 : -0.28, -1.45, 0);
+                group.add(batPos, batNeg);
+
+                // Majority Carriers: Holes (+, red) in P-region, Electrons (-, cyan) in N-region
+                const holes = [], electrons = [];
+                for (let i = 0; i < 6; i++) {
+                    const yOff = ((i % 3) - 1) * 0.52;
+                    const zOff = (i % 2 === 0 ? 0.32 : -0.32);
+                    const h = createSphere(0.12, 0xf43f5e, -1.8 + (i % 2) * 0.6, 0.25 + yOff, zOff);
+                    const e = createSphere(0.11, 0x38bdf8, 1.8 - (i % 2) * 0.6, 0.25 + yOff, -zOff);
+                    group.add(h, e);
+                    holes.push({ mesh: h, offset: i / 6, yOff, zOff });
+                    electrons.push({ mesh: e, offset: i / 6, yOff, zOff: -zOff });
+                }
+
+                if (isForward) {
+                    ui.label('P-Type (Anode +) → Holes (+)', [-1.45, 1.55, 0], '#fda4af');
+                    ui.label('Narrow Depletion Layer (~0.7 V Si)', [0, -0.95, 0], '#fbbf24');
+                    ui.label('N-Type (Cathode −) ← Electrons (−)', [1.45, 1.55, 0], '#7dd3fc');
+                    ui.info('<b>Forward Bias (P → +, N → −):</b> ဘက်ထရီ၏ အပေါင်းစွန်းကို P-type နှင့် အနုတ်စွန်းကို N-type သို့ ဆက်လိုက်သောအခါ <strong>Depletion Layer ကျဉ်းမြောင်းသွား</strong> ပြီး Silicon Diode အတွက် <strong>0.7 V</strong> (Germanium အတွက် <strong>0.3 V</strong>) ကျော်လွန်သည်နှင့် လျှပ်စီးအများအပြား စီးဆင်းသည်။');
+                } else {
+                    ui.label('P-Type (Connected to −)', [-1.45, 1.55, 0], '#fda4af');
+                    ui.label('Wide Depletion Layer (Blocks Current!)', [0, -0.95, 0], '#fbbf24');
+                    ui.label('N-Type (Connected to +)', [1.45, 1.55, 0], '#7dd3fc');
+                    ui.info('<b>Reverse Bias (P → −, N → +):</b> ဘက်ထရီ၏ အနုတ်စွန်းကို P-type နှင့် အပေါင်းစွန်းကို N-type သို့ ဆက်လိုက်သောအခါ Holes နှင့် Electrons များ အစွန်းဘက်သို့ ဆွဲယူခံရပြီး <strong>Depletion Layer အလွန်ကျယ်ပြန့်လာ</strong> ကာ လျှပ်စီးစီးဆင်းမှုကို ပိတ်ဆို့ထားသည် (High Resistance)။');
+                }
+
+                return (t) => {
+                    if (isForward) {
+                        holes.forEach(h => {
+                            const p = (t * 0.65 + h.offset) % 1.0;
+                            h.mesh.position.x = -2.1 + p * 2.3;
+                        });
+                        electrons.forEach(e => {
+                            const p = (t * 0.65 + e.offset) % 1.0;
+                            e.mesh.position.x = 2.1 - p * 2.3;
+                        });
+                    } else {
+                        holes.forEach((h, idx) => {
+                            h.mesh.position.x = -1.75 - 0.25 * Math.sin(t * 2 + idx);
+                        });
+                        electrons.forEach((e, idx) => {
+                            e.mesh.position.x = 1.75 + 0.25 * Math.sin(t * 2 + idx);
+                        });
+                    }
+                };
+            }, [
+                { color: '#f43f5e', text: 'P-Type / Holes (+)' },
+                { color: '#fbbf24', text: 'Depletion Layer' },
+                { color: '#38bdf8', text: 'N-Type / Electrons (−)' }
+            ]);
+        }
+
+        // 3D Viewer 12.2: AC-to-DC Rectifiers (Half-Wave vs Full-Wave Bridge) & LED
+        function render3D_12_2(mode) {
+            if (mode === 'half-wave' || mode === 'full-wave') {
+                const isFull = mode === 'full-wave';
+                init3DViewer('viewer-12-2', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.4, 8.2);
+
+                    // Left: AC Input Sine Wave Dots
+                    const acDots = [];
+                    const dcDots = [];
+                    const nPts = 28;
+                    for (let i = 0; i < nPts; i++) {
+                        const xIn = -3.3 + (i / (nPts - 1)) * 2.1;
+                        const dIn = createSphere(0.065, 0x38bdf8, xIn, 0, 0);
+                        group.add(dIn);
+                        acDots.push({ mesh: dIn, u: i / (nPts - 1) });
+
+                        const xOut = 1.2 + (i / (nPts - 1)) * 2.1;
+                        const dOut = createSphere(0.075, 0x10b981, xOut, 0, 0);
+                        group.add(dOut);
+                        dcDots.push({ mesh: dOut, u: i / (nPts - 1) });
+                    }
+
+                    // Center Rectifier Module (1 Diode for Half-Wave vs 4 Diodes Bridge for Full-Wave)
+                    const rectBox = new THREE.Mesh(
+                        new THREE.BoxGeometry(1.5, 1.7, 1.3),
+                        new THREE.MeshStandardMaterial({ color: isFull ? 0x6366f1 : 0xf59e0b, transparent: true, opacity: 0.35 })
+                    );
+                    group.add(rectBox);
+
+                    // Diode Cones inside Rectifier Box
+                    if (!isFull) {
+                        const diodeCone = new THREE.Mesh(
+                            new THREE.ConeGeometry(0.32, 0.65, 20).rotateZ(-Math.PI / 2),
+                            new THREE.MeshStandardMaterial({ color: 0xfbbf24 })
+                        );
+                        group.add(diodeCone);
+                    } else {
+                        [[-0.32, 0.35], [0.32, 0.35], [-0.32, -0.35], [0.32, -0.35]].forEach(([dx, dy]) => {
+                            const dCone = new THREE.Mesh(
+                                new THREE.ConeGeometry(0.18, 0.38, 16).rotateZ(-Math.PI / 2),
+                                new THREE.MeshStandardMaterial({ color: 0x34d399 })
+                            );
+                            dCone.position.set(dx, dy, 0);
+                            group.add(dCone);
+                        });
+                    }
+
+                    ui.label('AC Input (± Sine Wave)', [-2.25, 1.35, 0], '#38bdf8');
+                    ui.label(isFull ? '4-Diode Bridge Rectifier' : 'Single Diode Rectifier', [0, 1.25, 0], isFull ? '#a5b4fc' : '#fbbf24');
+                    ui.label(isFull ? 'Full-Wave Pulsating DC (+ + +)' : 'Half-Wave Pulsating DC (+ 0 +)', [2.25, 1.35, 0], '#34d399');
+                    ui.info(isFull
+                        ? '<b>Full-Wave Bridge Rectifier (4 Diodes):</b> အပေါင်းတစ်ဝက်လှိုင်း (Positive half-cycle) တွင် Diode ၂ လုံးစီးပြီး အနုတ်တစ်ဝက်လှိုင်း (Negative half-cycle) တွင် ကျန် Diode ၂ လုံး စီးဆင်းသဖြင့် လှိုင်းနှစ်ခြမ်းလုံးကို <strong>Pulsating DC</strong> အဖြစ် ပြောင်းလဲပေးသည် (Smoothing Capacitor တပ်ဆင်ပါက ချောမွေ့သော Steady DC ရရှိသည်)။'
+                        : '<b>Half-Wave Rectifier (1 Diode):</b> AC လှိုင်း၏ အပေါင်းတစ်ဝက်လှိုင်း (Forward bias) ကိုသာ ဖြတ်သန်းခွင့်ပြုပြီး အနုတ်တစ်ဝက်လှိုင်း (Reverse bias) ကို ပိတ်ဆို့ထားသဖြင့် အပေါင်းလှိုင်းခြမ်းများသာ ထွက်ပေါ်လာသည်။');
+
+                    return (t) => {
+                        acDots.forEach(p => {
+                            const phase = p.u * Math.PI * 4 - t * 4.0;
+                            p.mesh.position.y = 0.72 * Math.sin(phase);
+                        });
+                        dcDots.forEach(p => {
+                            const phase = p.u * Math.PI * 4 - t * 4.0;
+                            const s = Math.sin(phase);
+                            p.mesh.position.y = isFull ? (0.72 * Math.abs(s)) : (s > 0 ? 0.72 * s : 0);
+                        });
+                    };
+                }, [
+                    { color: '#38bdf8', text: 'AC Input' },
+                    { color: '#10b981', text: 'Rectified DC Output' }
+                ]);
+            } else {
+                // LED Photon Emission (Electroluminescence)
+                init3DViewer('viewer-12-2', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 7.6);
+
+                    // Transparent Dome Epoxy Lens of LED
+                    const dome = new THREE.Mesh(
+                        new THREE.SphereGeometry(1.15, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0x34d399, transparent: true, opacity: 0.35 })
+                    );
+                    dome.position.y = 0.25;
+                    const bodyCyl = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1.15, 1.15, 1.1, 32),
+                        new THREE.MeshStandardMaterial({ color: 0x10b981, transparent: true, opacity: 0.35 })
+                    );
+                    bodyCyl.position.y = -0.3;
+                    group.add(dome, bodyCyl);
+
+                    // Glowing Semiconductor Chip inside LED
+                    const chip = createSphere(0.32, 0x6ee7b7, 0, 0.1, 0);
+                    group.add(chip);
+
+                    // Anode (Longer Leg) & Cathode (Shorter Leg)
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-0.35, -0.85, 0), new THREE.Vector3(-0.35, -2.35, 0), 0xf43f5e, 0.05),
+                        createWireSegment(new THREE.Vector3(0.35, -0.85, 0), new THREE.Vector3(0.35, -1.95, 0), 0x38bdf8, 0.05)
+                    );
+
+                    // Emitted Photons (E = hf = hc/λ)
+                    const photons = [];
+                    for (let i = 0; i < 6; i++) {
+                        const ph = createSphere(0.1, 0xa7f3d0, 0, 0.5, 0);
+                        group.add(ph);
+                        photons.push({ mesh: ph, ang: -0.7 + i * 0.28, offset: i * 0.16 });
+                    }
+
+                    ui.label('Emitted Photons (E = hf ≈ E_g)', [0, 2.05, 0], '#6ee7b7');
+                    ui.label('Anode (+ Longer Lead)', [-1.35, -1.85, 0], '#fda4af');
+                    ui.label('Cathode (− Shorter Lead)', [1.35, -1.65, 0], '#7dd3fc');
+                    ui.info('<b>Light-Emitting Diode (LED):</b> Forward bias ပေးသောအခါ Electrons နှင့် Holes များ P-N junction တွင် ပြန်လည်ပေါင်းစည်း (Recombine) ပြီး စွမ်းအင်ကွာဟချက် <strong>Band Gap (E<sub>g</sub>)</strong> နှင့် ညီမျှသော အလင်းဖိုတွန် (<span class="mx"><i>E</i> = <i>hf</i> = <i>hc</i>/<i>λ</i></span>) များ ထုတ်လွှတ်ပေးသည်။');
+
+                    return (t) => {
+                        chip.scale.setScalar(1 + 0.1 * Math.sin(t * 8));
+                        photons.forEach(p => {
+                            const prog = (t * 0.8 + p.offset) % 1.0;
+                            const dist = 0.4 + prog * 1.8;
+                            p.mesh.position.set(dist * Math.sin(p.ang), 0.2 + dist * Math.cos(p.ang), 0);
+                        });
+                    };
+                }, [
+                    { color: '#10b981', text: 'Forward-Biased LED' },
+                    { color: '#a7f3d0', text: 'Photons (E = hf)' }
+                ]);
+            }
+        }
+
+        // 3D Viewer 12.3: NPN Bipolar Junction Transistor (I_E = I_B + I_C)
+        function render3D_12_3() {
+            init3DViewer('viewer-12-3', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.5, 8.0);
+
+                // Emitter (N+, Left), Base (Thin P, Center), Collector (N, Right)
+                const emitter = new THREE.Mesh(
+                    new THREE.BoxGeometry(1.8, 1.8, 1.5),
+                    new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.32 })
+                );
+                emitter.position.set(-1.35, 0.35, 0);
+
+                const base = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.42, 1.8, 1.5),
+                    new THREE.MeshStandardMaterial({ color: 0xf43f5e, transparent: true, opacity: 0.48 })
+                );
+                base.position.set(-0.24, 0.35, 0);
+
+                const collector = new THREE.Mesh(
+                    new THREE.BoxGeometry(2.1, 1.8, 1.5),
+                    new THREE.MeshStandardMaterial({ color: 0x0284c7, transparent: true, opacity: 0.32 })
+                );
+                collector.position.set(1.02, 0.35, 0);
+
+                group.add(emitter, base, collector);
+
+                // Terminal Leads (E, B, C)
+                group.add(
+                    createWireSegment(new THREE.Vector3(-2.25, 0.35, 0), new THREE.Vector3(-3.1, 0.35, 0), 0x94a3b8, 0.045),
+                    createWireSegment(new THREE.Vector3(-0.24, -0.55, 0), new THREE.Vector3(-0.24, -1.75, 0), 0xf43f5e, 0.045),
+                    createWireSegment(new THREE.Vector3(2.07, 0.35, 0), new THREE.Vector3(3.1, 0.35, 0), 0x94a3b8, 0.045)
+                );
+
+                // Electron Stream: ~98% cross thin Base into Collector (I_C), ~2% exit via Base (I_B)
+                const colElectrons = [];
+                for (let i = 0; i < 10; i++) {
+                    const e = createSphere(0.095, 0xfde047, -2.0, 0.35, 0);
+                    group.add(e);
+                    colElectrons.push({ mesh: e, offset: i / 10, yOff: ((i % 4) - 1.5) * 0.32, zOff: ((i % 3) - 1) * 0.32 });
+                }
+
+                const baseElectrons = [];
+                for (let i = 0; i < 2; i++) {
+                    const eb = createSphere(0.09, 0xfda4af, -0.24, 0, 0);
+                    group.add(eb);
+                    baseElectrons.push({ mesh: eb, offset: i * 0.5 });
+                }
+
+                ui.label('Emitter (N-Type, Heavily Doped: I_E)', [-1.5, 1.6, 0], '#7dd3fc');
+                ui.label('Thin Base (P-Type: Small I_B)', [-0.24, -2.1, 0], '#fda4af');
+                ui.label('Collector (N-Type: Large I_C = β I_B)', [1.35, 1.6, 0], '#38bdf8');
+                ui.info('<b>NPN Transistor Operation (<span class="mx"><i>I</i><sub>E</sub> = <i>I</i><sub>B</sub> + <i>I</i><sub>C</sub></span>, <span class="mx"><i>β</i> = <i>I</i><sub>C</sub> / <i>I</i><sub>B</sub></span>):</b> Base-Emitter junction ကို Forward bias နှင့် Base-Collector junction ကို Reverse bias ပေးသောအခါ Emitter မှ ထုတ်လွှတ်သော အီလက်ထရွန်အများစု (<strong>95% – 99%</strong>) သည် အလွန်ပါးလွှာသော Base ကိုဖြတ်ကျော်၍ Collector သို့ ရောက်ရှိသွားသဖြင့် <strong>သေးငယ်သော Base current (I<sub>B</sub>) ဖြင့် ကြီးမားသော Collector current (I<sub>C</sub>) ကို ထိန်းချုပ်နိုင်</strong> သည်။');
+
+                return (t) => {
+                    colElectrons.forEach(p => {
+                        const prog = (t * 0.75 + p.offset) % 1.0;
+                        p.mesh.position.set(-2.1 + prog * 4.1, 0.35 + p.yOff, p.zOff);
+                    });
+                    baseElectrons.forEach(p => {
+                        const prog = (t * 0.65 + p.offset) % 1.0;
+                        p.mesh.position.set(-0.24, 0.1 - prog * 1.75, 0);
+                    });
+                };
+            }, [
+                { color: '#38bdf8', text: 'N-Type (Emitter / Collector)' },
+                { color: '#f43f5e', text: 'Thin P-Base' },
+                { color: '#fde047', text: 'Electron Flow' }
+            ]);
+        }
+
+        // 3D Viewer 12.4: Interactive 3D Digital Logic Gate Lab (AND, OR, NOT, NAND, NOR, XOR)
+        function evalLogicGate(gate, a, b) {
+            if (gate === 'AND') return (a && b) ? 1 : 0;
+            if (gate === 'OR') return (a || b) ? 1 : 0;
+            if (gate === 'NOT') return a ? 0 : 1;
+            if (gate === 'NAND') return (a && b) ? 0 : 1;
+            if (gate === 'NOR') return (a || b) ? 0 : 1;
+            if (gate === 'XOR') return (a !== b) ? 1 : 0;
+            return 0;
+        }
+
+        function setLogicSim(gate, a, b) {
+            if (gate !== null) logicGateState.gate = gate;
+            if (a !== null) logicGateState.a = a;
+            if (b !== null) logicGateState.b = b;
+            render3D_12_4();
+        }
+
+        function render3D_12_4() {
+            const { gate, a, b } = logicGateState;
+            const yOut = evalLogicGate(gate, a, b);
+            const isNot = gate === 'NOT';
+
+            init3DViewer('viewer-12-4', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.4, 8.0);
+
+                // Central Logic Gate IC Chip Body
+                const chipColor = yOut === 1 ? 0x10b981 : 0x4f46e5;
+                const icChip = new THREE.Mesh(
+                    new THREE.BoxGeometry(2.1, 1.7, 0.75),
+                    new THREE.MeshStandardMaterial({ color: chipColor, roughness: 0.3, metalness: 0.25 })
+                );
+                group.add(icChip);
+
+                // Input A Node & Wire (Top Left)
+                const yA = isNot ? 0 : 0.5;
+                const nodeA = createSphere(0.28, a === 1 ? 0x10b981 : 0x475569, -2.6, yA, 0);
+                group.add(nodeA);
+                group.add(createWireSegment(new THREE.Vector3(-2.35, yA, 0), new THREE.Vector3(-1.05, yA, 0), a === 1 ? 0x34d399 : 0x64748b, 0.055));
+
+                // Input B Node & Wire (Bottom Left, hidden for NOT gate)
+                if (!isNot) {
+                    const nodeB = createSphere(0.28, b === 1 ? 0x10b981 : 0x475569, -2.6, -0.5, 0);
+                    group.add(nodeB);
+                    group.add(createWireSegment(new THREE.Vector3(-2.35, -0.5, 0), new THREE.Vector3(-1.05, -0.5, 0), b === 1 ? 0x34d399 : 0x64748b, 0.055));
+                }
+
+                // Output Y LED Indicator (Right)
+                const outLed = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.44, 32, 32),
+                    new THREE.MeshStandardMaterial({
+                        color: yOut === 1 ? 0xfef08a : 0x334155,
+                        emissive: yOut === 1 ? 0xf59e0b : 0x000000,
+                        emissiveIntensity: yOut === 1 ? 1.0 : 0
+                    })
+                );
+                outLed.position.set(2.65, 0, 0);
+                group.add(outLed);
+                group.add(createWireSegment(new THREE.Vector3(1.05, 0, 0), new THREE.Vector3(2.2, 0, 0), yOut === 1 ? 0xfbbf24 : 0x64748b, 0.06));
+
+                const exprMap = {
+                    'AND': `Y = A · B = ${a} · ${b} = ${yOut}`,
+                    'OR': `Y = A + B = ${a} + ${b} = ${yOut}`,
+                    'NOT': `Y = Ā = ${a}̄ = ${yOut}`,
+                    'NAND': `Y = (A · B)̄ = (${a} · ${b})̄ = ${yOut}`,
+                    'NOR': `Y = (A + B)̄ = (${a} + ${b})̄ = ${yOut}`,
+                    'XOR': `Y = A ⊕ B = ${a} ⊕ ${b} = ${yOut}`
+                };
+
+                ui.label(`Input A = ${a} (${a ? 'HIGH / 5V' : 'LOW / 0V'})`, [-2.6, yA + 0.55, 0], a ? '#34d399' : '#94a3b8');
+                if (!isNot) {
+                    ui.label(`Input B = ${b} (${b ? 'HIGH / 5V' : 'LOW / 0V'})`, [-2.6, -1.05, 0], b ? '#34d399' : '#94a3b8');
+                }
+                ui.label(`${gate} Gate IC`, [0, 1.25, 0], '#a5b4fc');
+                ui.label(`Output Y = ${yOut} (${yOut ? 'LED ON' : 'LED OFF'})`, [2.65, 0.85, 0], yOut ? '#fde047' : '#94a3b8');
+                ui.info(`<b>${gate} Logic Gate Simulator — Boolean Expression: <span class="font-mono text-amber-300">${exprMap[gate]}</span></b><br>အပေါ်ရှိ ခလုတ်များဖြင့် Gate အမျိုးအစားနှင့် Input A, B (0 သို့မဟုတ် 1) တန်ဖိုးများကို ပြောင်းလဲ၍ Output LED မီးလင်းပုံကို စမ်းသပ်ကြည့်ပါ။`);
+
+                return (t) => {
+                    if (yOut === 1) {
+                        outLed.scale.setScalar(1 + 0.08 * Math.sin(t * 7));
+                    }
+                };
+            }, [
+                { color: '#10b981', text: 'Logic 1 (HIGH)' },
+                { color: '#475569', text: 'Logic 0 (LOW)' },
+                { color: '#fde047', text: 'Output Y = 1' }
+            ]);
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE CHAPTER 12 CALCULATORS
+        // ==========================================
+        function switchCh12CalcInputs() {
+            const mode = document.getElementById('ch12-calc-mode')?.value || 'diode';
+            ['diode', 'zener', 'transistor', 'truth'].forEach(k => {
+                const el = document.getElementById(`ch12-in-${k}`);
+                if (el) el.classList.toggle('hidden', mode !== k);
+            });
+            runCh12Calculator();
+        }
+
+        function runCh12Calculator() {
+            const mode = document.getElementById('ch12-calc-mode')?.value || 'diode';
+            const out = document.getElementById('ch12-calc-output');
+            if (!out) return;
+
+            if (mode === 'diode') {
+                const Vs = parseFloat(document.getElementById('dd-vs')?.value || '5.0');
+                const Vk = parseFloat(document.getElementById('dd-vk')?.value || '0.7');
+                const R = parseFloat(document.getElementById('dd-r')?.value || '430');
+
+                if (Vs <= Vk) {
+                    out.innerHTML = `
+                        <div class="p-4 rounded-2xl bg-rose-500/20 border border-rose-400/40 text-xs sm:text-sm myanmar-text">
+                            <div class="font-bold text-rose-300">Supply Voltage V_s (${Vs} V) ≤ Barrier Voltage V_k (${Vk} V)</div>
+                            <div class="font-mono text-white">Diode is OFF (Non-conducting) ⇒ Forward Current I_F = 0 mA</div>
+                        </div>
+                    `;
+                } else {
+                    const If = (Vs - Vk) / R;
+                    out.innerHTML = `
+                        <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                            <div class="font-bold text-amber-300">Forward-Biased Diode Resistor Circuit: I_F = (V_s − V_k) / R</div>
+                            <div class="font-mono text-emerald-300 font-bold text-base">Forward Current I_F = (${Vs} − ${Vk}) / ${R} = ${(If * 1000).toFixed(2)} mA (${If.toFixed(4)} A)</div>
+                        </div>
+                    `;
+                }
+            } else if (mode === 'zener') {
+                const Vin = parseFloat(document.getElementById('zn-vin')?.value || '15');
+                const Vz = parseFloat(document.getElementById('zn-vz')?.value || '9');
+                const Rs = parseFloat(document.getElementById('zn-rs')?.value || '200');
+                const Rl = parseFloat(document.getElementById('zn-rl')?.value || '450');
+
+                const Is = (Vin - Vz) / Rs;
+                const Il = Vz / Rl;
+                const Iz = Is - Il;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Zener Voltage Regulator: I_S = (V_in − V_Z) / R_S, &nbsp; I_L = V_Z / R_L, &nbsp; I_Z = I_S − I_L</div>
+                        <div class="font-mono text-sky-300">Series Current I_S = ${(Is * 1000).toFixed(2)} mA, &nbsp; Load Current I_L = ${(Il * 1000).toFixed(2)} mA</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Zener Diode Current I_Z = ${(Iz * 1000).toFixed(2)} mA &nbsp;(${Iz >= 0 ? 'Regulating at ' + Vz + ' V' : 'Unregulated: V_in too low!'})</div>
+                    </div>
+                `;
+            } else if (mode === 'transistor') {
+                const IbUa = parseFloat(document.getElementById('tr-ib')?.value || '50');
+                const beta = parseFloat(document.getElementById('tr-beta')?.value || '100');
+
+                const IbMa = IbUa / 1000;
+                const IcMa = beta * IbMa;
+                const IeMa = IbMa + IcMa;
+                const alpha = beta / (beta + 1);
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">BJT Transistor Currents: I_C = β I_B, &nbsp; I_E = I_B + I_C, &nbsp; α = β / (β + 1)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Collector Current I_C = ${IcMa.toFixed(2)} mA &nbsp;|&nbsp; Emitter Current I_E = ${IeMa.toFixed(3)} mA</div>
+                        <div class="font-mono text-sky-300">Common-Base Current Gain α = ${alpha.toFixed(4)}</div>
+                    </div>
+                `;
+            } else {
+                const g = document.getElementById('tt-gate')?.value || 'NAND';
+                const rows = [[0, 0], [0, 1], [1, 0], [1, 1]];
+                const trs = rows.map(([a, b]) => {
+                    const y = evalLogicGate(g, a, b);
+                    return `<tr class="border-t border-white/10"><td class="py-1.5 px-3 font-mono">${a}</td><td class="py-1.5 px-3 font-mono">${b}</td><td class="py-1.5 px-3 font-mono font-bold ${y ? 'text-emerald-300' : 'text-rose-300'}">${y}</td></tr>`;
+                }).join('');
+
+                out.innerHTML = `
+                    <div class="p-3 rounded-2xl bg-white/10 border border-white/15 text-xs sm:text-sm">
+                        <div class="font-bold text-amber-300 mb-2">Complete Truth Table for ${g} Gate:</div>
+                        <table class="w-full max-w-xs text-center border border-white/15 rounded-xl overflow-hidden">
+                            <thead class="bg-slate-950/60 text-indigo-200"><tr><th class="py-1.5 px-3">Input A</th><th class="py-1.5 px-3">Input B</th><th class="py-1.5 px-3">Output Y</th></tr></thead>
+                            <tbody>${trs}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // 4. ARTICLE TEMPLATES (OVERVIEW + 12.1 - 12.4 + WORKED)
+        // ==========================================
+        const ARTICLES = {
+            'overview': {
+                badge: 'Chapter 12 Master Overview & Formula Table',
+                title: 'အခန်း (၁၂) အီလက်ထရွန်းနစ်နှင့် ဒစ်ဂျစ်တယ် လော့ဂျစ်',
+                subtitle: 'Electronics and Digital Logic — ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်း/လော့ဂျစ် ဇယားချုပ်',
+                html: `
+                    <!-- Master Formula & Truth Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Grade 12 Physics Chapter 12</span>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900">အခန်း (၁၂) အဓိက ပုံသေနည်းများနှင့် Digital Logic ဇယားချုပ်</h3>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 font-semibold self-start">Exam Must-Know</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ခေါင်းစဉ် (Topic)</th>
+                                        <th class="p-3">ပုံသေနည်း / ဆက်သွယ်ချက် (Formula)</th>
+                                        <th class="p-3">အဓိက မှတ်ချက် (Key Notes)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">1. Semiconductor Doping</td>
+                                        <td class="p-3 font-mono font-bold text-cyan-700">N-Type: Pentavalent (P, As, Sb) → Electrons majority<br>P-Type: Trivalent (B, Al, Ga) → Holes majority</td>
+                                        <td class="p-3">Barrier Potential: Silicon ≈ 0.7 V, Germanium ≈ 0.3 V</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">2. Diode & Zener Regulator</td>
+                                        <td class="p-3 font-mono font-bold text-indigo-700">Forward Current: I<sub>F</sub> = (V<sub>s</sub> − V<sub>k</sub>) / R<br>Zener Regulator: I<sub>S</sub> = I<sub>Z</sub> + I<sub>L</sub>, &nbsp; I<sub>L</sub> = V<sub>Z</sub> / R<sub>L</sub></td>
+                                        <td class="p-3">Zener diode operates in Reverse Breakdown Region</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">3. BJT Transistor Currents & Gain</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-700">I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub> &nbsp;|&nbsp; β = I<sub>C</sub> / I<sub>B</sub> &nbsp;|&nbsp; α = I<sub>C</sub> / I<sub>E</sub><br>β = α / (1 − α) &nbsp;|&nbsp; α = β / (β + 1)</td>
+                                        <td class="p-3">Emitter: heavily doped; Base: very thin & lightly doped</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">4. Basic Logic Gates</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">NOT: Y = Ā &nbsp;|&nbsp; AND: Y = A·B &nbsp;|&nbsp; OR: Y = A + B</td>
+                                        <td class="p-3">Binary Logic: HIGH = 1, LOW = 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">5. Universal & Exclusive Gates</td>
+                                        <td class="p-3 font-mono font-bold text-rose-700">NAND: Y = (A·B)̄ &nbsp;|&nbsp; NOR: Y = (A + B)̄<br>XOR: Y = A ⊕ B = ĀB + A B̄</td>
+                                        <td class="p-3">NAND & NOR are Universal Gates; XOR outputs 1 when A ≠ B</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900">🧠 Chapter 12 အပိုင်းတစ်ခုချင်းစီသို့ အမြန်သွားရန်</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <button onclick="selectArticle('12.1')" class="p-4 rounded-2xl bg-cyan-50 border border-cyan-200 text-left hover:bg-cyan-100 transition">
+                                <div class="font-bold text-cyan-950 text-sm">12.1 P-N Junction (3D) →</div>
+                                <p class="text-cyan-800 mt-1">3D Forward Bias vs Reverse Bias Depletion Layer</p>
+                            </button>
+                            <button onclick="selectArticle('12.2')" class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-left hover:bg-amber-100 transition">
+                                <div class="font-bold text-amber-950 text-sm">12.2 Rectifiers & LED (3D) →</div>
+                                <p class="text-amber-800 mt-1">3D Half-Wave / Full-Wave Rectifiers, Zener & LED</p>
+                            </button>
+                            <button onclick="selectArticle('12.3')" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left hover:bg-emerald-100 transition">
+                                <div class="font-bold text-emerald-950 text-sm">12.3 Transistors (3D) →</div>
+                                <p class="text-emerald-800 mt-1">3D NPN Transistor (I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>) & Amplifier</p>
+                            </button>
+                            <button onclick="selectArticle('12.4')" class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-left hover:bg-indigo-100 transition">
+                                <div class="font-bold text-indigo-950 text-sm">12.4 Logic Gates (3D) →</div>
+                                <p class="text-indigo-800 mt-1">3D Interactive Logic Gates (AND, OR, NOT, NAND, NOR, XOR)</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Big-Picture Chapter Roadmap -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">📖 Chapter 12 တစ်ခန်းလုံး၏ အနှစ်ချုပ် ရှင်းလင်းချက်</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၁။ Article 12.1 — Semiconductors & P-N Junction Diode</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Intrinsic နှင့် Extrinsic Semiconductors (<strong>N-type</strong> နှင့် <strong>P-type</strong>) တို့ကို ပေါင်းစပ်ထားသော P-N Junction Diode ၏ <strong>Forward Bias</strong> (လျှပ်စီးလွှတ်) နှင့် <strong>Reverse Bias</strong> (လျှပ်စီးပိတ်) အလုပ်လုပ်ပုံကို လေ့လာရမည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၂။ Article 12.2 — Rectifiers & Special Purpose Diodes</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ပြန်လှန်လျှပ်စီး (AC) မှ တစ်ဖက်တည်းစီးလျှပ်စီး (DC) သို့ ပြောင်းလဲပေးသော <strong>Half-Wave</strong> နှင့် <strong>Full-Wave Bridge Rectifiers</strong>၊ ဗို့အားတည်ငြိမ်စေသော <strong>Zener Diode</strong>၊ <strong>LED</strong> နှင့် <strong>Photodiode</strong> တို့ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၃။ Article 12.3 — Bipolar Junction Transistors (BJT)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Emitter, Base, Collector စွန်း ၃ ခုပါဝင်သော <strong>NPN</strong> နှင့် <strong>PNP</strong> ထရန်စစ္စတာများ၏ လျှပ်စီးဆက်သွယ်ချက် (<span class="mx"><i>I</i><sub>E</sub> = <i>I</i><sub>B</sub> + <i>I</i><sub>C</sub></span>)၊ အသံချဲ့စက် (Amplifier) နှင့် Electronic Switch အဖြစ် အသုံးချပုံများ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">၄။ Article 12.4 — Digital Electronics & Logic Gates</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Analog နှင့် Digital အချက်ပြလှိုင်း ကွာခြားချက်၊ Binary စနစ် (0 နှင့် 1) နှင့် <strong>AND, OR, NOT, NAND, NOR, XOR</strong> Logic Gates များ၏ Truth Tables နှင့် Boolean Expressions များကို ရှင်းပြထားသည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            '12.1': {
+                badge: 'Article 12.1',
+                title: 'Semiconductors and P-N Junction Diode',
+                subtitle: 'N-Type / P-Type Semiconductors, Depletion Layer နှင့် Forward vs Reverse Bias 3D',
+                html: `
+                    <!-- 3D Viewer 12.1 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Interactive 3D Semiconductor Physics</span>
+                                <h3 class="text-lg font-bold text-slate-900">P-N Junction Diode: Forward Bias နှင့် Reverse Bias Depletion Layer 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_12_1('forward')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">⚡ Forward Bias (Conducts Current)</button>
+                                <button onclick="render3D_12_1('reverse')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🚫 Reverse Bias (Blocks Current)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-12-1" class="canvas-container"></div>
+                    </div>
+
+                    <!-- N-Type vs P-Type Comparison Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-sm font-bold">12.1</span>
+                            N-Type နှင့် P-Type Semiconductors နှိုင်းယှဉ်ချက်
+                        </h3>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">အချက် (Property)</th>
+                                        <th class="p-3">N-Type Semiconductor</th>
+                                        <th class="p-3">P-Type Semiconductor</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold">Dopant Impurity Atoms</td>
+                                        <td class="p-3 font-semibold text-cyan-700">Pentavalent (Donor: Phosphorus P, Arsenic As, Antimony Sb)</td>
+                                        <td class="p-3 font-semibold text-rose-700">Trivalent (Acceptor: Boron B, Aluminium Al, Gallium Ga)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold">Majority Charge Carriers</td>
+                                        <td class="p-3 font-bold">Electrons (−)</td>
+                                        <td class="p-3 font-bold">Holes (+)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold">Minority Charge Carriers</td>
+                                        <td class="p-3">Holes (+)</td>
+                                        <td class="p-3">Electrons (−)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold">Net Electrical Charge</td>
+                                        <td class="p-3 font-semibold text-emerald-700">Electrically Neutral (0)</td>
+                                        <td class="p-3 font-semibold text-emerald-700">Electrically Neutral (0)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_12_1('forward')
+            },
+
+            '12.2': {
+                badge: 'Article 12.2',
+                title: 'Rectifiers and Special Purpose Diodes (Zener, LED, Photodiode)',
+                subtitle: 'AC မှ DC ပြောင်းလဲခြင်း (Half-Wave & Full-Wave Bridge Rectifiers) နှင့် Special Diodes 3D',
+                html: `
+                    <!-- 3D Viewer 12.2 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Interactive 3D Diode Applications Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Half-Wave Rectifier, Full-Wave Bridge Rectifier နှင့် LED 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_12_2('half-wave')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">〰️ Half-Wave (1 Diode)</button>
+                                <button onclick="render3D_12_2('full-wave')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition">⚡ Full-Wave Bridge (4 Diodes)</button>
+                                <button onclick="render3D_12_2('led')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">💡 Light-Emitting Diode (LED)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-12-2" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Special Diodes Summary -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold">12.2</span>
+                            Special Purpose Diodes (Zener Diode, LED, Photodiode & Solar Cell)
+                        </h3>
+
+                        <div class="grid md:grid-cols-3 gap-4 text-xs sm:text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">1. Zener Diode (Voltage Regulator)</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    <strong>Reverse Breakdown Region</strong> တွင် ပျက်စီးခြင်းမရှိဘဲ အလုပ်လုပ်ရန် အထူးပြုလုပ်ထားသည်။ Input ဗို့အား အတက်အကျရှိသော်လည်း Output Load ပေါ်တွင် <strong>ကိန်းသေဗို့အား V<sub>Z</sub></strong> အမြဲတည်ငြိမ်နေအောင် ထိန်းပေးသည် (<span class="mx"><i>I</i><sub>S</sub> = <i>I</i><sub>Z</sub> + <i>I</i><sub>L</sub></span>)။
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">2. Light-Emitting Diode (LED)</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    <strong>Forward Bias</strong> ပေးသောအခါ လျှပ်စစ်စွမ်းအင်မှ အလင်းစွမ်းအင် (<span class="mx"><i>E</i> = <i>hf</i></span>) သို့ တိုက်ရိုက်ပြောင်းလဲပေးသည် (GaAs, GaP ဒြပ်ပေါင်းများ သုံးသည်)။
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">3. Photodiode & Solar Cell</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    <strong>Photodiode</strong> ကို <strong>Reverse Bias</strong> ဖြင့် သုံးပြီး အလင်းကျရောက်မှုများလေ Reverse photocurrent တိုးလာလေ ဖြစ်သည်။ <strong>Solar Cell</strong> သည် Bias မလိုဘဲ နေရောင်ခြည်မှ လျှပ်စစ်ထုတ်ပေးသည်။
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_12_2('full-wave')
+            },
+
+            '12.3': {
+                badge: 'Article 12.3',
+                title: 'Transistors (NPN & PNP) and Their Applications',
+                subtitle: 'Bipolar Junction Transistor (I_E = I_B + I_C), Current Gain (β) နှင့် Amplifier / Switch 3D',
+                html: `
+                    <!-- 3D Viewer 12.3 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Interactive 3D Transistor Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">NPN Bipolar Junction Transistor (I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>) 3D Carrier Flow</h3>
+                            </div>
+                        </div>
+                        <div id="viewer-12-3" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Transistor Equations & Modes -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">12.3</span>
+                            Transistor လျှပ်စီးဆက်သွယ်ချက်များနှင့် အသုံးချမှု (၂) မျိုး
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+                                <div class="font-bold text-emerald-950 text-base">1. BJT Current & Gain Equations</div>
+                                <div class="p-3 rounded-xl bg-white border border-emerald-200 text-xs font-mono space-y-1">
+                                    <div class="text-emerald-900 font-bold text-sm">I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub> &nbsp;&nbsp;(I<sub>C</sub> ≈ I<sub>E</sub> since I<sub>B</sub> is very small)</div>
+                                    <div>• Common-Emitter Current Gain: <strong>β = I<sub>C</sub> / I<sub>B</sub></strong> (Typically 50 – 300)</div>
+                                    <div>• Common-Base Current Gain: <strong>α = I<sub>C</sub> / I<sub>E</sub></strong> (Typically 0.98 – 0.995)</div>
+                                    <div>• Relation: <strong>β = α / (1 − α)</strong> &nbsp;and&nbsp; <strong>α = β / (β + 1)</strong></div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">2. Two Main Applications of a Transistor</div>
+                                <ul class="list-disc pl-5 text-slate-700 text-xs sm:text-sm space-y-1.5">
+                                    <li><strong>As an Amplifier (Active Region):</strong> Base-Emitter ကို Forward bias နှင့် Base-Collector ကို Reverse bias ပေးထားပြီး အားနည်းသော Input AC signal (I<sub>B</sub>) ကို <strong>β ဆ</strong> ကြီးမားသော Output signal (I<sub>C</sub>) အဖြစ် ချဲ့ပေးသည်။</li>
+                                    <li><strong>As an Electronic Switch (Cut-off & Saturation):</strong> I<sub>B</sub> = 0 ဖြစ်လျှင် <strong>Cut-off (OFF)</strong> ဖြစ်ပြီး Base current လုံလောက်စွာပေးလျှင် <strong>Saturation (ON)</strong> ဖြစ်ကာ အလိုအလျောက် မီးဖွင့်/ပိတ် စနစ်များတွင် သုံးသည်။</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_12_3()
+            },
+
+            '12.4': {
+                badge: 'Article 12.4',
+                title: 'Digital Electronics and Logic Gates',
+                subtitle: 'Analog vs Digital Signals, Interactive 3D Logic Gate Simulator (AND, OR, NOT, NAND, NOR, XOR)',
+                html: `
+                    <!-- 3D Interactive Logic Gate Simulator -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Interactive 3D Digital Logic Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Logic Gate 3D Simulator — Gate နှင့် Input (A, B) များကို နှိပ်၍ စမ်းသပ်ပါ</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5">
+                                <button onclick="setLogicSim('AND', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700">AND</button>
+                                <button onclick="setLogicSim('OR', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700">OR</button>
+                                <button onclick="setLogicSim('NOT', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white hover:bg-indigo-700">NOT</button>
+                                <button onclick="setLogicSim('NAND', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700">NAND</button>
+                                <button onclick="setLogicSim('NOR', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700">NOR</button>
+                                <button onclick="setLogicSim('XOR', null, null)" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700">XOR</button>
+                            </div>
+                        </div>
+
+                        <!-- Input Toggle Buttons -->
+                        <div class="flex flex-wrap items-center gap-3 bg-slate-100 p-3 rounded-2xl text-xs">
+                            <span class="font-bold text-slate-700">Toggle Inputs:</span>
+                            <button onclick="setLogicSim(null, logicGateState.a ? 0 : 1, null)" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white font-mono font-bold hover:bg-slate-800">
+                                Switch Input A (0 ↔ 1)
+                            </button>
+                            <button onclick="setLogicSim(null, null, logicGateState.b ? 0 : 1)" class="px-3.5 py-1.5 rounded-xl bg-slate-900 text-white font-mono font-bold hover:bg-slate-800">
+                                Switch Input B (0 ↔ 1)
+                            </button>
+                        </div>
+
+                        <div id="viewer-12-4" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Master Truth Table for All 6 Logic Gates -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">12.4</span>
+                            Logic Gates (၆) မျိုးလုံး၏ ပေါင်းစည်း Truth Table နှင့် Boolean Expressions
+                        </h3>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-center border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">Input A</th>
+                                        <th class="p-3">Input B</th>
+                                        <th class="p-3">NOT (Ā)</th>
+                                        <th class="p-3">AND (A·B)</th>
+                                        <th class="p-3">OR (A+B)</th>
+                                        <th class="p-3 text-amber-300">NAND (A·B)̄</th>
+                                        <th class="p-3 text-amber-300">NOR (A+B)̄</th>
+                                        <th class="p-3 text-emerald-300">XOR (A⊕B)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white font-mono">
+                                    <tr>
+                                        <td class="p-3 font-bold">0</td>
+                                        <td class="p-3 font-bold">0</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3 font-bold text-indigo-700">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">1</td>
+                                        <td class="p-3 font-bold text-emerald-700">0</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold">0</td>
+                                        <td class="p-3 font-bold">1</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">0</td>
+                                        <td class="p-3 font-bold text-emerald-700">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold">1</td>
+                                        <td class="p-3 font-bold">0</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">0</td>
+                                        <td class="p-3 font-bold text-emerald-700">1</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold">1</td>
+                                        <td class="p-3 font-bold">1</td>
+                                        <td class="p-3">0</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3">1</td>
+                                        <td class="p-3 font-bold text-indigo-700">0</td>
+                                        <td class="p-3 font-bold text-indigo-700">0</td>
+                                        <td class="p-3 font-bold text-emerald-700">0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_12_4()
+            },
+
+            'worked': {
+                badge: 'Interactive Calculator & Exam Q&A',
+                title: 'Diode / Zener / Transistor / Logic Gate တွက်စက် နှင့် မေးခွန်းအဖြေများ',
+                subtitle: 'Grade 12 Physics Chapter 12 တွက်စာပုံသေနည်းများ စမ်းသပ်တွက်ချက်စက်နှင့် စာမေးပွဲမေးခွန်းအဖြေများ',
+                html: `
+                    <!-- Interactive Chapter 12 Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🔌 Interactive Chapter 12 Electronics & Logic Calculator</h3>
+                            <span class="text-xs text-slate-300">တွက်ချက်လိုသော ပုံသေနည်းကို ရွေးချယ်ပါ</span>
+                        </div>
+
+                        <div class="max-w-md text-xs">
+                            <label class="block text-slate-300 mb-1">တွက်ချက်မှု အမျိုးအစား ရွေးပါ</label>
+                            <select id="ch12-calc-mode" onchange="switchCh12CalcInputs()" class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                <option value="diode">1. Forward-Biased Diode Current (I_F = (V_s − V_k) / R)</option>
+                                <option value="zener">2. Zener Diode Voltage Regulator Currents (I_Z = I_S − I_L)</option>
+                                <option value="transistor">3. BJT Transistor Currents & Gain (I_C = β I_B, I_E = I_B + I_C)</option>
+                                <option value="truth">4. Logic Gate Truth Table Generator</option>
+                            </select>
+                        </div>
+
+                        <!-- Diode Inputs -->
+                        <div id="ch12-in-diode" class="grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Supply Voltage V_s (V)</label>
+                                <input id="dd-vs" type="number" step="0.5" value="5.0" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Knee Voltage V_k (0.7 V Si / 0.3 V Ge)</label>
+                                <input id="dd-vk" type="number" step="0.1" value="0.7" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Series Resistor R (Ω)</label>
+                                <input id="dd-r" type="number" value="430" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Zener Inputs -->
+                        <div id="ch12-in-zener" class="hidden grid sm:grid-cols-4 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Input Voltage V_in (V)</label>
+                                <input id="zn-vin" type="number" value="15" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Zener Voltage V_Z (V)</label>
+                                <input id="zn-vz" type="number" value="9" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Series Resistor R_S (Ω)</label>
+                                <input id="zn-rs" type="number" value="200" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Load Resistor R_L (Ω)</label>
+                                <input id="zn-rl" type="number" value="450" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Transistor Inputs -->
+                        <div id="ch12-in-transistor" class="hidden grid sm:grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Base Current I_B (μA)</label>
+                                <input id="tr-ib" type="number" value="50" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Current Gain β</label>
+                                <input id="tr-beta" type="number" value="100" oninput="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Truth Table Inputs -->
+                        <div id="ch12-in-truth" class="hidden max-w-xs text-xs">
+                            <label class="block text-slate-300 mb-1">Select Logic Gate</label>
+                            <select id="tt-gate" onchange="runCh12Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                <option value="AND">AND Gate</option>
+                                <option value="OR">OR Gate</option>
+                                <option value="NAND" selected>NAND Gate</option>
+                                <option value="NOR">NOR Gate</option>
+                                <option value="XOR">XOR Gate</option>
+                            </select>
+                        </div>
+
+                        <div id="ch12-calc-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Worked Examples & Exam Q&A -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4 text-xs sm:text-sm myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900">✍️ စာမေးပွဲတွင် မေးလေ့ရှိသော Textbook တွက်စာနှင့် မေးခွန်းအဖြေများ</h3>
+
+                        <div class="p-4 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                            <div class="font-bold text-cyan-950">Q1 (Zener Diode Voltage Regulator): A 9 V Zener diode is connected in a regulator circuit with a series resistor R_S = 200 Ω and a load resistor R_L = 450 Ω. If the input DC supply voltage is 15 V, find (a) the current through R_S, (b) the load current I_L, and (c) the Zener diode current I_Z.</div>
+                            <div class="bg-slate-900 text-amber-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>(a) I_S = (V_in − V_Z) / R_S = (15 V − 9 V) / 200 Ω = 6 / 200 = 0.030 A = 30 mA</div>
+                                <div>(b) I_L = V_Z / R_L = 9 V / 450 Ω = 0.020 A = 20 mA</div>
+                                <div>(c) I_Z = I_S − I_L = 30 mA − 20 mA = 10 mA</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                            <div class="font-bold text-emerald-950">Q2 (BJT Transistor): In an NPN transistor circuit, the base current is 50 μA and the common-emitter current gain β is 100. Calculate (a) the collector current I_C, (b) the emitter current I_E, and (c) the common-base current gain α.</div>
+                            <div class="bg-slate-900 text-emerald-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>(a) I_C = β I_B = 100 × (50 × 10⁻⁶ A) = 5.0 × 10⁻³ A = 5.0 mA</div>
+                                <div>(b) I_E = I_B + I_C = 0.05 mA + 5.0 mA = 5.05 mA</div>
+                                <div>(c) α = β / (β + 1) = 100 / 101 = 0.990</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                            <div class="font-bold text-indigo-950">Q3 (Concept Question): Why are NAND and NOR gates called "Universal Gates"?</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> <strong>NAND</strong> and <strong>NOR</strong> gates are called <strong>Universal Gates</strong> because any of the three basic logic gates (<strong>NOT, AND, and OR</strong>)—and therefore any complex digital logic circuit—can be constructed using only NAND gates alone or only NOR gates alone.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runCh12Calculator()
+            }
+        };
+
+        // ==========================================
+        // 5. NAVIGATION & UI CONTROLLER (Matches Chapters 4–11 UI)
+        // ==========================================
+        function selectArticle(id) {
+            currentArticleId = id;
+            const article = ARTICLES[id];
+            if (!article) return;
+
+            clearActiveScenes();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                const badge = btn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-indigo-600', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const activeBtn = document.getElementById(`nav-${id}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                const badge = activeBtn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-indigo-600', 'text-white');
+                }
+            }
+
+            const container = document.getElementById('content-container');
+            const ids = ['overview', '12.1', '12.2', '12.3', '12.4', 'worked'];
+            const labels = {
+                'overview': 'အခန်း (၁၂) မိတ်ဆက်',
+                '12.1': '12.1 P-N Junction',
+                '12.2': '12.2 Rectifiers & LED',
+                '12.3': '12.3 Transistors',
+                '12.4': '12.4 Logic Gates',
+                'worked': 'Calculator & Q&A'
+            };
+            const idx = ids.indexOf(id);
+            const prevId = idx > 0 ? ids[idx - 1] : null;
+            const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 mb-2">
+                        ${article.badge}
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${article.title}</h1>
+                    <p class="mt-1 text-sm sm:text-base text-slate-600 font-medium">${article.subtitle}</p>
+                </div>
+
+                ${article.html}
+
+                <div class="pt-4 pb-8 flex items-center justify-between gap-4 border-t border-slate-200">
+                    ${prevId ? `
+                        <button onclick="selectArticle('${prevId}')" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> ယခင်အပိုင်း (${labels[prevId]})
+                        </button>
+                    ` : `
+                        <a href="chapter11.html" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> Chapter 11 သို့ ပြန်သွားရန်
+                        </a>
+                    `}
+
+                    ${nextId ? `
+                        <button onclick="selectArticle('${nextId}')" class="px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            နောက်တစ်ပိုင်း (${labels[nextId]}) <span>→</span>
+                        </button>
+                    ` : `
+                        <a href="chapter13.html" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            Chapter 13 သို့ ဆက်သွားရန် <span>→</span>
+                        </a>
+                    `}
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileSidebar();
+
+            if (typeof article.onMount === 'function') {
+                setTimeout(() => article.onMount(), 50);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        window.onload = function() {
+            try {
+                selectArticle('overview');
+            } catch (err) {
+                console.error('Initialization error:', err);
+            }
+        };
+    </script>
+</body>
+</html>
