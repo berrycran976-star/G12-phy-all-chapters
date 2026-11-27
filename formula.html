@@ -18,6 +18,27 @@
             font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
             line-height: 1.65;
         }
+        /* ===== Formula Collection Modal & Card Styles ===== */
+        #fm-fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9998;padding:11px 16px;border-radius:9999px;border:0;background:linear-gradient(135deg,#059669,#1d4ed8);color:#fff;font:700 13px/1 Inter,'Noto Sans Myanmar',sans-serif;box-shadow:0 6px 18px rgba(30,41,59,.35);cursor:pointer}
+        #fm-modal{position:fixed;inset:0;z-index:9999;display:none;flex-direction:column;background:#f8fafc;font-family:Inter,'Noto Sans Myanmar',sans-serif;color:#1e293b}
+        #fm-modal.on{display:flex}
+        .fm-head{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px}
+        .fm-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+        .fm-row h2{font-size:15px;font-weight:700;margin:0}
+        .fm-x{border:0;background:rgba(255,255,255,.15);color:#fff;width:32px;height:32px;border-radius:9999px;font-size:18px;cursor:pointer}
+        #fm-q{width:100%;margin-top:8px;padding:8px 12px;border-radius:.7rem;border:0;font-size:14px;color:#0f172a;box-sizing:border-box}
+        .fm-tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px}
+        .fm-tabs button{flex:none;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#e0e7ff;padding:4px 11px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer}
+        .fm-tabs button.on{background:#6366f1;color:#fff;border-color:#818cf8}
+        #fm-body{flex:1;overflow-y:auto;padding:12px 12px calc(24px + env(safe-area-inset-bottom,0px));max-width:860px;width:100%;margin:0 auto;box-sizing:border-box}
+        .fm-t{font-size:13.5px;font-weight:700;color:#4338ca;margin:6px 0 10px}
+        .fm-c{background:#fff;border:1px solid #e2e8f0;border-radius:.9rem;padding:9px 12px;margin-bottom:8px}
+        .fm-n{font-size:11.5px;color:#64748b;line-height:1.5}
+        .fm-f{font-family:'Cambria Math','STIX Two Math',Georgia,serif;font-size:17px;line-height:1.65;color:#0f172a;word-break:break-word}
+        .fm-u{background:#eef2ff;border:1px solid #c7d2fe;border-radius:.9rem;padding:9px 12px;font-size:12px;line-height:1.8;margin-top:12px;margin-bottom:16px}
+        .fm-u summary{font-weight:700;cursor:pointer;color:#3730a3}
+        .fm-o{text-decoration:overline}
+        .fm-oo{text-decoration:overline double}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
@@ -33,12 +54,12 @@
                 </a>
             </div>
 
-            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 mb-3">
-                Grade 12 Physics • Formulas
+            <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 mb-3">
+                Grade 12 Physics • Formulas (Ch 1 – 13)
             </span>
             <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">1 to 13 Formula Bank</h1>
             <p class="mt-2.5 text-blue-200 text-sm sm:text-base max-w-2xl mx-auto">
-                အခန်း (၁) မှ (၁၃) အထိ အရေးကြီး ပုံသေနည်းများ စုစည်းမှု (Formula Files)
+                အခန်းတစ်ခုချင်းစီကို နှိပ်၍ သက်ဆိုင်ရာ ပုံသေနည်းများနှင့် SI Units များကို တိုက်ရိုက်ကြည့်ရှုနိုင်ပါသည်
             </p>
 
             <!-- Quick Search Bar -->
@@ -49,198 +70,332 @@
                 <input
                     id="chapter-search"
                     type="text"
-                    placeholder="အခန်းနံပါတ် သို့မဟုတ် ခေါင်းစဉ် ရှာရန်..."
-                    class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-blue-200/70 text-xs sm:text-sm focus:outline-none focus:bg-white/15 focus:border-indigo-400 transition"
+                    placeholder="အခန်းနံပါတ် သို့မဟုတ် Formula ရှာရန် (ဥပမာ - Bernoulli, ω)..."
+                    class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-blue-200/70 text-xs sm:text-sm focus:outline-none focus:bg-white/15 focus:border-emerald-400 transition"
                 >
             </div>
         </div>
     </header>
 
-    <!-- Main 13-Chapter File Grid -->
+    <!-- Main 13-Chapter Formula Grid -->
     <main id="chapters-grid" class="flex-1 max-w-4xl w-full mx-auto px-4 py-10 grid sm:grid-cols-2 gap-5">
 
-        <!-- Master All-in-One File Card -->
-        <a href="formula/formula_all.html" data-search="all chapters 1 to 13 master စုပေါင်းဖိုင်" class="chapter-card sm:col-span-2 block p-6 bg-slate-900 text-white rounded-3xl border border-slate-700 hover:border-indigo-400 hover:shadow-md transition">
+        <!-- Master All-in-One Card -->
+        <button type="button" onclick="openFormulaAll()" data-search="all chapters 1 to 13 master စုပေါင်းဖိုင်" class="chapter-card text-left sm:col-span-2 block w-full p-6 bg-slate-900 text-white rounded-3xl border border-slate-700 hover:border-emerald-400 hover:shadow-md transition cursor-pointer">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/30 text-indigo-200">All Chapters (Ch 1 – 13)</span>
-                    <h2 class="mt-2.5 text-lg font-extrabold text-white">📑 All Chapters Master Formula Sheet (Ch 1 – 13 စုပေါင်းဖိုင်)</h2>
-                    <p class="mt-0.5 text-xs font-mono text-slate-400">Path: formula/formula_all.html</p>
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/25 text-emerald-200">All Chapters (Ch 1 – 13)</span>
+                    <h2 class="mt-2.5 text-lg font-extrabold text-white">📑 All Chapters Master Formula Sheet (Ch 1 – 13 စုပေါင်းကြည့်ရန်)</h2>
+                    <p class="mt-0.5 text-xs text-slate-300">အခန်း (၁) မှ (၁၃) အထိ ပုံသေနည်းအားလုံးကို တစ်စုတစ်စည်းတည်း ကြည့်ရှုရှာဖွေရန်</p>
                 </div>
-                <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white text-slate-900 text-xs font-extrabold self-start sm:self-center">
-                    <span>ဖိုင်ဖွင့်ရန်</span>
+                <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-white text-slate-900 text-xs font-extrabold self-start sm:self-center shrink-0">
+                    <span>အားလုံးဖွင့်ရန်</span>
                     <span>→</span>
                 </span>
             </div>
-        </a>
+        </button>
 
-        <!-- Chapter 1 -->
-        <a href="formula/formula_ch1.html" data-search="1 rotational motion လည်ပတ်ရွေ့လျားမှု angular centripetal" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 1</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch1.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Rotational Motion</h2>
-            <p class="mt-1 text-xs text-slate-500">လည်ပတ်ရွေ့လျားမှု၊ Angular Acceleration နှင့် Centripetal Acceleration</p>
-        </a>
-
-        <!-- Chapter 2 -->
-        <a href="formula/formula_ch2.html" data-search="2 forces in circular motion စက်ဝိုင်းပတ်ရွေ့လျားမှု centripetal centrifugal banking" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 2</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch2.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Forces in Circular Motion</h2>
-            <p class="mt-1 text-xs text-slate-500">စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ၊ Centripetal နှင့် Centrifugal Force</p>
-        </a>
-
-        <!-- Chapter 3 -->
-        <a href="formula/formula_ch3.html" data-search="3 fluid dynamics အရည်နှင့်ဓာတ်ငွေ့ bernoulli continuity viscosity" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 3</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch3.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Fluid Dynamics</h2>
-            <p class="mt-1 text-xs text-slate-500">အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု၊ Continuity နှင့် Bernoulli's Equation</p>
-        </a>
-
-        <!-- Chapter 4 -->
-        <a href="formula/formula_ch4.html" data-search="4 sources of energy environmental impacts စွမ်းအင်အရင်းအမြစ် renewable" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 4</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch4.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Sources of Energy and Environmental Impacts</h2>
-            <p class="mt-1 text-xs text-slate-500">စွမ်းအင်အရင်းအမြစ်များနှင့် ပတ်ဝန်းကျင်ဆိုင်ရာ သက်ရောက်မှုများ</p>
-        </a>
-
-        <!-- Chapter 5 -->
-        <a href="formula/formula_ch5.html" data-search="5 heat transfer thermodynamics အပူကူးပြောင်းခြင်း သာမိုဒိုင်းနမစ်" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 5</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch5.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Heat Transfer and Thermodynamics</h2>
-            <p class="mt-1 text-xs text-slate-500">အပူကူးပြောင်းခြင်း၊ သာမိုဒိုင်းနမစ် နိယာမများနှင့် Heat Engines</p>
-        </a>
-
-        <!-- Chapter 6 -->
-        <a href="formula/formula_ch6.html" data-search="6 effects characteristics of sound အသံ doppler echo decibel" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 6</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch6.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Effects and Characteristics of Sound</h2>
-            <p class="mt-1 text-xs text-slate-500">အသံ၏ အကျိုးသက်ရောက်မှုများ၊ ဂုဏ်သတ္တိများနှင့် Doppler Effect</p>
-        </a>
-
-        <!-- Chapter 7 -->
-        <a href="formula/formula_ch7.html" data-search="7 applications of light optical instruments အလင်း camera eye telescope microscope" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 7</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch7.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Applications of Light and Optical Instruments</h2>
-            <p class="mt-1 text-xs text-slate-500">အလင်း၏ အသုံးချမှုများနှင့် အလင်းဆိုင်ရာ ကိရိယာများ (Camera, Eye, Telescope)</p>
-        </a>
-
-        <!-- Chapter 8 -->
-        <a href="formula/formula_ch8.html" data-search="8 interference diffraction of light အလင်းလှိုင်း ထပ်ခြင်း ကွေ့ခြင်း" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 8</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch8.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Interference and Diffraction of Light</h2>
-            <p class="mt-1 text-xs text-slate-500">အလင်းလှိုင်း ထပ်ခြင်း (Interference) နှင့် ကွေ့ခြင်း (Diffraction)</p>
-        </a>
-
-        <!-- Chapter 9 -->
-        <a href="formula/formula_ch9.html" data-search="9 capacitor capacitance လျှပ်သို dielectric" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 9</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch9.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Capacitor and Capacitance</h2>
-            <p class="mt-1 text-xs text-slate-500">လျှပ်သိုနှင့် လျှပ်သိုသတ္တိ၊ Parallel-Plate Capacitors နှင့် Dielectrics</p>
-        </a>
-
-        <!-- Chapter 10 -->
-        <a href="formula/formula_ch10.html" data-search="10 electrical energy power heating effect လျှပ်စစ်စွမ်းအင် joule" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 10</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch10.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Electrical Energy, Power and Heating Effect</h2>
-            <p class="mt-1 text-xs text-slate-500">လျှပ်စစ်စွမ်းအင်၊ စွမ်းအားနှင့် အပူသက်ရောက်မှု (Joule's Law)</p>
-        </a>
-
-        <!-- Chapter 11 -->
-        <a href="formula/formula_ch11.html" data-search="11 electromagnetic induction ac distribution လျှပ်စစ်သံလိုက်ညှို့ယူခြင်း faraday transformer" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 11</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch11.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Electromagnetic Induction & AC Distribution</h2>
-            <p class="mt-1 text-xs text-slate-500">လျှပ်စစ်သံလိုက်ညှို့ယူခြင်း၊ Transformers နှင့် လျှပ်စစ်ဓာတ်အား ဖြန့်ဖြူးခြင်း</p>
-        </a>
-
-        <!-- Chapter 12 -->
-        <a href="formula/formula_ch12.html" data-search="12 electronics digital systems အီလက်ထရွန်းနစ် logic gates diode transistor" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 12</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch12.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Electronics and Digital Systems</h2>
-            <p class="mt-1 text-xs text-slate-500">အီလက်ထရွန်းနစ် ပစ္စည်းများနှင့် ဒစ်ဂျစ်တယ်စနစ်များ (Logic Gates)</p>
-        </a>
-
-        <!-- Chapter 13 -->
-        <a href="formula/formula_ch13.html" data-search="13 modern physics ခေတ်သစ်ရူပဗေဒ radioactivity nuclear relativity quantum" class="chapter-card block p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition sm:col-span-2">
-            <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter 13</span>
-                <span class="text-[11px] font-mono text-slate-400">formula/formula_ch13.html</span>
-            </div>
-            <h2 class="mt-3 text-lg font-bold text-slate-900">Modern Physics</h2>
-            <p class="mt-1 text-xs text-slate-500">ခေတ်သစ်ရူပဗေဒ၊ ရေဒီယိုသတ္တိကြွခြင်း (Radioactivity)၊ နျူကလီးယားစွမ်းအင်နှင့် Relativity</p>
-        </a>
+        <!-- Chapter Cards Container (Auto-populated from D array so counts & titles always match) -->
+        <div id="chapter-cards-target" class="contents"></div>
 
     </main>
 
     <!-- Empty Search State Message -->
     <div id="empty-state" class="hidden max-w-4xl mx-auto px-4 pb-12 text-center">
         <div class="bg-white rounded-3xl border border-slate-200 p-8 text-sm text-slate-500">
-            ရှာဖွေထားသော အခန်း မတွေ့ရှိပါ။ စာလုံးပေါင်း ပြန်လည်စစ်ဆေးကြည့်ပါ။
+            <p>ရှာဖွေထားသော အခန်း မတွေ့ရှိပါ။</p>
+            <button type="button" onclick="searchInsideFormulas()" class="mt-3 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition">
+                <span>🔍 Formula စာသားများထဲတွင် ဆက်ရှာရန်</span>
+            </button>
         </div>
     </div>
 
     <!-- Simple Footer -->
     <footer class="border-t border-slate-200 bg-white py-6 px-4 text-center text-xs text-slate-500">
-        Grade 12 Physics • Folder: formula/formula_ch1.html – formula/formula_ch13.html
+        Grade 12 Physics • Interactive Formula Bank (Chapters 1 – 13)
     </footer>
 
-    <!-- Instant Client-Side Search Filter -->
+    <!-- Floating Quick Formula Button -->
+    <button id="fm-fab" type="button">📐 Formulas</button>
+
+    <!-- ===== Formula Collection (Ch 1–13) ===== -->
     <script>
-        (function () {
-            const searchInput = document.getElementById('chapter-search');
+    (function(){
+    const U12="s = displacement (m) · v = velocity (m s⁻¹) · a = acceleration (m s⁻²) · θ = angular displacement (rad) · ω = angular velocity (rad s⁻¹) · α = angular acceleration (rad s⁻²) · a_T = tangential acceleration (m s⁻²) · a_C = centripetal acceleration (m s⁻²) · T = tension (N) · F_c = centripetal force (N) · w = weight (N)";
+    const U34="P = pressure (Pa) · A = area (m²) · V = volume (m³) · ρ = density (kg m⁻³) · V/t = volume flow rate (m³ s⁻¹) · PE = potential energy (J) · KE = kinetic energy (J) · τ = shear stress (N m⁻²) · η = dynamic viscosity (Pa s) · η = kinematic viscosity (m² s⁻¹) · γ = surface tension (N m⁻¹) · p = power (W)";
+    const U5="ΔQ = heat (J) · H = rate of heat flow (W) · κ = thermal conductivity (W m⁻¹ K⁻¹) · q = convection constant (W m⁻² K⁻¹) · σ = Stefan's constant (W m⁻² K⁻⁴) · ε = total emissive power (W m⁻²) · e = emissivity (no unit) · ΔU = internal energy (J) · R = gas constant (J mol⁻¹ K⁻¹)";
+    const U6="Y = Young modulus (N m⁻²) · B = bulk modulus (N m⁻²) · β = intensity level (dB) · I = intensity (W m⁻²) · λ = wavelength (m) · f = frequency (Hz) · ω = angular frequency (rad s⁻¹)";
+    const U7="P = power of lens (D) · φ = luminous flux (lm) · I_v = luminous intensity (cd or lm sr⁻¹) · Ω = solid angle (sr) · L_v = luminance (cd m⁻²) · E_v = illuminance (lx)";
+    const U8="λ = wavelength (m) · m = order of fringe (no unit) · d = slit separation (m) · D = slit-to-screen distance (m) · a = slit width (m) · θ = diffraction angle (degree) · N = lines per cm (lines cm⁻¹)";
+    const U911="C = capacitance (F) · σ = surface charge density (C m⁻²) · Q = charge (C) · κ = dielectric constant (no unit) · ε = permittivity (C² N⁻¹ m⁻²) · τ = time constant (s) · E = emf (V) · I = current (A) · E = electric field (N C⁻¹) · V = voltage (V) · W = electrical energy (kWh) · P = power (W) · φ = magnetic flux (Wb) · B = flux density (T) · H = field strength (A m⁻¹) · R = resistance (Ω) · ρ = resistivity (Ω m)";
+
+    const MY_DESC = [
+        "လည်ပတ်ရွေ့လျားမှု၊ Angular Acceleration နှင့် Centripetal Acceleration",
+        "စက်ဝိုင်းပတ်ရွေ့လျားမှုဆိုင်ရာ အားများ၊ Centripetal နှင့် Banked Road",
+        "အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု၊ Continuity၊ Bernoulli နှင့် Viscosity",
+        "လေစွမ်းအင် (Wind Energy) နှင့် ရေအားလျှပ်စစ်စွမ်းအင် (Hydro Power)",
+        "အပူကူးပြောင်းခြင်း၊ သာမိုဒိုင်းနမစ် နိယာမများနှင့် Heat Engines",
+        "အသံ၏ အမြန်နှုန်း၊ Intensity Level (dB) နှင့် Doppler Effect",
+        "အလင်းဆိုင်ရာ ကိရိယာများ (Microscope, Telescope) နှင့် Photometry",
+        "အလင်းလှိုင်း ထပ်ခြင်း (Interference) နှင့် ကွေ့ခြင်း (Diffraction)",
+        "လျှပ်သို (Capacitors)၊ Dielectric နှင့် RC Time Constant",
+        "လျှပ်စစ်စွမ်းအင်၊ စွမ်းအား (Power) နှင့် အပူသက်ရောက်မှု (Heat)",
+        "လျှပ်စစ်သံလိုက်ညှို့ယူခြင်း၊ AC Generator နှင့် Transformer",
+        "LED Resistor၊ Boolean Algebra Laws၊ De Morgan နှင့် Logic Gates",
+        "Radioactivity (Half-life)၊ de Broglie Wavelength နှင့် Relativity"
+    ];
+
+    // [chapter title, [[name, formula], ...], units]   (_x = subscript, ^{x} = superscript)
+    const D=[
+    ["Rotational Motion",[
+    ["Equations of motion — linear ⟷ angular","v = v₀ + at   ⟷   ω = ω₀ + αt"],
+    ["","s = v₀t + ½at²   ⟷   θ = ω₀t + ½αt²"],
+    ["","v² = v₀² + 2as   ⟷   ω² = ω₀² + 2αθ"],
+    ["Average","v̄ = (v + v₀)/2   ⟷   ω̄ = (ω + ω₀)/2"],
+    ["Linear ↔ rotational relations","s = rθ ,  v = rω ,  a_T = rα"],
+    ["Centripetal acceleration","a_C = v²/r = rω²"],
+    ["Tangential acceleration","a_T = rα"],
+    ["Resultant acceleration","a = √(a_C² + a_T²)"],
+    ["Direction of resultant acceleration","tan θ = v²/(rg)"]],U12],
+    ["Circular Motion & Centripetal Force",[
+    ["Newton's second law","F_{net} = ma"],
+    ["Centripetal force","F_C = ma_C = mv²/r"],
+    ["Substituting v = rω","F_c = mrω²"],
+    ["Angle of banked road","tan θ = v²/(rg)"],
+    ["Horizontal circle","F_c = T = mv²/r"],
+    ["Vertical circle (top)","F_c = T + w   (w = mg)"],
+    ["Vertical circle (bottom)","F_c = T − w"]],U12],
+    ["Fluid Dynamics",[
+    ["Volume flow rate","V/t = Av"],
+    ["Equation of continuity","A₁v₁ = A₂v₂"],
+    ["Bernoulli's equation","p + ½ρv² + ρgh = constant"],
+    ["","p₁ + ½ρv₁² + ρgh₁ = p₂ + ½ρv₂² + ρgh₂"],
+    ["Newton's law of viscosity","τ = −η dv/dy"],
+    ["Shear stress","τ = F/A"],
+    ["Dynamic viscosity","η = −(F/A) / (dv/dy)"],
+    ["Stokes' law","F = 6πηrv"],
+    ["Kinematic viscosity","η = 2gr²(ρ₁ − ρ₂) / (9v)"],
+    ["Surface tension","γ = F/l"],
+    ["Capillarity action","h = 2γ cosθ / (ρgr)"]],U34],
+    ["Wind & Hydro Energy",[
+    ["Total energy of wind","E = ½mv² = ½ρVv² = ½ρAvt·v² = ½ρAtv³"],
+    ["Power of wind","p = ½ρAv³"],
+    ["Hydroelectric power","p = ηρV̇gh"]],U34],
+    ["Heat & Thermodynamics",[
+    ["Heat conduction","H_{cond} = κA(T₂ − T₁)/l"],
+    ["Temperature gradient","(T₂ − T₁)/l"],
+    ["Heat convection","H_{conv} = qA(T₂ − T₁)"],
+    ["Heat radiation","H_{rad} = eσAT⁴"],
+    ["Stefan–Boltzmann law","ε₀ = σT⁴"],
+    ["Emissivity","e = ε/ε₀"],
+    ["Net heat radiation","H_{net} = eσA(T₂⁴ − T₁⁴)"],
+    ["First law of thermodynamics","ΔU = Q − W"],
+    ["Internal energy of ideal gas","U = (3/2)nRT"],
+    ["Isobaric process","W = p∫dV = p(V_f − V_i)"],
+    ["Isochoric process","ΔU = (3/2)nRΔT"],
+    ["Isothermal process","W = nRT ln(V_f/V_i)"],
+    ["Adiabatic process","W = (p_iV_i − p_fV_f)/(γ − 1)"],
+    ["Thermal efficiency","η = W_{out}/Q_{in} = W/Q_H"],
+    ["Theoretical efficiency","η = 1 − Q_C/Q_H   or   1 − T_C/T_H"],
+    ["Gasoline engine efficiency","η = 1 − 1/(V₁/V₂)^{γ−1}"]],U5],
+    ["Sound",[
+    ["Speed of sound — solid","v = √(Y/ρ)"],
+    ["Speed of sound — liquid","v = √(B/ρ)"],
+    ["Speed of sound — gas","v = √(γp/ρ)"],
+    ["Intensity level","β (dB) = 10 log₁₀(I/I₀)"],
+    ["Echo","v = 2d/t"],
+    ["Doppler equation","f_o = f_s (v ± v_o)/(v ± v_s)"],
+    ["Intensity and loudness","I = ½ρvω²A²"]],U6],
+    ["Optical Instruments & Photometry",[
+    ["Compound microscope — in general","M_P = (v_o/u_o) × (25/u_e) ;  L = v_o + u_e"],
+    ["— at infinity","M_P = (v_o/u_o) × (25/f_e) ;  L = v_o + f_e"],
+    ["— at 25 cm","M_P = (v_o/u_o)(25/f_e + 1)"],
+    ["Astronomical telescope — in general","M_P = v_o/u_e ;  L = v_o + u_e"],
+    ["— at infinity","M_P = f_o/f_e ;  L = f_o + f_e"],
+    ["Luminous intensity","I_v = φ/Ω"],
+    ["Solid angle","Ω = A/r²"],
+    ["Illuminance","E_v = φ/A = I_vΩ/A = I_vA/(Ar²) = I_v/r²"],
+    ["Inverse square law of illuminance","E_v = I_v cosθ / r²"]],U7],
+    ["Interference & Diffraction",[
+    ["Phase difference ↔ path difference","Δφ = (2π/λ)Δx"],
+    ["Fringe width","y_m = mλD/d"],
+    ["Bright fringe from central bright line","y = mλD/d   (m = 0, 1, 2, 3, …)"],
+    ["m-th dark fringe","y = (m + ½)λD/d   (m = 0, 1, 2, 3, …)"],
+    ["m-th minimum from central maximum","y = mλD/a   (m = 0, 1, 2, 3, …)"],
+    ["Width of central maximum","2λD/a"],
+    ["Distance between adjacent slits","d (cm) = 1/N (lines per cm)"],
+    ["Condition for maximum intensity","d sinθ = mλ   (m = 0, 1, 2, 3, …)"]],U8],
+    ["Capacitors",[
+    ["Capacitance","C = Q/V"],
+    ["Dielectric constant","κ = C/C₀ = V₀/V"],
+    ["Energy of capacitor","W = ½VQ = ½CV² = ½Q²/C"],
+    ["Parallel plate capacitor","C = εA/d = κε₀A/d"],
+    ["Capacitors in parallel","C = C₁ + C₂ + C₃"],
+    ["Capacitors in series","1/C = 1/C₁ + 1/C₂ + 1/C₃"],
+    ["Charging capacitor","V_c = V₀(1 − e^{−t/RC})"],
+    ["Discharging capacitor","V_c = V₀ e^{−t/RC}"],
+    ["Time constant","τ = RC"]],U911],
+    ["DC Circuits",[
+    ["Circuit equation","I = E/(R + r)"],
+    ["Batteries in series (aiding)","I = (E₁ + E₂)/(R + r₁ + r₂)"],
+    ["Batteries in series (opposing)","I = (E₁ − E₂)/(R + r₁ + r₂)   (E₁ > E₂)"],
+    ["Batteries in parallel","I = E/(R + r/2)"],
+    ["Electrical energy","W = VQ = VIt = I²Rt = V²t/R"],
+    ["Electrical power","P = W/t = VI = I²R = V²/R"],
+    ["Heat","H = W/J = VIt/J = I²Rt/J = V²t/(RJ)"]],U911],
+    ["EM Induction & AC",[
+    ["Waveform of emf","E = E_m sinωt"],
+    ["Alternating current","I = I_m sinωt"],
+    ["Angular frequency","ω = 2πf"],
+    ["Magnetic flux density","B = μH"],
+    ["Magnetic flux","φ_B = BA cosθ"],
+    ["Faraday's law","E = −N dφ_B/dt"],
+    ["Induced emf of AC generator","E = NBA sinωt = E_m sinωt ;  E_m = NBAω"],
+    ["Transformer","E_s/E_p = N_s/N_p = V_s/V_p = I_p/I_s"],
+    ["Efficiency","Efficiency = (output power / input power) × 100%"],
+    ["Power loss in transmission line","P_{loss} = I²R"]],U911],
+    ["Electronics & Logic Gates",[
+    ["LED current-limiting resistor","R = V_R/I = (V_S − V_F)/I"],
+    ["Boolean laws — AND","A·A = A ;  A·1 = A ;  A·0 = 0 ;  A·~{A} = 0"],
+    ["Boolean laws — OR","A + A = A ;  A + 0 = A ;  A + 1 = 1 ;  A + ~{A} = 1"],
+    ["De Morgan's theorem","~{XYZ} = ~{X} + ~{Y} + ~{Z}"],
+    ["","~{X + Y + Z} = ~{X} ~{Y} ~{Z}"],
+    ["Double inversion","~~{A} = A"],
+    ["OR gate","A + B"],
+    ["AND gate","AB"],
+    ["NAND gate","~{AB}"],
+    ["NOR gate","~{A + B}"]],""],
+    ["Modern Physics",[
+    ["After one half-life","amount left = ½ × initial amount"],
+    ["Radioactive decay","N_t = N₀ e^{(−0.693/T_{1/2}) t}"],
+    ["de Broglie wavelength (from KE)","λ = h / √(2m·KE)"],
+    ["de Broglie wavelength","λ = h/(mv)"],
+    ["Rest energy","E₀ = m₀c²"],
+    ["Length contraction","L = L₀ √(1 − v²/c²)"],
+    ["Relativistic factor","γ = 1 / √(1 − v²/c²)"],
+    ["","2πr = nλ"]],
+    "N_t = number of radioactive atoms at time t · N₀ = initial number of radioactive atoms · T_{1/2} = half life · −0.693/T_{1/2} = decay constant · L₀ = proper length (m) · L = observed length (m) · γ = relativistic factor"]
+    ];
+
+    const E=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+     .replace(/_\{([^}]*)\}|_(\w)/g,(m,a,b)=>'<sub>'+(a||b)+'</sub>')
+     .replace(/\^\{([^}]*)\}/g,'<sup>$1</sup>')
+     .replace(/~~\{([^}]*)\}/g,'<span class="fm-o fm-oo">$1</span>')
+     .replace(/~\{([^}]*)\}/g,'<span class="fm-o">$1</span>');
+
+    // Render the 13 Chapter Cards on the main formula.html page
+    const target = document.getElementById('chapter-cards-target');
+    if (target) {
+        target.innerHTML = D.map((c, i) => {
+            const num = i + 1;
+            const colSpan = num === 13 ? ' sm:col-span-2' : '';
+            const formulaSearchText = c[1].map(([n, f]) => n + ' ' + f).join(' ').toLowerCase();
+            return `
+            <button type="button" onclick="openFormulaChapter(${num})" data-search="${num} ${c[0].toLowerCase()} ${MY_DESC[i].toLowerCase()} ${formulaSearchText}" class="chapter-card text-left block w-full p-6 bg-white rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-md transition cursor-pointer${colSpan}">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700">Chapter ${num}</span>
+                    <span class="text-xs font-bold text-slate-400">${c[1].length} Formulas →</span>
+                </div>
+                <h2 class="mt-3 text-lg font-bold text-slate-900">${E(c[0])}</h2>
+                <p class="mt-1 text-xs text-slate-500">${MY_DESC[i]}</p>
+            </button>`;
+        }).join('');
+    }
+
+    document.body.insertAdjacentHTML('beforeend',
+     '<div id="fm-modal"><div class="fm-head"><div class="fm-row"><h2>📐 Formulas — Chapter 1–13</h2><button class="fm-x" type="button" aria-label="Close">✕</button></div>'+
+     '<input id="fm-q" type="search" placeholder="🔍 ရှာရန် (e.g. Bernoulli, efficiency, ω)"><div class="fm-tabs"></div></div><div id="fm-body"></div></div>');
+
+    const modal=document.getElementById('fm-modal'),body=document.getElementById('fm-body'),
+          tabs=modal.querySelector('.fm-tabs'),qi=document.getElementById('fm-q');
+    let cur=1,q='';
+
+    // "All" tab + Ch 1..13 tabs
+    const allBtn=document.createElement('button');
+    allBtn.type='button';
+    allBtn.textContent='All (1–13)';
+    allBtn.onclick=()=>{cur=0;q='';qi.value='';draw()};
+    tabs.appendChild(allBtn);
+
+    D.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent='Ch '+(i+1);
+     b.onclick=()=>{cur=i+1;q='';qi.value='';draw()};tabs.appendChild(b)});
+
+    const card=(n,f,tag)=>'<div class="fm-c">'+((n||tag)?'<div class="fm-n">'+(tag?'<b>Ch '+tag+'</b>'+(n?' · ':''):'')+E(n||'')+'</div>':'')+'<div class="fm-f">'+E(f)+'</div></div>';
+
+    function renderSingleChapter(chIndex){
+     const c=D[chIndex];
+     let h='<div class="fm-t">Chapter '+(chIndex+1)+' · '+E(c[0])+'</div>';
+     h+=c[1].length?c[1].map(([n,f])=>card(n,f)).join(''):'<p class="fm-n">ဤ chapter ၏ formula များသည် PDF ထဲတွင် မပါပါ။</p>';
+     if(c[2])h+='<details class="fm-u"><summary>Symbols &amp; SI units</summary>'+c[2].split(' · ').map(x=>'<div>'+E(x)+'</div>').join('')+'</details>';
+     return h;
+    }
+
+    function draw(){
+     let h='';
+     if(q){
+      const s=q.toLowerCase();
+      D.forEach((c,i)=>c[1].forEach(([n,f])=>{if((n+' '+f+' '+c[0]).toLowerCase().includes(s))h+=card(n,f,i+1)}));
+      h=h||'<p class="fm-n">မတွေ့ပါ</p>';
+     }else if(cur===0){
+      D.forEach((c,i)=>{h+=renderSingleChapter(i)});
+     }else{
+      h=renderSingleChapter(cur-1);
+     }
+     body.innerHTML=h;body.scrollTop=0;
+     const tabBtns=tabs.querySelectorAll('button');
+     tabBtns[0].classList.toggle('on',!q&&cur===0);
+     for(let i=1;i<tabBtns.length;i++){
+      tabBtns[i].classList.toggle('on',!q&&i===cur);
+     }
+     const activeTab=tabs.querySelector('button.on');
+     if(activeTab)activeTab.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+    }
+
+    const open=()=>{modal.classList.add('on');document.body.style.overflow='hidden';draw()};
+    const close=()=>{modal.classList.remove('on');document.body.style.overflow=''};
+
+    window.openFormulaChapter = function(chNum){
+     cur = chNum;
+     q = '';
+     qi.value = '';
+     open();
+    };
+    window.openFormulaAll = function(){
+     cur = 0;
+     q = '';
+     qi.value = '';
+     open();
+    };
+    window.searchInsideFormulas = function(){
+     const topSearch = document.getElementById('chapter-search');
+     q = topSearch ? topSearch.value.trim() : '';
+     qi.value = q;
+     open();
+    };
+
+    document.getElementById('fm-fab').onclick=open;
+    modal.querySelector('.fm-x').onclick=close;
+    qi.oninput=()=>{q=qi.value.trim();draw()};
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+
+    // Top page search bar filter
+    const searchInput = document.getElementById('chapter-search');
+    const emptyState = document.getElementById('empty-state');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const query = this.value.trim().toLowerCase();
             const cards = document.querySelectorAll('.chapter-card');
-            const emptyState = document.getElementById('empty-state');
-
-            if (!searchInput) return;
-
-            searchInput.addEventListener('input', function () {
-                const query = this.value.trim().toLowerCase();
-                let visibleCount = 0;
-
-                cards.forEach(function (card) {
-                    const haystack = (card.dataset.search || '') + ' ' + card.textContent.toLowerCase();
-                    const isMatch = !query || haystack.includes(query);
-                    card.classList.toggle('hidden', !isMatch);
-                    if (isMatch) visibleCount++;
-                });
-
-                emptyState.classList.toggle('hidden', visibleCount > 0);
+            let visibleCount = 0;
+            cards.forEach(function (card) {
+                const haystack = (card.dataset.search || '') + ' ' + card.textContent.toLowerCase();
+                const isMatch = !query || haystack.includes(query);
+                card.classList.toggle('hidden', !isMatch);
+                if (isMatch) visibleCount++;
             });
-        })();
+            emptyState.classList.toggle('hidden', visibleCount > 0);
+        });
+    }
+    })();
     </script>
 </body>
 </html>
