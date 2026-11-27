@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grade 12 Physics - Chapter 10: Electrical Energy, Power and Heating Effect of Electric Current</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D EMF/Internal Resistance, Series/Parallel Batteries, Power & Joule Heating Labs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.85;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 430px;
+            }
+        }
+        .myanmar-text {
+            line-height: 1.98;
+        }
+        .formula-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+        .math-box {
+            font-family: 'Inter', monospace;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+        /* 3D Viewer Overlay UI (Matches Chapters 4–9 Structure) */
+        .v3d-ui { position: absolute; inset: 0; pointer-events: none; font-family: 'Inter','Noto Sans Myanmar',sans-serif; }
+        .v3d-btn { position: absolute; top: 8px; right: 10px; pointer-events: auto; font-size: 11px; font-weight: 600; color: #e0e7ff; background: rgba(15,23,42,.75); border: 1px solid rgba(129,140,248,.45); padding: 3px 10px; border-radius: 9999px; cursor: pointer; }
+        .v3d-hint { position: absolute; top: 10px; left: 10px; font-size: 10.5px; color: #cbd5e1; transition: opacity .4s; }
+        .v3d-zoom { position: absolute; right: 10px; top: 38px; display: flex; flex-direction: column; gap: 6px; }
+        .v3d-zoom button { pointer-events: auto; width: 30px; height: 30px; border-radius: 9999px; font-size: 16px; font-weight: 700; line-height: 1; color: #e0e7ff; background: rgba(15,23,42,.78); border: 1px solid rgba(129,140,248,.45); cursor: pointer; }
+        .v3d-labels { position: absolute; inset: 0; }
+        .v3d-label { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; font-size: 11px; line-height: 1.35; font-weight: 600; color: #f8fafc; background: rgba(15,23,42,.84); border: 1px solid #818cf8; border-radius: .6rem; padding: 2px 8px; will-change: transform; }
+        .v3d-info { position: absolute; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.6; color: #e2e8f0; background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14); border-radius: .8rem; padding: 7px 11px; }
+        .v3d-info b { color: #93c5fd; }
+        /* Clean Mathematical Typography */
+        .mx { font-family: 'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif; font-size: 1.1em; font-weight: 500; letter-spacing: .01em; }
+        .mx i { font-style: italic; }
+        .mx .nb { display: inline-block; white-space: nowrap; margin-right: .2em; }
+        .mx .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .25em; line-height: 1.3; }
+        .mx .fr > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .3em .08em; }
+        .mx .fr > span:last-child { padding: .08em .3em 0; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-white font-bold shadow">
+                Ch10
+            </div>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p class="text-xs text-slate-500">Electrical Energy, Power & Heating Effect</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Open Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Left Sidebar Taskbar (Matches Chapters 4–9 Structure) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:shadow-none">
+            <!-- Brand Header + Chapter Switcher -->
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/25 text-indigo-200 border border-indigo-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Grade 12 Physics
+                    </span>
+                    <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10" aria-label="Close Navigation">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <h2 class="mt-3 text-lg font-bold tracking-tight leading-snug">Chapter 10: Electrical Energy, Power & Heating Effect</h2>
+                <p class="mt-1 text-xs text-indigo-200/85">EMF & Internal Resistance, Batteries in Series/Parallel, Power & Joule's Law</p>
+
+                <!-- Cross-Chapter Page Navigation Bar -->
+                <div class="mt-4 pt-3 border-t border-white/15 grid grid-cols-5 gap-1.5">
+                    <a href="../index.html" class="text-center py-1.5 px-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition" title="Home">🏠</a>
+                    <a href="../chapter1.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 1</a>
+                    <a href="chapter2.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 2</a>
+                    <a href="chapter3.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 3</a>
+                    <a href="chapter4.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 4</a>
+                    <a href="chapter5.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 5</a>
+                    <a href="chapter6.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 6</a>
+                    <a href="chapter7.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 7</a>
+                    <a href="chapter8.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 8</a>
+                    <a href="chapter9.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 9</a>
+                    <a href="chapter10.html" class="text-center py-1.5 px-1 rounded-lg bg-indigo-500 text-xs font-semibold text-white shadow-xs">Ch 10</a>
+                    <a href="chapter11.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 11</a>
+                    <a href="chapter12.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 12</a>
+                    <a href="chapter13.html" class="col-span-2 text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 13</a>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Chapter 10 လေ့လာရန် အပိုင်းများ (6 ခု)
+                </div>
+
+                <button onclick="selectArticle('overview')" id="nav-overview" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">⚡</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">အခန်း (၁၀) မိတ်ဆက် & Formula Table</div>
+                        <div class="text-xs opacity-80 mt-0.5">Electrical Energy & Power ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('10.1')" id="nav-10.1" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">10.1</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">EMF & Electric Circuits (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Discharging (V = E − Ir) vs Charging (V = E + Ir) Circuits</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('10.2')" id="nav-10.2" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">10.2</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Batteries in Series & Parallel (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Series Aiding (E₁ + E₂), Series Opposing (|E₁ − E₂|) & Parallel</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('10.3')" id="nav-10.3" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">10.3</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Electrical Energy & Power (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">P = VI = I²R = V²/R, Bulb Brightness & 1 kWh = 3.6 × 10⁶ J</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('10.4')" id="nav-10.4" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">10.4</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Joule's Law of Electric Heating (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D Nichrome Heating Coil, H = I²Rt & Electric Safety Fuse</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('worked')" id="nav-worked" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">✍️</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Circuit & Power Calculator & Q&A</div>
+                        <div class="text-xs opacity-80 mt-0.5">EMF / Batteries / kWh Cost / Joule Heating တွက်စက်နှင့် မေးခွန်းအဖြေများ</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Footer Tip -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200/80 text-xs text-indigo-950 flex items-start gap-2.5">
+                    <span class="text-base">🔋</span>
+                    <span><strong>Exam Tip:</strong> ဘက်ထရီကို အသုံးပြုနေစဉ် (<strong>Discharging</strong>) တွင် <span class="mx"><i>V</i> = <i>E</i> − <i>Ir</i> &lt; <i>E</i></span> ဖြစ်ပြီး ဘက်ထရီကို အားပြန်သွင်းနေစဉ် (<strong>Charging</strong>) တွင်သာ <span class="mx"><i>V</i> = <i>E</i> + <i>Ir</i> &gt; <i>E</i></span> ဖြစ်သည်။</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+            <div id="content-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-8">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & THREE.JS ENGINE MANAGER
+        // ==========================================
+        let currentArticleId = 'overview';
+        let activeScenes = [];
+
+        function clearActiveScenes() {
+            activeScenes.forEach(item => {
+                if (item.animId) cancelAnimationFrame(item.animId);
+                if (item.renderer) item.renderer.dispose();
+            });
+            activeScenes = [];
+        }
+
+        function init3DViewer(containerId, buildSceneCallback, legendItems = []) {
+            const container = document.getElementById(containerId);
+            if (!container || typeof THREE === 'undefined') return null;
+            container.querySelectorAll('canvas,.v3d-ui').forEach(n => n.remove());
+            activeScenes = activeScenes.filter(r => {
+                if (r.cid === containerId) {
+                    cancelAnimationFrame(r.animId);
+                    r.renderer.dispose();
+                    return false;
+                }
+                return true;
+            });
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 380;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1.4, 7.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const legendHtml = legendItems.length
+                ? `<div class="v3d-legend" style="position:absolute;top:8px;left:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;font-weight:700;color:#e2e8f0;background:rgba(15,23,42,.72);padding:3px 9px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);">
+                    ${legendItems.map(it => `<span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${it.color};margin-right:4px;"></i>${it.text}</span>`).join('')}
+                   </div>`
+                : '';
+
+            const ui = document.createElement('div');
+            ui.className = 'v3d-ui';
+            ui.innerHTML = `
+                ${legendHtml}
+                <button type="button" class="v3d-btn">🏷️ ရှင်းလင်းချက်: ON</button>
+                <div class="v3d-zoom"><button type="button" data-z="in" title="Zoom In">+</button><button type="button" data-z="out" title="Zoom Out">−</button><button type="button" data-z="reset" title="Reset View">⟲</button></div>
+                <div class="v3d-labels"></div>
+                <div class="v3d-hint" style="top:${legendItems.length ? '36px' : '10px'};">👆 ဆွဲ၍လှည့်ပါ · + − ဖြင့် ချုံ့ချဲ့ပါ</div>
+                <div class="v3d-info"></div>`;
+            container.appendChild(ui);
+
+            const labelBox = ui.querySelector('.v3d-labels');
+            const labels = [];
+            const api = {
+                label(text, pos, color = '#818cf8', obj) {
+                    const el = document.createElement('div');
+                    el.className = 'v3d-label';
+                    el.style.borderColor = color;
+                    el.innerHTML = text;
+                    labelBox.appendChild(el);
+                    labels.push({ el, obj, pos: pos.clone ? pos.clone() : new THREE.Vector3(...pos) });
+                },
+                info(html) { ui.querySelector('.v3d-info').innerHTML = html; }
+            };
+
+            const btn = ui.querySelector('.v3d-btn');
+            btn.addEventListener('click', () => {
+                const on = labelBox.style.display === 'none';
+                labelBox.style.display = on ? '' : 'none';
+                btn.textContent = '🏷️ ရှင်းလင်းချက်: ' + (on ? 'ON' : 'OFF');
+            });
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.92);
+            dirLight1.position.set(6, 9, 7);
+            scene.add(dirLight1);
+            const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.5);
+            dirLight2.position.set(-6, -4, -5);
+            scene.add(dirLight2);
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            const customUpdate = buildSceneCallback(rootGroup, camera, scene, api);
+            camera.lookAt(0, 0, 0);
+            const camPos0 = camera.position.clone();
+            let zoom = 1;
+            const setZoom = z => { zoom = Math.max(0.55, Math.min(2.3, z)); };
+
+            ui.querySelector('.v3d-zoom').addEventListener('click', e => {
+                const k = e.target.dataset.z;
+                if (k === 'in') setZoom(zoom * 1.25);
+                else if (k === 'out') setZoom(zoom / 1.25);
+                else if (k === 'reset') { zoom = 1; rootGroup.rotation.set(0, 0, 0); autoRotate = true; }
+            });
+
+            let isDragging = false, prevX = 0, prevY = 0, autoRotate = true;
+            const onDown = (x, y) => { isDragging = true; autoRotate = false; prevX = x; prevY = y; ui.querySelector('.v3d-hint').style.opacity = 0; };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                rootGroup.rotation.y += (x - prevX) * 0.01;
+                rootGroup.rotation.x = Math.max(-1.1, Math.min(1.1, rootGroup.rotation.x + (y - prevY) * 0.01));
+                prevX = x; prevY = y;
+            };
+            const onUp = () => { isDragging = false; };
+
+            const domElem = renderer.domElement;
+            domElem.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+            domElem.addEventListener('wheel', e => { e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onUp);
+            domElem.addEventListener('touchstart', e => { if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchmove', e => { if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchend', onUp);
+
+            window.addEventListener('resize', () => {
+                if (!container.isConnected || !container.clientWidth) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            const sceneRecord = { renderer, animId: null, cid: containerId };
+            activeScenes.push(sceneRecord);
+
+            const clock = new THREE.Clock();
+            const v = new THREE.Vector3();
+            function animate() {
+                sceneRecord.animId = requestAnimationFrame(animate);
+                const elapsed = clock.getElapsedTime();
+                if (autoRotate) rootGroup.rotation.y += 0.0028;
+                if (typeof customUpdate === 'function') customUpdate(elapsed, rootGroup);
+                camera.position.copy(camPos0).multiplyScalar(1 / zoom);
+                renderer.render(scene, camera);
+
+                const W = container.clientWidth, H = container.clientHeight;
+                scene.updateMatrixWorld();
+                labels.forEach(l => {
+                    v.copy(l.pos);
+                    (l.obj || rootGroup).localToWorld(v).project(camera);
+                    l.el.style.opacity = l.obj && !l.obj.visible ? 0 : 1;
+                    const hw = l.el.offsetWidth / 2 + 4;
+                    const x = Math.max(hw, Math.min(W - hw, (v.x * 0.5 + 0.5) * W));
+                    const y = Math.max(14, Math.min(H - 96, (-v.y * 0.5 + 0.5) * H));
+                    l.el.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px)`;
+                });
+            }
+            animate();
+        }
+
+        function createSphere(radius, colorHex, x = 0, y = 0, z = 0) {
+            const geo = new THREE.SphereGeometry(radius, 28, 28);
+            const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.28, metalness: 0.15 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            return mesh;
+        }
+
+        function createWireSegment(p1, p2, colorHex = 0x64748b, radius = 0.032) {
+            const dir = new THREE.Vector3().subVectors(p2, p1);
+            const len = dir.length();
+            const cyl = new THREE.Mesh(
+                new THREE.CylinderGeometry(radius, radius, len, 12),
+                new THREE.MeshBasicMaterial({ color: colorHex })
+            );
+            const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+            cyl.position.copy(mid);
+            cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+            return cyl;
+        }
+
+        function createBatteryCell(x, y, z, scale = 1.0, flipPolarity = false) {
+            const cell = new THREE.Group();
+            cell.position.set(x, y, z);
+            cell.scale.setScalar(scale);
+
+            const posBody = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.36, 0.36, 0.65, 24).rotateZ(Math.PI / 2),
+                new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.35 })
+            );
+            posBody.position.x = flipPolarity ? -0.325 : 0.325;
+
+            const negBody = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.36, 0.36, 0.65, 24).rotateZ(Math.PI / 2),
+                new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.45 })
+            );
+            negBody.position.x = flipPolarity ? 0.325 : -0.325;
+
+            const cap = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.15, 0.15, 0.14, 18).rotateZ(Math.PI / 2),
+                new THREE.MeshStandardMaterial({ color: 0xfbbf24, metalness: 0.6 })
+            );
+            cap.position.x = flipPolarity ? -0.7 : 0.7;
+
+            cell.add(posBody, negBody, cap);
+            return cell;
+        }
+
+        // ==========================================
+        // 2. SPECIFIC 3D VISUALIZATIONS FOR CHAPTER 10
+        // ==========================================
+
+        // 3D Viewer 10.1: EMF, Internal Resistance & Terminal Voltage (Discharging vs Charging)
+        function render3D_10_1(mode) {
+            const isCharging = mode === 'charging';
+            init3DViewer('viewer-10-1', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.5, 8.2);
+
+                // Dashed Box representing Real Battery (EMF E + Internal Resistance r) on Left
+                const batBox = new THREE.Mesh(
+                    new THREE.BoxGeometry(2.3, 1.4, 1.3),
+                    new THREE.MeshStandardMaterial({ color: 0x3b82f6, transparent: true, opacity: 0.16 })
+                );
+                batBox.position.set(-1.7, 0, 0);
+                group.add(batBox);
+
+                // EMF Cell inside battery box
+                const cell = createBatteryCell(-2.05, 0, 0, 0.85, false);
+                group.add(cell);
+
+                // Internal Resistance r inside battery box
+                const intRes = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.16, 0.16, 0.62, 18).rotateZ(Math.PI / 2),
+                    new THREE.MeshStandardMaterial({ color: 0xf59e0b })
+                );
+                intRes.position.set(-1.0, 0, 0);
+                group.add(intRes);
+
+                // Circuit Loop Wires
+                const pTL = new THREE.Vector3(-2.65, 0, 0);
+                const pTopL = new THREE.Vector3(-2.65, 1.35, 0);
+                const pTopR = new THREE.Vector3(2.2, 1.35, 0);
+                const pBotR = new THREE.Vector3(2.2, -1.35, 0);
+                const pBotL = new THREE.Vector3(-0.68, -1.35, 0);
+                const pTR = new THREE.Vector3(-0.68, 0, 0);
+
+                group.add(
+                    createWireSegment(pTL, pTopL),
+                    createWireSegment(pTopL, pTopR),
+                    createWireSegment(pTopR, pBotR),
+                    createWireSegment(pBotR, pBotL),
+                    createWireSegment(pBotL, pTR)
+                );
+
+                // Right Side: External Load Resistor/Lamp (Discharging) OR External Charger (Charging)
+                if (!isCharging) {
+                    const loadLamp = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.48, 28, 28),
+                        new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 0.85 })
+                    );
+                    loadLamp.position.set(2.2, 0, 0);
+                    group.add(loadLamp);
+                } else {
+                    const charger = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.95, 1.2, 0.9),
+                        new THREE.MeshStandardMaterial({ color: 0x10b981, roughness: 0.3 })
+                    );
+                    charger.position.set(2.2, 0, 0);
+                    group.add(charger);
+                }
+
+                // Conventional Current Dots (+q) flowing around the loop
+                const currentDots = [];
+                for (let i = 0; i < 10; i++) {
+                    const dot = createSphere(0.09, isCharging ? 0x34d399 : 0xfde047, 0, 1.35, 0);
+                    group.add(dot);
+                    currentDots.push({ mesh: dot, offset: i / 10 });
+                }
+
+                if (!isCharging) {
+                    ui.label('Battery (EMF E & Internal Resistance r)', [-1.7, 1.05, 0], '#93c5fd');
+                    ui.label('External Load R (V = E − Ir < E)', [2.1, 1.05, 0], '#fde047');
+                    ui.info('<b>Discharging a Battery (<span class="mx"><i>V</i> = <i>E</i> − <i>Ir</i></span>, <span class="mx"><i>I</i> = <i>E</i> / (<i>R</i> + <i>r</i>)</span>):</b> ဘက်ထရီကို အသုံးပြုနေစဉ် ဘက်ထရီအတွင်းရှိ <strong>Internal Resistance (r)</strong> ကြောင့် ဗို့အား <span class="mx"><i>Ir</i></span> ဆုံးရှုံးသွားသဖြင့် Terminal Voltage <strong>V</strong> သည် EMF <strong>E</strong> ထက် <strong>ငယ်သည် (V &lt; E)</strong>။');
+                } else {
+                    ui.label('Battery Being Charged (V = E + Ir > E)', [-1.7, 1.05, 0], '#fca5a5');
+                    ui.label('External DC Charger (Pushes I into + Terminal)', [2.1, 1.05, 0], '#34d399');
+                    ui.info('<b>Charging a Battery (<span class="mx"><i>V</i> = <i>E</i> + <i>Ir</i></span>, <span class="mx"><i>I</i> = (<i>V</i><sub>charger</sub> − <i>E</i>) / (<i>R</i> + <i>r</i>)</span>):</b> ပြင်ပ Charger ဖြင့် ဘက်ထရီ၏ အပေါင်းစွန်း (+) ထဲသို့ လျှပ်စီးပြန်သွင်းသောအခါ Terminal Voltage <strong>V</strong> သည် EMF <strong>E</strong> ထက် <strong>ကြီးသည် (V &gt; E)</strong>။');
+                }
+
+                return (t) => {
+                    // Perimeter loop animation
+                    currentDots.forEach(d => {
+                        // Discharging: + terminal at (-0.68) -> bottom -> right -> top -> - terminal at (-2.65)
+                        // Wait: let's set + terminal on right of cell (-1.4) so top wire flows left-to-right!
+                        const dir = isCharging ? -1 : 1;
+                        const s = ((dir * t * 0.32) + d.offset + 10) % 1.0;
+                        if (s < 0.35) {
+                            const u = s / 0.35;
+                            d.mesh.position.set(-2.65 + u * 4.85, 1.35, 0);
+                        } else if (s < 0.5) {
+                            const u = (s - 0.35) / 0.15;
+                            d.mesh.position.set(2.2, 1.35 - u * 2.7, 0);
+                        } else if (s < 0.85) {
+                            const u = (s - 0.5) / 0.35;
+                            d.mesh.position.set(2.2 - u * 2.88, -1.35, 0);
+                        } else {
+                            const u = (s - 0.85) / 0.15;
+                            d.mesh.position.set(-0.68, -1.35 + u * 1.35, 0);
+                        }
+                    });
+                };
+            }, [
+                { color: '#ef4444', text: 'EMF Source (E)' },
+                { color: '#f59e0b', text: 'Internal Resistance (r)' },
+                { color: '#fde047', text: 'Current I' }
+            ]);
+        }
+
+        // 3D Viewer 10.2: Batteries in Series (Aiding & Opposing) and Parallel
+        function render3D_10_2(mode) {
+            init3DViewer('viewer-10-2', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.4, 8.2);
+
+                if (mode === 'series-aiding') {
+                    // Two cells in Series Aiding (+ - + -)
+                    const c1 = createBatteryCell(-1.1, 0.3, 0, 0.95, false);
+                    const c2 = createBatteryCell(1.1, 0.3, 0, 0.95, false);
+                    group.add(c1, c2);
+
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-2.6, 0.3, 0), new THREE.Vector3(-1.75, 0.3, 0), 0x94a3b8),
+                        createWireSegment(new THREE.Vector3(-0.45, 0.3, 0), new THREE.Vector3(0.45, 0.3, 0), 0xfbbf24),
+                        createWireSegment(new THREE.Vector3(1.75, 0.3, 0), new THREE.Vector3(2.6, 0.3, 0), 0x94a3b8)
+                    );
+
+                    ui.label('Cell 1 (E₁, r₁)', [-1.1, 1.15, 0], '#fca5a5');
+                    ui.label('Series Aiding: E_eq = E₁ + E₂,  r_eq = r₁ + r₂', [0, -0.95, 0], '#fbbf24');
+                    ui.label('Cell 2 (E₂, r₂)', [1.1, 1.15, 0], '#fca5a5');
+                    ui.info('<b>Batteries in Series Aiding (<span class="mx"><i>E</i><sub>eq</sub> = <i>E</i><sub>1</sub> + <i>E</i><sub>2</sub></span>, <span class="mx"><i>r</i><sub>eq</sub> = <i>r</i><sub>1</sub> + <i>r</i><sub>2</sub></span>):</b> ဘက်ထရီတစ်လုံး၏ အနုတ်စွန်း (−) ကို နောက်တစ်လုံး၏ အပေါင်းစွန်း (+) နှင့် တစ်တန်းတည်း ဆက်သွယ်သောအခါ စုစုပေါင်း EMF <strong>ပေါင်းလဒ်အဖြစ် တိုးလာ</strong> သည်။');
+                } else if (mode === 'series-opposing') {
+                    // Two cells in Series Opposing (+ - - +)
+                    const c1 = createBatteryCell(-1.1, 0.3, 0, 0.95, false);
+                    const c2 = createBatteryCell(1.1, 0.3, 0, 0.95, true); // Flipped polarity
+                    group.add(c1, c2);
+
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-2.6, 0.3, 0), new THREE.Vector3(-1.75, 0.3, 0), 0x94a3b8),
+                        createWireSegment(new THREE.Vector3(-0.45, 0.3, 0), new THREE.Vector3(0.45, 0.3, 0), 0xf43f5e),
+                        createWireSegment(new THREE.Vector3(1.75, 0.3, 0), new THREE.Vector3(2.6, 0.3, 0), 0x94a3b8)
+                    );
+
+                    ui.label('Cell 1 (E₁, r₁)', [-1.1, 1.15, 0], '#fca5a5');
+                    ui.label('Series Opposing: E_eq = |E₁ − E₂|,  r_eq = r₁ + r₂', [0, -0.95, 0], '#fda4af');
+                    ui.label('Cell 2 Reversed (E₂, r₂)', [1.1, 1.15, 0], '#93c5fd');
+                    ui.info('<b>Batteries in Series Opposing (<span class="mx"><i>E</i><sub>eq</sub> = |<i>E</i><sub>1</sub> − <i>E</i><sub>2</sub>|</span>, <span class="mx"><i>r</i><sub>eq</sub> = <i>r</i><sub>1</sub> + <i>r</i><sub>2</sub></span>):</b> တူညီသောအစွန်းချင်း (+ နှင့် + သို့မဟုတ် − နှင့် −) ဆန့်ကျင်ဘက်ဆက်မိပါက EMF အချင်းချင်း <strong>ခုနှိမ်သွား</strong> သော်လည်း Internal Resistance မှာ <strong>r₁ + r₂</strong> အတိုင်း ပေါင်းမြဲပေါင်းသည်။');
+                } else {
+                    // Two identical cells in Parallel
+                    const cTop = createBatteryCell(0, 0.95, 0, 0.85, false);
+                    const cBot = createBatteryCell(0, -0.95, 0, 0.85, false);
+                    group.add(cTop, cBot);
+
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-2.5, 0, 0), new THREE.Vector3(-1.4, 0, 0), 0x94a3b8),
+                        createWireSegment(new THREE.Vector3(-1.4, -0.95, 0), new THREE.Vector3(-1.4, 0.95, 0), 0x94a3b8),
+                        createWireSegment(new THREE.Vector3(-1.4, 0.95, 0), new THREE.Vector3(-0.6, 0.95, 0), 0x94a3b8),
+                        createWireSegment(new THREE.Vector3(-1.4, -0.95, 0), new THREE.Vector3(-0.6, -0.95, 0), 0x94a3b8),
+
+                        createWireSegment(new THREE.Vector3(0.6, 0.95, 0), new THREE.Vector3(1.4, 0.95, 0), 0xef4444),
+                        createWireSegment(new THREE.Vector3(0.6, -0.95, 0), new THREE.Vector3(1.4, -0.95, 0), 0xef4444),
+                        createWireSegment(new THREE.Vector3(1.4, -0.95, 0), new THREE.Vector3(1.4, 0.95, 0), 0xef4444),
+                        createWireSegment(new THREE.Vector3(1.4, 0, 0), new THREE.Vector3(2.5, 0, 0), 0xef4444)
+                    );
+
+                    ui.label('Top Cell (E, r)', [0, 1.65, 0], '#34d399');
+                    ui.label('Parallel: E_eq = E,  1/r_eq = 1/r₁ + 1/r₂ (r/2)', [2.1, 0.45, 0], '#fbbf24');
+                    ui.label('Bottom Cell (E, r)', [0, -1.65, 0], '#34d399');
+                    ui.info('<b>Identical Batteries in Parallel (<span class="mx"><i>E</i><sub>eq</sub> = <i>E</i></span>, <span class="mx"><i>r</i><sub>eq</sub> = <i>r</i> / <i>n</i></span>):</b> တူညီသော ဘက်ထရီများကို ပြိုင်ဆက် (Parallel) ဆက်သောအခါ စုစုပေါင်း EMF မပြောင်းလဲဘဲ <strong>Internal Resistance သည် n ဆ လျော့နည်းသွား</strong> သဖြင့် လျှပ်စီးပိုမိုထုတ်ပေးနိုင်သည်။');
+                }
+
+                return () => {};
+            }, [
+                { color: '#ef4444', text: '+ Positive Terminal' },
+                { color: '#1e293b', text: '− Negative Terminal' }
+            ]);
+        }
+
+        // 3D Viewer 10.3: Bulb Power Brightness (Series vs Parallel) & High-Voltage Power Transmission
+        function render3D_10_3(mode) {
+            if (mode === 'bulbs') {
+                init3DViewer('viewer-10-3', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.5, 8.2);
+
+                    // Left Side: SERIES (60W bulb R1 high glows BRIGHTER than 100W bulb R2 low because P = I²R)
+                    const sBulb1 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.42, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xfef08a, emissive: 0xf59e0b, emissiveIntensity: 1.0 })
+                    );
+                    sBulb1.position.set(-2.4, 0.5, 0);
+                    const sBulb2 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.42, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xfde047, emissive: 0xd97706, emissiveIntensity: 0.35 })
+                    );
+                    sBulb2.position.set(-1.1, 0.5, 0);
+                    group.add(sBulb1, sBulb2);
+                    group.add(createWireSegment(new THREE.Vector3(-3.1, 0.5, 0), new THREE.Vector3(-0.4, 0.5, 0), 0x94a3b8));
+
+                    // Right Side: PARALLEL (100W bulb R2 low glows BRIGHTER than 60W bulb R1 high because P = V²/R)
+                    const pBulb1 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.42, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xfde047, emissive: 0xd97706, emissiveIntensity: 0.45 })
+                    );
+                    pBulb1.position.set(1.75, 0.95, 0);
+                    const pBulb2 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.42, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xfef08a, emissive: 0xf59e0b, emissiveIntensity: 1.0 })
+                    );
+                    pBulb2.position.set(1.75, -0.35, 0);
+                    group.add(pBulb1, pBulb2);
+                    group.add(
+                        createWireSegment(new THREE.Vector3(0.8, -0.35, 0), new THREE.Vector3(0.8, 0.95, 0), 0x38bdf8),
+                        createWireSegment(new THREE.Vector3(0.8, 0.95, 0), new THREE.Vector3(2.7, 0.95, 0), 0x38bdf8),
+                        createWireSegment(new THREE.Vector3(0.8, -0.35, 0), new THREE.Vector3(2.7, -0.35, 0), 0x38bdf8),
+                        createWireSegment(new THREE.Vector3(2.7, -0.35, 0), new THREE.Vector3(2.7, 0.95, 0), 0x38bdf8)
+                    );
+
+                    ui.label('SERIES (Same I): 60W (High R) Brighter!', [-1.75, 1.35, 0], '#fbbf24');
+                    ui.label('PARALLEL (Same V): 100W (Low R) Brighter!', [1.75, 1.65, 0], '#34d399');
+                    ui.info('<b>Exam Classic — 60 W vs 100 W Bulbs (<span class="mx"><i>R</i> = <i>V</i>² / <i>P</i></span>):</b> 60 W မီးလုံးသည် 100 W မီးလုံးထက် ခုခံမှု <strong>R ပိုကြီး</strong> သည်။ <strong>Series</strong> ဆက်လျှင် လျှပ်စီး I တူညီသဖြင့် <span class="mx"><i>P</i> = <i>I</i>²<i>R</i></span> အရ <strong>60 W မီးလုံး ပိုလင်း</strong> ပြီး၊ <strong>Parallel</strong> ဆက်လျှင် ဗို့အား V တူညီသဖြင့် <span class="mx"><i>P</i> = <i>V</i>²/<i>R</i></span> အရ <strong>100 W မီးလုံး ပိုလင်း</strong> သည်။');
+                }, [
+                    { color: '#fef08a', text: 'Brighter Bulb' },
+                    { color: '#d97706', text: 'Dimmer Bulb' }
+                ]);
+            } else {
+                // High-Voltage Electrical Power Transmission (P_loss = I² R_line)
+                init3DViewer('viewer-10-3', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.4, 8.2);
+
+                    const plant = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.3, 1.1), new THREE.MeshStandardMaterial({ color: 0x3b82f6 }));
+                    plant.position.set(-2.7, 0, 0);
+                    const stepUp = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 1.0, 24), new THREE.MeshStandardMaterial({ color: 0xf59e0b }));
+                    stepUp.position.set(-1.3, 0, 0);
+                    const stepDown = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 1.0, 24), new THREE.MeshStandardMaterial({ color: 0x10b981 }));
+                    stepDown.position.set(1.5, 0, 0);
+                    const city = new THREE.Mesh(new THREE.BoxGeometry(1.1, 1.3, 1.1), new THREE.MeshStandardMaterial({ color: 0x6366f1 }));
+                    city.position.set(2.8, 0, 0);
+
+                    group.add(plant, stepUp, stepDown, city);
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-2.2, 0.25, 0), new THREE.Vector3(2.3, 0.25, 0), 0xfde047, 0.03),
+                        createWireSegment(new THREE.Vector3(-2.2, -0.25, 0), new THREE.Vector3(2.3, -0.25, 0), 0xfde047, 0.03)
+                    );
+
+                    ui.label('Power Station', [-2.7, 1.05, 0], '#93c5fd');
+                    ui.label('High-Voltage Lines (Low I → Low P_loss = I²R)', [0.1, 1.15, 0], '#fde047');
+                    ui.label('City / Homes (230 V)', [2.8, 1.05, 0], '#a5b4fc');
+                    ui.info('<b>High-Voltage Power Transmission (<span class="mx"><i>P</i><sub>loss</sub> = <i>I</i>² <i>R</i><sub>line</sub></span>):</b> လျှပ်စစ်စွမ်းအား <span class="mx"><i>P</i> = <i>VI</i></span> ကို ခရီးဝေးသို့ ပို့လွှတ်ရာတွင် ဗို့အား <strong>V</strong> ကို အလွန်မြင့်တင်လိုက်ခြင်းဖြင့် လျှပ်စီး <strong>I = P / V</strong> လျော့နည်းသွားပြီး ဝါယာကြိုးတစ်လျှောက် အပူအဖြစ် စွမ်းအင်ဆုံးရှုံးမှု (<span class="mx"><i>I</i>²<i>R</i></span>) ကို အနည်းဆုံးဖြစ်စေသည်။');
+                }, [
+                    { color: '#f59e0b', text: 'Step-Up Transformer' },
+                    { color: '#10b981', text: 'Step-Down Transformer' }
+                ]);
+            }
+        }
+
+        // 3D Viewer 10.4: Joule's Law of Electric Heating & Safety Electric Fuse
+        function render3D_10_4(mode) {
+            if (mode === 'heater') {
+                init3DViewer('viewer-10-4', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 7.8);
+
+                    // Glowing Nichrome Heating Coil (Helix)
+                    const coilPoints = [];
+                    const turns = 10;
+                    for (let i = 0; i <= 140; i++) {
+                        const u = i / 140;
+                        const x = -2.2 + u * 4.4;
+                        const ang = u * turns * Math.PI * 2;
+                        coilPoints.push(new THREE.Vector3(x, 0.55 * Math.sin(ang), 0.55 * Math.cos(ang)));
+                    }
+                    const tubeGeo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coilPoints), 140, 0.08, 12, false);
+                    const coilMat = new THREE.MeshStandardMaterial({ color: 0xf97316, emissive: 0xef4444, emissiveIntensity: 0.75, roughness: 0.3 });
+                    const coilMesh = new THREE.Mesh(tubeGeo, coilMat);
+                    group.add(coilMesh);
+
+                    // Terminal Leads
+                    group.add(
+                        createWireSegment(new THREE.Vector3(-3.2, 0, 0.55), new THREE.Vector3(-2.2, 0, 0.55), 0x94a3b8, 0.05),
+                        createWireSegment(new THREE.Vector3(2.2, 0, 0.55), new THREE.Vector3(3.2, 0, 0.55), 0x94a3b8, 0.05)
+                    );
+
+                    // Rising Heat Waves
+                    const heatOrbs = [];
+                    for (let i = 0; i < 8; i++) {
+                        const orb = createSphere(0.11, 0xfef08a, -1.6 + i * 0.45, 0.8, 0);
+                        group.add(orb);
+                        heatOrbs.push({ mesh: orb, baseX: -1.6 + i * 0.45, offset: i * 0.14 });
+                    }
+
+                    ui.label('Nichrome Heating Element (High Resistivity & High Melting Point)', [0, 1.65, 0], '#fb923c');
+                    ui.label('Joule Heat H = I² R t = V I t = (V² / R) t', [0, -1.35, 0], '#fde047');
+                    ui.info('<b>Joule\'s Law of Electric Heating (<span class="mx"><i>H</i> = <i>I</i>² <i>R</i> <i>t</i></span>):</b> ခုခံမှုမြင့်မားသော <strong>Nichrome ဝါယာခွေ</strong> အတွင်း လျှပ်စီး <strong>I</strong> ဖြတ်သန်းသောအခါ အီလက်ထရွန်များနှင့် သတ္တုအိုင်းယွန်းများ တိုက်မိရာမှ အပူစွမ်းအင် <span class="mx"><i>H</i> = <i>I</i>²<i>Rt</i></span> (Joules) သို့မဟုတ် <span class="mx"><i>H</i> = <i>I</i>²<i>Rt</i> / <i>J</i></span> (Calories) ထွက်ပေါ်လာသည်။');
+
+                    return (t) => {
+                        coilMat.emissiveIntensity = 0.65 + 0.35 * Math.sin(t * 5);
+                        heatOrbs.forEach(o => {
+                            const p = (t * 0.7 + o.offset) % 1.0;
+                            o.mesh.position.set(o.baseX + Math.sin(t * 4 + o.offset * 6) * 0.15, 0.6 + p * 1.4, 0);
+                        });
+                    };
+                }, [
+                    { color: '#f97316', text: 'Glowing Nichrome Coil' },
+                    { color: '#fef08a', text: 'Radiated Heat H' }
+                ]);
+            } else {
+                // Electric Fuse Overload Protection
+                init3DViewer('viewer-10-4', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 7.6);
+
+                    // Glass Cartridge Fuse Body
+                    const glassBody = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.65, 0.65, 3.0, 32, 1, true).rotateZ(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+                    );
+                    group.add(glassBody);
+
+                    // Metal End Caps
+                    const capL = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 0.45, 28).rotateZ(Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.7 }));
+                    capL.position.x = -1.5;
+                    const capR = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 0.45, 28).rotateZ(Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.7 }));
+                    capR.position.x = 1.5;
+                    group.add(capL, capR);
+
+                    // Thin Fuse Element Wire inside (Tin-Lead Alloy)
+                    const fuseLeft = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.4, 14).rotateZ(Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xfbbf24 }));
+                    fuseLeft.position.x = -0.7;
+                    const fuseRight = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.4, 14).rotateZ(Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xfbbf24 }));
+                    fuseRight.position.x = 0.7;
+                    group.add(fuseLeft, fuseRight);
+
+                    ui.label('Cartridge Electric Fuse (Connected in Live Wire)', [0, 1.35, 0], '#93c5fd');
+                    ui.label('Low-Melting-Point Tin-Lead Alloy Wire', [0, -1.25, 0], '#fbbf24');
+                    ui.info('<b>Electric Fuse Safety Device:</b> Fuse ဝါယာကြိုးကို <strong>Live Wire</strong> တွင် တန်းဆက် (Series) တပ်ဆင်ထားသည်။ သတ်မှတ်ထားသော Fuse Rating ထက် လျှပ်စီးပိုမိုစီးဆင်းလာပါက အပူလွန်ကဲပြီး <strong>အရည်ပျော်ပြတ်တောက် (Melts & Breaks Circuit)</strong> ကာ လျှပ်စစ်ပစ္စည်းများနှင့် မီးလောင်မှုအန္တရာယ်မှ ကာကွယ်ပေးသည်။');
+
+                    return (t) => {
+                        const cycle = t % 3.5;
+                        if (cycle > 2.0) {
+                            // Melted gap in center
+                            fuseLeft.position.x = -0.82;
+                            fuseRight.position.x = 0.82;
+                            fuseLeft.material.color.setHex(0xef4444);
+                            fuseRight.material.color.setHex(0xef4444);
+                        } else {
+                            fuseLeft.position.x = -0.7;
+                            fuseRight.position.x = 0.7;
+                            fuseLeft.material.color.setHex(0xfbbf24);
+                            fuseRight.material.color.setHex(0xfbbf24);
+                        }
+                    };
+                }, [
+                    { color: '#cbd5e1', text: 'Metal Caps' },
+                    { color: '#fbbf24', text: 'Fuse Element' }
+                ]);
+            }
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE CHAPTER 10 CALCULATORS
+        // ==========================================
+        function switchCh10CalcInputs() {
+            const mode = document.getElementById('ch10-calc-mode')?.value || 'emf';
+            ['emf', 'batteries', 'kwh', 'joule'].forEach(k => {
+                const el = document.getElementById(`ch10-in-${k}`);
+                if (el) el.classList.toggle('hidden', mode !== k);
+            });
+            runCh10Calculator();
+        }
+
+        function runCh10Calculator() {
+            const mode = document.getElementById('ch10-calc-mode')?.value || 'emf';
+            const out = document.getElementById('ch10-calc-output');
+            if (!out) return;
+
+            if (mode === 'emf') {
+                const E = parseFloat(document.getElementById('em-e')?.value || '12');
+                const r = parseFloat(document.getElementById('em-r')?.value || '0.5');
+                const R = parseFloat(document.getElementById('em-R')?.value || '5.5');
+
+                const I = E / (R + r);
+                const Vterm = E - I * r;
+                const Pout = I * I * R;
+                const Ploss = I * I * r;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Discharging Circuit: I = E / (R + r) &nbsp;|&nbsp; Terminal Voltage V = E − I r</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Circuit Current I = ${E} / (${R} + ${r}) = ${I.toFixed(2)} A &nbsp;|&nbsp; Terminal Voltage V = ${Vterm.toFixed(2)} V</div>
+                        <div class="font-mono text-sky-300">External Power Output = ${Pout.toFixed(2)} W, &nbsp; Internal Power Loss (I²r) = ${Ploss.toFixed(2)} W</div>
+                    </div>
+                `;
+            } else if (mode === 'batteries') {
+                const config = document.getElementById('bt-cfg')?.value || 'aiding';
+                const e1 = parseFloat(document.getElementById('bt-e1')?.value || '6');
+                const r1 = parseFloat(document.getElementById('bt-r1')?.value || '0.4');
+                const e2 = parseFloat(document.getElementById('bt-e2')?.value || '4');
+                const r2 = parseFloat(document.getElementById('bt-r2')?.value || '0.6');
+                const R = parseFloat(document.getElementById('bt-R')?.value || '4');
+
+                let eEq = 0, rEq = 0;
+                if (config === 'aiding') {
+                    eEq = e1 + e2;
+                    rEq = r1 + r2;
+                } else if (config === 'opposing') {
+                    eEq = Math.abs(e1 - e2);
+                    rEq = r1 + r2;
+                } else {
+                    eEq = e1; // Identical cells in parallel
+                    rEq = (r1 * r2) / (r1 + r2);
+                }
+                const I = eEq / (R + rEq);
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Combined Batteries (${config === 'aiding' ? 'Series Aiding' : config === 'opposing' ? 'Series Opposing' : 'Parallel'})</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">E_eq = ${eEq.toFixed(2)} V, &nbsp; r_eq = ${rEq.toFixed(3)} Ω &nbsp;|&nbsp; Current I = ${I.toFixed(2)} A</div>
+                    </div>
+                `;
+            } else if (mode === 'kwh') {
+                const powerW = parseFloat(document.getElementById('kw-p')?.value || '1500');
+                const hoursPerDay = parseFloat(document.getElementById('kw-h')?.value || '4');
+                const days = parseFloat(document.getElementById('kw-d')?.value || '30');
+                const rate = parseFloat(document.getElementById('kw-rate')?.value || '125');
+
+                const kwhTotal = (powerW / 1000) * hoursPerDay * days;
+                const joulesTotal = kwhTotal * 3.6e6;
+                const cost = kwhTotal * rate;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Electrical Energy (Units) = P(kW) × t(hours) &nbsp;|&nbsp; 1 kWh = 1 Unit = 3.6 × 10⁶ J</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Total Energy = ${kwhTotal.toFixed(2)} kWh (Units) = ${joulesTotal.toExponential(3)} J</div>
+                        <div class="font-mono text-sky-300 font-bold">Total Electricity Cost = ${kwhTotal.toFixed(2)} × ${rate} = ${cost.toLocaleString()} Kyats</div>
+                    </div>
+                `;
+            } else {
+                const I = parseFloat(document.getElementById('jl-i')?.value || '5');
+                const R = parseFloat(document.getElementById('jl-r')?.value || '20');
+                const tMin = parseFloat(document.getElementById('jl-t')?.value || '10');
+
+                const tSec = tMin * 60;
+                const heatJ = I * I * R * tSec;
+                const heatCal = heatJ / 4.186;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Joule's Law of Electric Heating: H = I² R t &nbsp;(J = 4.186 J cal⁻¹)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Heat Produced H = ${I}² × ${R} × ${tSec} s = ${heatJ.toLocaleString()} J (${(heatJ / 1000).toFixed(2)} kJ)</div>
+                        <div class="font-mono text-sky-300">In Calories: H = ${heatCal.toFixed(1)} cal (${(heatCal / 1000).toFixed(2)} kcal)</div>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // 4. ARTICLE TEMPLATES (OVERVIEW + 10.1 - 10.4 + WORKED)
+        // ==========================================
+        const ARTICLES = {
+            'overview': {
+                badge: 'Chapter 10 Master Overview & Formula Table',
+                title: 'အခန်း (၁၀) လျှပ်စစ်စွမ်းအင်၊ စွမ်းအားနှင့် လျှပ်စီး၏ အပူသက်ရောက်မှု',
+                subtitle: 'Electrical Energy, Power and Heating Effect of Electric Current — ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်',
+                html: `
+                    <!-- Master Formula Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Grade 12 Physics Chapter 10</span>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900">အခန်း (၁၀) အဓိက ပုံသေနည်းများနှင့် SI ယူနစ်များ ဇယားချုပ်</h3>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 font-semibold self-start">Exam Must-Know</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ခေါင်းစဉ် (Topic)</th>
+                                        <th class="p-3">ပုံသေနည်း (Formula)</th>
+                                        <th class="p-3">မှတ်ချက်နှင့် SI ယူနစ် (Notes & Units)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">1. EMF & Terminal Voltage</td>
+                                        <td class="p-3 font-mono font-bold text-indigo-700">I = E / (R + r) &nbsp;|&nbsp; Discharging: V = E − I r<br>Open Circuit: V = E &nbsp;|&nbsp; Charging: V = E + I r</td>
+                                        <td class="p-3">E in Volt (V), r = internal resistance (Ω)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">2. Batteries in Series & Parallel</td>
+                                        <td class="p-3 font-mono font-bold text-cyan-700">Series Aiding: E<sub>eq</sub> = E<sub>1</sub> + E<sub>2</sub>, r<sub>eq</sub> = r<sub>1</sub> + r<sub>2</sub><br>Series Opposing: E<sub>eq</sub> = |E<sub>1</sub> − E<sub>2</sub>|, r<sub>eq</sub> = r<sub>1</sub> + r<sub>2</sub><br>Parallel (n identical): E<sub>eq</sub> = E, r<sub>eq</sub> = r / n</td>
+                                        <td class="p-3">Current I = E<sub>eq</sub> / (R + r<sub>eq</sub>)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">3. Electrical Energy (W)</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-700">W = Q V = V I t = I² R t = (V² / R) t</td>
+                                        <td class="p-3">Joule (J); 1 kWh = 1 Unit = 3.6 × 10⁶ J</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">4. Electrical Power (P)</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">P = W / t = V I = I² R = V² / R</td>
+                                        <td class="p-3">Watt (W = J s⁻¹); 1 kW = 1000 W</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">5. Joule's Law of Electric Heating</td>
+                                        <td class="p-3 font-mono font-bold text-rose-700">H = I² R t = V I t = (V² / R) t &nbsp;(in Joules)<br>H = I² R t / J &nbsp;(in Calories)</td>
+                                        <td class="p-3">Joule's mechanical equivalent J = 4.186 J cal⁻¹</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900">🧠 Chapter 10 အပိုင်းတစ်ခုချင်းစီသို့ အမြန်သွားရန်</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <button onclick="selectArticle('10.1')" class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-left hover:bg-indigo-100 transition">
+                                <div class="font-bold text-indigo-950 text-sm">10.1 EMF & Circuits (3D) →</div>
+                                <p class="text-indigo-800 mt-1">3D Discharging (V = E − Ir) နှင့် Charging (V = E + Ir)</p>
+                            </button>
+                            <button onclick="selectArticle('10.2')" class="p-4 rounded-2xl bg-cyan-50 border border-cyan-200 text-left hover:bg-cyan-100 transition">
+                                <div class="font-bold text-cyan-950 text-sm">10.2 Batteries Combo (3D) →</div>
+                                <p class="text-cyan-800 mt-1">Series Aiding, Series Opposing နှင့် Parallel 3D Circuits</p>
+                            </button>
+                            <button onclick="selectArticle('10.3')" class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-left hover:bg-amber-100 transition">
+                                <div class="font-bold text-amber-950 text-sm">10.3 Energy & Power (3D) →</div>
+                                <p class="text-amber-800 mt-1">P = VI = I²R = V²/R, Bulb Brightness & Transmission</p>
+                            </button>
+                            <button onclick="selectArticle('10.4')" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-left hover:bg-rose-100 transition">
+                                <div class="font-bold text-rose-950 text-sm">10.4 Joule's Heating (3D) →</div>
+                                <p class="text-rose-800 mt-1">3D Nichrome Heating Coil, H = I²Rt & Electric Fuse</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Big-Picture Chapter Roadmap -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">📖 Chapter 10 တစ်ခန်းလုံး၏ အနှစ်ချုပ် ရှင်းလင်းချက်</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">၁။ Article 10.1 — Electromotive Force & Electric Circuits</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဘက်ထရီ၏ <strong>Electromotive Force (EMF, E)</strong>၊ ဘက်ထရီအတွင်းရှိ <strong>Internal Resistance (r)</strong> နှင့် ပြင်ပပတ်လမ်းဗို့အား <strong>Terminal Voltage (<span class="mx"><i>V</i> = <i>E</i> − <i>Ir</i></span>)</strong> တို့၏ ဆက်သွယ်ချက်ကို လေ့လာရမည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၂။ Article 10.2 — Batteries in Series and Parallel</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဘက်ထရီများကို <strong>Series Aiding (<span class="mx"><i>E</i><sub>1</sub> + <i>E</i><sub>2</sub></span>)</strong>၊ <strong>Series Opposing (<span class="mx">|<i>E</i><sub>1</sub> − <i>E</i><sub>2</sub>|</span>)</strong> နှင့် <strong>Parallel (<span class="mx"><i>E</i><sub>eq</sub> = <i>E</i>, <i>r</i><sub>eq</sub> = <i>r</i>/<i>n</i></span>)</strong> ဆက်သွယ်ပုံများ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၃။ Article 10.3 — Electrical Energy and Electrical Power</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">လျှပ်စစ်စွမ်းအင် (<span class="mx"><i>W</i> = <i>VIt</i></span>)၊ လျှပ်စစ်စွမ်းအား (<span class="mx"><i>P</i> = <i>VI</i> = <i>I</i>²<i>R</i> = <i>V</i>²/<i>R</i></span>) နှင့် မီတာယူနစ် (<strong>1 kWh = 1 Unit = 3.6 × 10⁶ J</strong>) တွက်ချက်ပုံများကို ရှင်းပြထားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၄။ Article 10.4 — Joule's Law of Electric Heating</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">လျှပ်စီးကြောင့် ထွက်ပေါ်လာသော အပူစွမ်းအင် (<span class="mx"><i>H</i> = <i>I</i>²<i>Rt</i></span>) နှင့် လျှပ်စစ်မီးပူ၊ မီးဖို၊ <strong>Electric Fuse</strong> တို့၏ အလုပ်လုပ်ပုံများ ပါဝင်သည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            '10.1': {
+                badge: 'Article 10.1',
+                title: 'Electromotive Force (EMF) and Electric Circuits',
+                subtitle: 'လျှပ်စစ်တွန်းအား (EMF), Internal Resistance (r) နှင့် Terminal Voltage (V = E ∓ Ir) 3D',
+                html: `
+                    <!-- 3D Viewer 10.1 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Interactive 3D Circuit Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Battery Discharging (V = E − Ir) နှင့် Charging (V = E + Ir) 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_10_1('discharging')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">💡 Discharging Battery (V = E − Ir)</button>
+                                <button onclick="render3D_10_1('charging')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">🔌 Charging Battery (V = E + Ir)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-10-1" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">10.1</span>
+                            EMF (E), Internal Resistance (r) နှင့် Terminal Voltage (V) နှိုင်းယှဉ်ချက်
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">1. Electromotive Force (EMF, E)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    <strong>EMF (E)</strong> ဆိုသည်မှာ လျှပ်စီးပတ်လမ်းတစ်ပတ်လုံးသို့ ယူနစ်လျှပ်စစ်ပမာဏ (Unit positive charge) စီးဆင်းရန် ဘက်ထရီက ထောက်ပံ့ပေးသော စွမ်းအင်ပမာဏ (<span class="mx"><i>E</i> = <i>W</i> / <i>Q</i></span>) ဖြစ်သည်။ လျှပ်စီးမစီးနေသောအခါ (<strong>Open circuit, I = 0</strong>) တွင် <strong>V = E</strong> ဖြစ်သည်။
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                                <div class="font-bold text-amber-950 text-base">2. Three Terminal Voltage Cases</div>
+                                <div class="p-3 rounded-xl bg-white border border-amber-200 text-xs font-mono space-y-1">
+                                    <div>• <strong>Discharging (In use):</strong> V = E − I r &nbsp;(V &lt; E)</div>
+                                    <div>• <strong>Open Circuit (I = 0):</strong> V = E</div>
+                                    <div>• <strong>Charging (External charger):</strong> V = E + I r &nbsp;(V &gt; E)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_10_1('discharging')
+            },
+
+            '10.2': {
+                badge: 'Article 10.2',
+                title: 'Batteries in Series and Parallel',
+                subtitle: 'ဘက်ထရီများကို Series Aiding, Series Opposing နှင့် Parallel ပေါင်းစပ်ဆက်သွယ်ခြင်း 3D',
+                html: `
+                    <!-- 3D Viewer 10.2 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Interactive 3D Battery Network Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Batteries in Series Aiding, Series Opposing နှင့် Parallel 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_10_2('series-aiding')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">🔋 Series Aiding (E₁ + E₂)</button>
+                                <button onclick="render3D_10_2('series-opposing')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🔄 Series Opposing (|E₁ − E₂|)</button>
+                                <button onclick="render3D_10_2('parallel')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">🔀 Parallel (r / n)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-10-2" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Comparison Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-sm font-bold">10.2</span>
+                            ဘက်ထရီ ပေါင်းစပ်ဆက်သွယ်နည်း (၃) မျိုး ဇယားချုပ်
+                        </h3>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ဆက်သွယ်ပုံ (Connection)</th>
+                                        <th class="p-3">Equivalent EMF (E<sub>eq</sub>)</th>
+                                        <th class="p-3">Equivalent Internal Resistance (r<sub>eq</sub>)</th>
+                                        <th class="p-3">Circuit Current (I)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-amber-800">1. Series Aiding (+ − + −)</td>
+                                        <td class="p-3 font-mono font-bold">E<sub>eq</sub> = E<sub>1</sub> + E<sub>2</sub> (or n E)</td>
+                                        <td class="p-3 font-mono">r<sub>eq</sub> = r<sub>1</sub> + r<sub>2</sub> (or n r)</td>
+                                        <td class="p-3 font-mono">I = (E<sub>1</sub> + E<sub>2</sub>) / (R + r<sub>1</sub> + r<sub>2</sub>)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-rose-800">2. Series Opposing (+ − − +)</td>
+                                        <td class="p-3 font-mono font-bold">E<sub>eq</sub> = |E<sub>1</sub> − E<sub>2</sub>|</td>
+                                        <td class="p-3 font-mono">r<sub>eq</sub> = r<sub>1</sub> + r<sub>2</sub></td>
+                                        <td class="p-3 font-mono">I = |E<sub>1</sub> − E<sub>2</sub>| / (R + r<sub>1</sub> + r<sub>2</sub>)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-emerald-800">3. Parallel (n identical cells)</td>
+                                        <td class="p-3 font-mono font-bold">E<sub>eq</sub> = E</td>
+                                        <td class="p-3 font-mono">r<sub>eq</sub> = r / n</td>
+                                        <td class="p-3 font-mono">I = E / (R + r/n)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_10_2('series-aiding')
+            },
+
+            '10.3': {
+                badge: 'Article 10.3',
+                title: 'Electrical Energy and Electrical Power',
+                subtitle: 'လျှပ်စစ်စွမ်းအင် (W = VIt)၊ စွမ်းအား (P = VI = I²R = V²/R) နှင့် 3D Bulb Brightness / Transmission',
+                html: `
+                    <!-- 3D Viewer 10.3 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Interactive 3D Power Physics Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">60W vs 100W Bulb Brightness (Series vs Parallel) နှင့် High-Voltage Transmission</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_10_3('bulbs')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">💡 60W vs 100W Bulbs</button>
+                                <button onclick="render3D_10_3('transmission')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition">⚡ High-Voltage Power Lines</button>
+                            </div>
+                        </div>
+                        <div id="viewer-10-3" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm font-bold">10.3</span>
+                            Electrical Energy, Power ပုံသေနည်းများနှင့် မီတာယူနစ် (kWh)
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                                <div class="font-bold text-amber-950 text-base">1. Electrical Energy & Power Equations</div>
+                                <div class="p-3 rounded-xl bg-white border border-amber-200 text-xs font-mono space-y-1">
+                                    <div>• Electrical Energy: W = Q V = V I t = I² R t = (V² / R) t</div>
+                                    <div class="text-amber-900 font-bold">• Electrical Power: P = W / t = V I = I² R = V² / R</div>
+                                    <div>• Resistance of Appliance: R = V<sub>rated</sub>² / P<sub>rated</sub></div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+                                <div class="font-bold text-emerald-950 text-base">2. Commercial Unit of Electrical Energy (kWh)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    လျှပ်စစ်မီတာဘေလ် တွက်ချက်ရာတွင် အသုံးပြုသော ယူနစ်မှာ <strong>Kilowatt-hour (kWh or Unit)</strong> ဖြစ်သည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-emerald-200 text-xs font-mono space-y-1">
+                                    <div class="text-emerald-900 font-bold">1 kWh = 1000 W × 3600 s = 3.6 × 10⁶ J</div>
+                                    <div>Units (kWh) = [ Power (W) × Time (hours) ] / 1000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_10_3('bulbs')
+            },
+
+            '10.4': {
+                badge: 'Article 10.4',
+                title: 'Joule\'s Law of Electric Heating & Safety Devices',
+                subtitle: 'ဂျူးလ်၏ လျှပ်စီးအပူထုတ်လွှတ်မှု နိယာမ (H = I²Rt), Nichrome Coil နှင့် Electric Fuse 3D',
+                html: `
+                    <!-- 3D Viewer 10.4 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Interactive 3D Electric Heating Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Nichrome Heating Coil (H = I²Rt) နှင့် Safety Electric Fuse 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_10_4('heater')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🔥 Nichrome Heating Coil (H = I²Rt)</button>
+                                <button onclick="render3D_10_4('fuse')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">⚡ Electric Safety Fuse</button>
+                            </div>
+                        </div>
+                        <div id="viewer-10-4" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Joule's Law & Practical Heating Devices -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold">10.4</span>
+                            Joule's Law of Electric Heating နှင့် လက်တွေ့အသုံးချမှုများ
+                        </h3>
+
+                        <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2 text-sm">
+                            <div class="font-bold text-rose-950 text-base">🔥 Statement of Joule's Law of Electric Heating</div>
+                            <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                လျှပ်ကူးပစ္စည်းတစ်ခုအတွင်း လျှပ်စီးစီးဆင်းသောအခါ ထွက်ပေါ်လာသော အပူပမာဏ (<strong>H</strong>) သည် (၁) လျှပ်စီးနှစ်ထပ်ကိန်း (<strong>I²</strong>)၊ (၂) ခုခံမှု (<strong>R</strong>) နှင့် (၃) လျှပ်စီးဖြတ်သန်းချိန် (<strong>t</strong>) တို့နှင့် တိုက်ရိုက်အချိုးကျသည်-
+                            </p>
+                            <div class="p-3.5 rounded-xl bg-white border border-rose-200 font-mono font-bold text-center text-sm text-rose-900">
+                                H = I² R t = V I t = (V² / R) t &nbsp;(in Joules) &nbsp;&nbsp;|&nbsp;&nbsp; H = I² R t / J &nbsp;(in Calories, J = 4.186 J cal⁻¹)
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900">1. Why Nichrome is used in Heaters & Irons</div>
+                                <p class="text-slate-700">Nichrome (Nickel + Chromium alloy) သည် <strong>Resistivity မြင့်မား</strong> ပြီး <strong>Melting point (~1400°C) အလွန်မြင့်</strong> သည့်အပြင် အပူချိန်မြင့်တွင် အောက်ဆီဂျင်နှင့် ဓာတ်ပြုမီးလောင်ခြင်း (Oxidation) မရှိသောကြောင့် ဖြစ်သည်။</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+                                <div class="font-bold text-slate-900">2. Why Tin-Lead Alloy is used in Electric Fuses</div>
+                                <p class="text-slate-700">Fuse ဝါယာကြိုးသည် <strong>Melting point နိမ့်</strong> ပြီး Resistivity မြင့်မားရမည်ဖြစ်ကာ အိမ်သုံးပတ်လမ်း၏ <strong>Live Wire</strong> တွင် တန်းဆက် (Series) တပ်ဆင်ရသည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_10_4('heater')
+            },
+
+            'worked': {
+                badge: 'Interactive Calculator & Exam Q&A',
+                title: 'EMF / Batteries / kWh Cost / Joule Heating တွက်စက် နှင့် မေးခွန်းအဖြေများ',
+                subtitle: 'Grade 12 Physics Chapter 10 တွက်စာပုံသေနည်းများ စမ်းသပ်တွက်ချက်စက်နှင့် စာမေးပွဲမေးခွန်းအဖြေများ',
+                html: `
+                    <!-- Interactive Chapter 10 Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">⚡ Interactive Chapter 10 Electrical Energy & Power Calculator</h3>
+                            <span class="text-xs text-slate-300">တွက်ချက်လိုသော ပုံသေနည်းကို ရွေးချယ်ပါ</span>
+                        </div>
+
+                        <div class="max-w-md text-xs">
+                            <label class="block text-slate-300 mb-1">ပုံသေနည်း အမျိုးအစား ရွေးပါ</label>
+                            <select id="ch10-calc-mode" onchange="switchCh10CalcInputs()" class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                <option value="emf">1. EMF, Internal Resistance & Terminal Voltage (V = E − Ir)</option>
+                                <option value="batteries">2. Batteries in Series (Aiding/Opposing) & Parallel</option>
+                                <option value="kwh">3. Electrical Energy (kWh / Units) & Electricity Cost</option>
+                                <option value="joule">4. Joule's Law of Electric Heating (H = I² R t)</option>
+                            </select>
+                        </div>
+
+                        <!-- EMF Inputs -->
+                        <div id="ch10-in-emf" class="grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Battery EMF E (Volts)</label>
+                                <input id="em-e" type="number" step="0.5" value="12" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Internal Resistance r (Ω)</label>
+                                <input id="em-r" type="number" step="0.1" value="0.5" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">External Load R (Ω)</label>
+                                <input id="em-R" type="number" step="0.5" value="5.5" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Batteries Inputs -->
+                        <div id="ch10-in-batteries" class="hidden grid sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Connection</label>
+                                <select id="bt-cfg" onchange="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                    <option value="aiding">Series Aiding</option>
+                                    <option value="opposing">Series Opposing</option>
+                                    <option value="parallel">Parallel (E₁=E₂)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">E₁ (V)</label>
+                                <input id="bt-e1" type="number" value="6" oninput="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">r₁ (Ω)</label>
+                                <input id="bt-r1" type="number" step="0.1" value="0.4" oninput="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">E₂ (V)</label>
+                                <input id="bt-e2" type="number" value="4" oninput="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">r₂ (Ω)</label>
+                                <input id="bt-r2" type="number" step="0.1" value="0.6" oninput="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Load R (Ω)</label>
+                                <input id="bt-R" type="number" value="4" oninput="runCh10Calculator()" class="w-full px-2.5 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- kWh Cost Inputs -->
+                        <div id="ch10-in-kwh" class="hidden grid sm:grid-cols-4 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Appliance Power P (W)</label>
+                                <input id="kw-p" type="number" value="1500" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Hours / Day</label>
+                                <input id="kw-h" type="number" step="0.5" value="4" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Number of Days</label>
+                                <input id="kw-d" type="number" value="30" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Rate (Kyats / Unit)</label>
+                                <input id="kw-rate" type="number" value="125" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Joule Heating Inputs -->
+                        <div id="ch10-in-joule" class="hidden grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Current I (Amperes)</label>
+                                <input id="jl-i" type="number" step="0.5" value="5" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Resistance R (Ω)</label>
+                                <input id="jl-r" type="number" value="20" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Time t (Minutes)</label>
+                                <input id="jl-t" type="number" value="10" oninput="runCh10Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <div id="ch10-calc-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Worked Examples & Exam Q&A -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4 text-xs sm:text-sm myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900">✍️ စာမေးပွဲတွင် မေးလေ့ရှိသော Textbook တွက်စာနှင့် မေးခွန်းအဖြေများ</h3>
+
+                        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                            <div class="font-bold text-indigo-950">Q1 (EMF & Terminal Voltage): A battery has an emf of 12 V and an internal resistance of 0.5 Ω. When it is connected to an external resistor of 5.5 Ω, find (a) the current in the circuit and (b) the terminal voltage of the battery.</div>
+                            <div class="bg-slate-900 text-amber-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>(a) I = E / (R + r) = 12 V / (5.5 Ω + 0.5 Ω) = 12 / 6.0 = 2.0 A</div>
+                                <div>(b) Terminal Voltage V = E − I r = 12 V − (2.0 A × 0.5 Ω) = 12 − 1.0 = 11.0 V</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                            <div class="font-bold text-amber-950">Q2 (Electrical Energy & Cost): An electric heater rated 1500 W is used for 4 hours daily for 30 days. Find the total electrical energy consumed in kWh (units) and the total cost at 125 Kyats per unit.</div>
+                            <div class="bg-slate-900 text-emerald-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>P = 1500 W = 1.5 kW, &nbsp; Total time t = 4 h/day × 30 days = 120 hours</div>
+                                <div>Total Energy = P × t = 1.5 kW × 120 h = 180 kWh (180 Units)</div>
+                                <div>Total Cost = 180 Units × 125 Kyats/Unit = 22,500 Kyats</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                            <div class="font-bold text-rose-950">Q3 (Concept Question): Two electric bulbs rated (60 W, 220 V) and (100 W, 220 V) are connected (a) in series and (b) in parallel to a 220 V mains supply. Which bulb glows brighter in each case?</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> Since <span class="mx"><i>R</i> = <i>V</i>² / <i>P</i></span>, the <strong>60 W bulb has a higher resistance</strong> than the 100 W bulb (<span class="mx"><i>R</i><sub>60</sub> &gt; <i>R</i><sub>100</sub></span>).<br>
+                                (a) <strong>In Series:</strong> Both carry the same current <strong>I</strong>. Since <span class="mx"><i>P</i> = <i>I</i>²<i>R</i></span>, the <strong>60 W bulb</strong> dissipates more power and glows brighter.<br>
+                                (b) <strong>In Parallel:</strong> Both have the same voltage <strong>V</strong>. Since <span class="mx"><i>P</i> = <i>V</i>²/<i>R</i></span>, the <strong>100 W bulb</strong> dissipates more power and glows brighter.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runCh10Calculator()
+            }
+        };
+
+        // ==========================================
+        // 5. NAVIGATION & UI CONTROLLER (Matches Chapters 4–9 UI)
+        // ==========================================
+        function selectArticle(id) {
+            currentArticleId = id;
+            const article = ARTICLES[id];
+            if (!article) return;
+
+            clearActiveScenes();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                const badge = btn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-indigo-600', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const activeBtn = document.getElementById(`nav-${id}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                const badge = activeBtn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-indigo-600', 'text-white');
+                }
+            }
+
+            const container = document.getElementById('content-container');
+            const ids = ['overview', '10.1', '10.2', '10.3', '10.4', 'worked'];
+            const labels = {
+                'overview': 'အခန်း (၁၀) မိတ်ဆက်',
+                '10.1': '10.1 EMF & Circuits',
+                '10.2': '10.2 Batteries Combo',
+                '10.3': '10.3 Energy & Power',
+                '10.4': '10.4 Joule\'s Heating',
+                'worked': 'Calculator & Q&A'
+            };
+            const idx = ids.indexOf(id);
+            const prevId = idx > 0 ? ids[idx - 1] : null;
+            const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 mb-2">
+                        ${article.badge}
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${article.title}</h1>
+                    <p class="mt-1 text-sm sm:text-base text-slate-600 font-medium">${article.subtitle}</p>
+                </div>
+
+                ${article.html}
+
+                <div class="pt-4 pb-8 flex items-center justify-between gap-4 border-t border-slate-200">
+                    ${prevId ? `
+                        <button onclick="selectArticle('${prevId}')" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> ယခင်အပိုင်း (${labels[prevId]})
+                        </button>
+                    ` : `
+                        <a href="chapter9.html" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> Chapter 9 သို့ ပြန်သွားရန်
+                        </a>
+                    `}
+
+                    ${nextId ? `
+                        <button onclick="selectArticle('${nextId}')" class="px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            နောက်တစ်ပိုင်း (${labels[nextId]}) <span>→</span>
+                        </button>
+                    ` : `
+                        <a href="chapter11.html" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            Chapter 11 သို့ ဆက်သွားရန် <span>→</span>
+                        </a>
+                    `}
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileSidebar();
+
+            if (typeof article.onMount === 'function') {
+                setTimeout(() => article.onMount(), 50);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        window.onload = function() {
+            try {
+                selectArticle('overview');
+            } catch (err) {
+                console.error('Initialization error:', err);
+            }
+        };
+    </script>
+</body>
+</html>
