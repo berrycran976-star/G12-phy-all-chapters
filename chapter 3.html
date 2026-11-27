@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grade 12 Physics - Chapter 3: Fluid Dynamics</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D Fluid Dynamics Simulations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.85;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #082f49 0%, #0f172a 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 430px;
+            }
+        }
+        .myanmar-text {
+            line-height: 1.98;
+        }
+        .formula-card {
+            background: linear-gradient(135deg, #0f172a 0%, #0e7490 100%);
+        }
+        .math-box {
+            font-family: 'Inter', monospace;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+        .v3d-ui { position: absolute; inset: 0; pointer-events: none; font-family: 'Inter','Noto Sans Myanmar',sans-serif; }
+        .v3d-btn { position: absolute; top: 8px; right: 10px; pointer-events: auto; font-size: 11px; font-weight: 600; color: #cffafe; background: rgba(15,23,42,.78); border: 1px solid rgba(34,211,238,.45); padding: 3px 10px; border-radius: 9999px; cursor: pointer; }
+        .v3d-hint { position: absolute; top: 36px; left: 10px; font-size: 10.5px; color: #cbd5e1; transition: opacity .4s; }
+        .v3d-zoom { position: absolute; right: 10px; top: 38px; display: flex; flex-direction: column; gap: 6px; }
+        .v3d-zoom button { pointer-events: auto; width: 30px; height: 30px; border-radius: 9999px; font-size: 16px; font-weight: 700; line-height: 1; color: #cffafe; background: rgba(15,23,42,.78); border: 1px solid rgba(34,211,238,.45); cursor: pointer; }
+        .v3d-labels { position: absolute; inset: 0; }
+        .v3d-label { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; font-size: 11px; line-height: 1.35; font-weight: 600; color: #f8fafc; background: rgba(15,23,42,.85); border: 1px solid #67e8f9; border-radius: .6rem; padding: 2px 8px; will-change: transform; }
+        .v3d-info { position: absolute; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.6; color: #e2e8f0; background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14); border-radius: .8rem; padding: 7px 11px; }
+        .v3d-info b { color: #67e8f9; }
+        .mx { font-family: 'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif; font-size: 1.1em; font-weight: 500; letter-spacing: .01em; }
+        .mx i { font-style: italic; }
+        .mx .nb { display: inline-block; white-space: nowrap; margin-right: .2em; }
+        .mx .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .25em; line-height: 1.3; }
+        .mx .fr > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .3em .08em; }
+        .mx .fr > span:last-child { padding: .08em .3em 0; }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-100 selection:text-cyan-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-600 to-sky-700 flex items-center justify-center text-white font-bold shadow">
+                Ch3
+            </div>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p class="text-xs text-slate-500">Chapter 3: Fluid Dynamics</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Open Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Left Sidebar Taskbar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:shadow-none">
+            <!-- Brand Header + Chapter Switcher -->
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-cyan-950 to-sky-950 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-cyan-500/25 text-cyan-200 border border-cyan-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Grade 12 Physics
+                    </span>
+                    <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10" aria-label="Close Menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <h2 class="mt-3 text-lg font-bold tracking-tight leading-snug">Chapter 3: Fluid Dynamics</h2>
+                <p class="mt-1 text-xs text-cyan-200/85">Fluid Flow, Continuity, Bernoulli's Equation, Capillarity & 3D Lab</p>
+
+                <!-- Cross-Chapter Page Navigation Bar (Chapters 1 - 13) -->
+                <div class="mt-4 pt-3 border-t border-white/15 grid grid-cols-5 gap-1.5">
+                    <a href="index.html" class="text-center py-1.5 px-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition">🏠</a>
+                    <a href="chapter1.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 1</a>
+                    <a href="chapter2.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 2</a>
+                    <a href="chapter3.html" class="text-center py-1.5 px-1 rounded-lg bg-cyan-500 text-xs font-semibold text-white shadow-xs">Ch 3</a>
+                    <a href="chapter4.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 4</a>
+                    <a href="chapter5.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 5</a>
+                    <a href="chapter6.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 6</a>
+                    <a href="chapter7.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 7</a>
+                    <a href="chapter8.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 8</a>
+                    <a href="chapter9.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 9</a>
+                    <a href="chapter10.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 10</a>
+                    <a href="chapter11.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 11</a>
+                    <a href="chapter12.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 12</a>
+                    <a href="chapter13.html" class="col-span-2 text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 13</a>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Chapter 3 လေ့လာရန် အပိုင်းများ (6 ခု)
+                </div>
+
+                <button onclick="selectArticle('overview')" id="nav-overview" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">💧</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Fluid Dynamics Master Table</div>
+                        <div class="text-xs opacity-80 mt-0.5">အခန်း (၃) ပုံသေနည်းချုပ်၊ Concept Chain & ရှင်းလင်းချက်</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('3.1')" id="nav-3.1" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">3.1</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Fluid Flow & Ideal Fluids</div>
+                        <div class="text-xs opacity-80 mt-0.5">Laminar နှင့် Turbulent စီးဆင်းမှု (3D) & Ideal Fluid</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('3.2')" id="nav-3.2" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">3.2</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Equation of Continuity</div>
+                        <div class="text-xs opacity-80 mt-0.5">စီးဆင်းနှုန်း တသမတ်တည်းရှိခြင်း (A₁v₁ = A₂v₂) 3D Lab</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('3.3')" id="nav-3.3" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">3.3</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Bernoulli's Equation</div>
+                        <div class="text-xs opacity-80 mt-0.5">Venturi Pipe၊ လေယာဉ်တောင်ပံ ပင့်အား (3D) & ဖိအား</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('3.4')" id="nav-3.4" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">3.4</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Surface Tension, Capillarity & Viscosity</div>
+                        <div class="text-xs opacity-80 mt-0.5">မျက်နှာပြင်တင်းအား၊ ကေသရာဇာ (3D) & Stokes' Law</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('worked')" id="nav-worked" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">✍️</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Fluid Simulator, Q&A & Quiz</div>
+                        <div class="text-xs opacity-80 mt-0.5">တွက်ချက်မှု Simulator၊ မေးခွန်းဟောင်း အဖြေများ & Quiz</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Footer Tip -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="p-3 rounded-xl bg-cyan-50 border border-cyan-200/80 text-xs text-cyan-950 flex items-start gap-2.5">
+                    <span class="text-base">🌊</span>
+                    <span><strong>Bernoulli's Principle:</strong> ရေပြင်ညီပိုက်တွင် ပိုက်ဝကျဉ်းသွားပါက အလျင် (<strong>v</strong>) မြန်လာပြီး ဖိအား (<strong>P</strong>) လျော့ကျသွားသည် (<strong>A₁v₁ = A₂v₂</strong>)။</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+            <div id="content-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-8">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & THREE.JS ENGINE MANAGER
+        // ==========================================
+        let currentArticleId = 'overview';
+        let activeScenes = [];
+
+        function clearActiveScenes() {
+            activeScenes.forEach(item => {
+                if (item.animId) cancelAnimationFrame(item.animId);
+                if (item.renderer) item.renderer.dispose();
+            });
+            activeScenes = [];
+        }
+
+        function init3DViewer(containerId, legendItems, buildSceneCallback) {
+            const container = document.getElementById(containerId);
+            if (!container || typeof THREE === 'undefined') return null;
+            container.querySelectorAll('canvas,.v3d-ui').forEach(n => n.remove());
+            activeScenes = activeScenes.filter(r => {
+                if (r.cid === containerId) {
+                    cancelAnimationFrame(r.animId);
+                    r.renderer.dispose();
+                    return false;
+                }
+                return true;
+            });
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 380;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1.4, 7.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const legendHtml = (legendItems || []).map(item =>
+                `<span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${item.color};margin-right:4px;"></i>${item.text}</span>`
+            ).join('');
+
+            const ui = document.createElement('div');
+            ui.className = 'v3d-ui';
+            ui.innerHTML = `
+                <div class="v3d-legend" style="position:absolute;top:8px;left:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;font-weight:700;color:#e2e8f0;background:rgba(15,23,42,.72);padding:3px 9px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);">
+                    ${legendHtml}
+                </div>
+                <button type="button" class="v3d-btn">🏷️ ရှင်းလင်းချက်: ON</button>
+                <div class="v3d-zoom"><button type="button" data-z="in">+</button><button type="button" data-z="out">−</button><button type="button" data-z="reset">⟲</button></div>
+                <div class="v3d-labels"></div>
+                <div class="v3d-hint">👆 ဆွဲ၍လှည့်ပါ · + − ဖြင့် ချုံ့ချဲ့ပါ</div>
+                <div class="v3d-info"></div>`;
+            container.appendChild(ui);
+
+            const labelBox = ui.querySelector('.v3d-labels');
+            const labels = [];
+            const api = {
+                label(text, pos, color = '#67e8f9', obj) {
+                    const el = document.createElement('div');
+                    el.className = 'v3d-label';
+                    el.style.borderColor = color;
+                    el.innerHTML = text;
+                    labelBox.appendChild(el);
+                    labels.push({ el, obj, pos: pos.clone ? pos.clone() : new THREE.Vector3(...pos) });
+                    return el;
+                },
+                info(html) { ui.querySelector('.v3d-info').innerHTML = html; }
+            };
+
+            const btn = ui.querySelector('.v3d-btn');
+            btn.addEventListener('click', () => {
+                const on = labelBox.style.display === 'none';
+                labelBox.style.display = on ? '' : 'none';
+                btn.textContent = '🏷️ ရှင်းလင်းချက်: ' + (on ? 'ON' : 'OFF');
+            });
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
+            dirLight1.position.set(6, 9, 7);
+            scene.add(dirLight1);
+            const dirLight2 = new THREE.DirectionalLight(0x38bdf8, 0.45);
+            dirLight2.position.set(-6, -4, -5);
+            scene.add(dirLight2);
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            const customUpdate = buildSceneCallback(rootGroup, camera, scene, api);
+            camera.lookAt(0, 0, 0);
+            const camPos0 = camera.position.clone();
+            let zoom = 1;
+            const setZoom = z => { zoom = Math.max(0.55, Math.min(2.3, z)); };
+
+            ui.querySelector('.v3d-zoom').addEventListener('click', e => {
+                const k = e.target.dataset.z;
+                if (k === 'in') setZoom(zoom * 1.25);
+                else if (k === 'out') setZoom(zoom / 1.25);
+                else if (k === 'reset') { zoom = 1; rootGroup.rotation.set(0, 0, 0); }
+            });
+
+            let isDragging = false, prevX = 0, prevY = 0;
+            const onDown = (x, y) => { isDragging = true; prevX = x; prevY = y; ui.querySelector('.v3d-hint').style.opacity = 0; };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                rootGroup.rotation.y += (x - prevX) * 0.01;
+                rootGroup.rotation.x = Math.max(-1.2, Math.min(1.2, rootGroup.rotation.x + (y - prevY) * 0.01));
+                prevX = x; prevY = y;
+            };
+            const onUp = () => { isDragging = false; };
+
+            const domElem = renderer.domElement;
+            domElem.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+            domElem.addEventListener('wheel', e => { e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onUp);
+            domElem.addEventListener('touchstart', e => { if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchmove', e => { if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchend', onUp);
+
+            window.addEventListener('resize', () => {
+                if (!container.isConnected || !container.clientWidth) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            const sceneRecord = { renderer, animId: null, cid: containerId };
+            activeScenes.push(sceneRecord);
+
+            const clock = new THREE.Clock();
+            const v = new THREE.Vector3();
+            function animate() {
+                sceneRecord.animId = requestAnimationFrame(animate);
+                const dt = Math.min(clock.getDelta(), 0.05);
+                const elapsed = clock.getElapsedTime();
+                if (typeof customUpdate === 'function') customUpdate(dt, elapsed, rootGroup);
+                camera.position.copy(camPos0).multiplyScalar(1 / zoom);
+                renderer.render(scene, camera);
+
+                const W = container.clientWidth, H = container.clientHeight;
+                scene.updateMatrixWorld();
+                labels.forEach(l => {
+                    v.copy(l.pos);
+                    (l.obj || rootGroup).localToWorld(v).project(camera);
+                    l.el.style.opacity = l.obj && !l.obj.visible ? 0 : 1;
+                    const hw = l.el.offsetWidth / 2 + 4;
+                    const x = Math.max(hw, Math.min(W - hw, (v.x * 0.5 + 0.5) * W));
+                    const y = Math.max(14, Math.min(H - 96, (-v.y * 0.5 + 0.5) * H));
+                    l.el.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px)`;
+                });
+            }
+            animate();
+        }
+
+        // ==========================================
+        // 2. SPECIFIC 3D VISUALIZATIONS FOR CHAPTER 3
+        // ==========================================
+
+        // 3D Viewer 3.1: Laminar vs Turbulent Flow in a 3D Pipe
+        let sim31State = { isTurbulent: false, speed: 2.0 };
+        function setCh3Sim1Mode(mode) {
+            sim31State.isTurbulent = (mode === 'turbulent');
+            if (sim31State.isTurbulent && sim31State.speed < 3.5) {
+                sim31State.speed = 4.0;
+            } else if (!sim31State.isTurbulent && sim31State.speed > 3.0) {
+                sim31State.speed = 2.0;
+            }
+            const slider = document.getElementById('ch3-s1-speed');
+            if (slider) slider.value = String(sim31State.speed);
+            syncCh3Sim1UI();
+        }
+        function updateCh3Sim1Speed(val) {
+            sim31State.speed = parseFloat(val);
+            sim31State.isTurbulent = sim31State.speed >= 3.5;
+            syncCh3Sim1UI();
+        }
+        function syncCh3Sim1UI() {
+            const lbl = document.getElementById('ch3-s1-speed-lbl');
+            const lamBtn = document.getElementById('btn-31-lam');
+            const turbBtn = document.getElementById('btn-31-turb');
+            if (lbl) lbl.textContent = `${sim31State.speed.toFixed(1)} m/s`;
+            if (lamBtn && turbBtn) {
+                if (sim31State.isTurbulent) {
+                    turbBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white transition';
+                    lamBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                } else {
+                    lamBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 text-white transition';
+                    turbBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                }
+            }
+        }
+
+        function render3D_3_1() {
+            init3DViewer('viewer-3-1', [
+                { color: '#22d3ee', text: 'Outer Streamlines' },
+                { color: '#34d399', text: 'Center Core (Fastest)' },
+                { color: '#f59e0b', text: 'Turbulent Eddies' }
+            ], (group, camera, scene, ui) => {
+                camera.position.set(0, 1.3, 7.6);
+
+                const pipeLen = 6.2;
+                const pipeGeom = new THREE.CylinderGeometry(1.25, 1.25, pipeLen, 36, 1, true);
+                pipeGeom.rotateZ(Math.PI / 2);
+                const pipeMat = new THREE.MeshStandardMaterial({
+                    color: 0x38bdf8,
+                    transparent: true,
+                    opacity: 0.18,
+                    side: THREE.DoubleSide,
+                    roughness: 0.2
+                });
+                group.add(new THREE.Mesh(pipeGeom, pipeMat));
+
+                [-pipeLen / 2, pipeLen / 2].forEach(xPos => {
+                    const ring = new THREE.Mesh(
+                        new THREE.TorusGeometry(1.25, 0.04, 12, 48).rotateY(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0x64748b })
+                    );
+                    ring.position.x = xPos;
+                    group.add(ring);
+                });
+
+                const particles = [];
+                const layerColors = [0x22d3ee, 0x38bdf8, 0x34d399, 0x38bdf8, 0x22d3ee];
+                const layerY = [-0.82, -0.41, 0, 0.41, 0.82];
+
+                for (let l = 0; l < 5; l++) {
+                    for (let i = 0; i < 10; i++) {
+                        const p = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.09, 14, 14),
+                            new THREE.MeshStandardMaterial({ color: layerColors[l] })
+                        );
+                        const baseX = -2.9 + (i * 0.6);
+                        const baseZ = ((l % 2 === 0 ? 1 : -1) * 0.24);
+                        p.position.set(baseX, layerY[l], baseZ);
+                        group.add(p);
+                        particles.push({ mesh: p, baseY: layerY[l], baseZ, phase: i * 0.7 + l * 1.1 });
+                    }
+                }
+
+                const stateLabel = ui.label('Laminar Flow: မျဉ်းပြိုင်အလွှာလိုက် စီးဆင်း', [0, 1.65, 0], '#67e8f9');
+                ui.label('Inlet (အဝင်)', [-3.1, -1.55, 0], '#94a3b8');
+                ui.label('Outlet (အထွက်)', [3.1, -1.55, 0], '#94a3b8');
+
+                let elapsed = 0;
+                return (dt) => {
+                    elapsed += dt;
+                    const isTurb = sim31State.isTurbulent;
+                    const spd = sim31State.speed;
+
+                    particles.forEach(pt => {
+                        const centerFactor = 1.15 - 0.35 * Math.abs(pt.baseY);
+                        pt.mesh.position.x += spd * centerFactor * dt;
+                        if (pt.mesh.position.x > 2.95) pt.mesh.position.x = -2.95;
+
+                        if (isTurb) {
+                            pt.mesh.material.color.setHex(0xfbbf24);
+                            pt.mesh.position.y = pt.baseY + 0.32 * Math.sin(elapsed * 6.5 + pt.phase + pt.mesh.position.x * 1.8);
+                            pt.mesh.position.z = pt.baseZ + 0.32 * Math.cos(elapsed * 5.8 + pt.phase * 1.3);
+                        } else {
+                            pt.mesh.material.color.setHex(pt.baseY === 0 ? 0x34d399 : 0x38bdf8);
+                            pt.mesh.position.y += (pt.baseY - pt.mesh.position.y) * 0.14;
+                            pt.mesh.position.z += (pt.baseZ - pt.mesh.position.z) * 0.14;
+                        }
+                    });
+
+                    if (isTurb) {
+                        stateLabel.innerHTML = 'Turbulent Flow: ဝဲဂယက်များဖြင့် ရှုပ်ထွေးစီးဆင်း';
+                        stateLabel.style.borderColor = '#fbbf24';
+                        ui.info('<b>Turbulent Flow (v ≥ 3.5 m/s)</b> — စီးဆင်းနှုန်း အလွန်မြန်လာသောအခါ အမှုန်များ၏ လမ်းကြောင်းများ ဖြတ်သန်းကာ <strong>ဝဲဂယက် (Eddies)</strong> များ ဖြစ်ပေါ်လာသည် (ဥပမာ- မုန်တိုင်းလေ၊ ရေတံခွန်)။');
+                    } else {
+                        stateLabel.innerHTML = 'Laminar Flow: မျဉ်းပြိုင်အလွှာလိုက် စီးဆင်း';
+                        stateLabel.style.borderColor = '#67e8f9';
+                        ui.info('<b>Laminar (Streamline) Flow</b> — ငွေ့ရည်အမှုန်များသည် တစ်ခုနှင့်တစ်ခု မဖြတ်သန်းဘဲ ချောမွေ့တသမတ်တည်းသော <strong>Streamlines</strong> အတိုင်း စီးဆင်းသည် (Ideal fluid condition)။');
+                    }
+                };
+            });
+        }
+
+        // 3D Viewer 3.2: Equation of Continuity (A1*v1 = A2*v2)
+        let sim32State = { ratio: 4.0, v1: 1.5 };
+        function updateCh3Sim2Params() {
+            const rEl = document.getElementById('ch3-s2-ratio');
+            const vEl = document.getElementById('ch3-s2-inlet');
+            if (rEl) sim32State.ratio = parseFloat(rEl.value);
+            if (vEl) sim32State.v1 = parseFloat(vEl.value);
+
+            const v2 = sim32State.v1 * sim32State.ratio;
+            const a1 = 4.0;
+            const a2 = a1 / sim32State.ratio;
+            const q = a1 * sim32State.v1;
+
+            const rLbl = document.getElementById('ch3-s2-ratio-lbl');
+            const vLbl = document.getElementById('ch3-s2-inlet-lbl');
+            if (rLbl) rLbl.textContent = `${sim32State.ratio.toFixed(1)}× (A₁/A₂)`;
+            if (vLbl) vLbl.textContent = `${sim32State.v1.toFixed(1)} m/s`;
+
+            const tel = document.getElementById('ch3-s2-telemetry');
+            if (tel) {
+                tel.innerHTML = `
+                    <div>Wide Pipe (A₁ = <strong>${a1.toFixed(1)} cm²</strong>): Inlet Speed v₁ = <strong class="text-sky-300">${sim32State.v1.toFixed(2)} m/s</strong></div>
+                    <div>Narrow Nozzle (A₂ = <strong>${a2.toFixed(2)} cm²</strong>): Outlet Speed v₂ = <strong class="text-amber-300">${v2.toFixed(2)} m/s</strong></div>
+                    <div class="text-emerald-300 font-bold pt-0.5">Volume Flow Rate (Q = A₁v₁ = A₂v₂): ${q.toFixed(2)} × 10⁻⁴ m³/s</div>
+                `;
+            }
+        }
+
+        function render3D_3_2() {
+            init3DViewer('viewer-3-2', [
+                { color: '#38bdf8', text: 'Wide Section (A₁, slow v₁)' },
+                { color: '#34d399', text: 'Narrow Nozzle (A₂, fast v₂)' },
+                { color: '#fbbf24', text: 'Velocity Vectors' }
+            ], (group, camera, scene, ui) => {
+                camera.position.set(0, 1.3, 8.0);
+
+                const wideMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.22, side: THREE.DoubleSide });
+                const narrowMat = new THREE.MeshStandardMaterial({ color: 0x34d399, transparent: true, opacity: 0.25, side: THREE.DoubleSide });
+
+                const widePipe = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 2.7, 32, 1, true).rotateZ(Math.PI / 2), wideMat);
+                widePipe.position.x = -1.75;
+                group.add(widePipe);
+
+                const coneMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 1.3, 1.0, 32, 1, true).rotateZ(Math.PI / 2), wideMat);
+                coneMesh.position.x = 0.1;
+                group.add(coneMesh);
+
+                const narrowPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 2.5, 32, 1, true).rotateZ(Math.PI / 2), narrowMat);
+                narrowPipe.position.x = 1.85;
+                group.add(narrowPipe);
+
+                const v1Arrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(-2.4, 1.6, 0), 1.0, 0x38bdf8, 0.25, 0.15);
+                const v2Arrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(1.0, 1.15, 0), 2.1, 0xfbbf24, 0.3, 0.18);
+                group.add(v1Arrow, v2Arrow);
+
+                const drops = [];
+                for (let i = 0; i < 24; i++) {
+                    const d = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.1, 14, 14),
+                        new THREE.MeshStandardMaterial({ color: 0x6ee7b7 })
+                    );
+                    const x0 = -3.0 + (i * 0.25);
+                    const rFrac = ((i % 5) - 2) * 0.34;
+                    d.position.set(x0, rFrac, ((i % 3) - 1) * 0.24);
+                    group.add(d);
+                    drops.push({ mesh: d, rFrac, zFrac: ((i % 3) - 1) * 0.24 });
+                }
+
+                const lbl1 = ui.label('A₁ (ကျယ်) → v₁ နှေး', [-1.8, 2.0, 0], '#7dd3fc');
+                const lbl2 = ui.label('A₂ (ကျဉ်း) → v₂ မြန်', [1.8, 1.6, 0], '#fde047');
+                let prevRatio = -1;
+
+                return (dt) => {
+                    const ratio = sim32State.ratio;
+                    const v1 = sim32State.v1;
+                    const v2 = v1 * ratio;
+                    const narrowScale = Math.max(0.35, 1 / Math.sqrt(ratio));
+
+                    if (ratio !== prevRatio) {
+                        prevRatio = ratio;
+                        narrowPipe.scale.set(1, narrowScale * 2.0, narrowScale * 2.0);
+                        coneMesh.geometry.dispose();
+                        coneMesh.geometry = new THREE.CylinderGeometry(1.3 * narrowScale, 1.3, 1.0, 32, 1, true).rotateZ(Math.PI / 2);
+                    }
+
+                    v1Arrow.setLength(Math.max(0.45, v1 * 0.52), 0.22, 0.14);
+                    v2Arrow.setLength(Math.min(2.5, Math.max(0.7, v2 * 0.32)), 0.28, 0.16);
+                    lbl1.innerHTML = `A₁ = 4.0 cm² · v₁ = ${v1.toFixed(1)} m/s`;
+                    lbl2.innerHTML = `A₂ = ${(4.0 / ratio).toFixed(2)} cm² · v₂ = ${v2.toFixed(1)} m/s`;
+
+                    drops.forEach(d => {
+                        const x = d.mesh.position.x;
+                        let localScale = 1.0;
+                        let localSpeed = v1;
+
+                        if (x > 0.6) {
+                            localScale = narrowScale;
+                            localSpeed = v2;
+                        } else if (x > -0.4) {
+                            const t = (x + 0.4) / 1.0;
+                            localScale = 1.0 - t * (1.0 - narrowScale);
+                            localSpeed = v1 / (localScale * localScale);
+                        }
+
+                        d.mesh.position.x += Math.min(9.0, localSpeed) * dt;
+                        if (d.mesh.position.x > 3.05) d.mesh.position.x = -3.05;
+                        d.mesh.position.y = d.rFrac * localScale;
+                        d.mesh.position.z = d.zFrac * localScale;
+                    });
+
+                    ui.info(`<b>Equation of Continuity (A₁v₁ = A₂v₂)</b> — ဧရိယာ <b>${ratio.toFixed(1)} ဆ</b> ကျဉ်းသွားသောအခါ ထုထည်စီးဆင်းနှုန်း တူညီစေရန် အရည်အလျင်သည် <b>${v1.toFixed(1)} m/s</b> မှ <b>${v2.toFixed(1)} m/s</b> သို့ မြန်လာသည်။`);
+                };
+            });
+        }
+
+        // 3D Viewer 3.3: Bernoulli's Equation (Venturi Manometers & Airplane Wing Lift)
+        let sim33State = { mode: 'venturi', flowLevel: 3 };
+        function setCh3Sim3Mode(mode) {
+            sim33State.mode = mode;
+            const vBtn = document.getElementById('btn-33-venturi');
+            const wBtn = document.getElementById('btn-33-wing');
+            if (vBtn && wBtn) {
+                if (mode === 'venturi') {
+                    vBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition';
+                    wBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                } else {
+                    wBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition';
+                    vBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                }
+            }
+        }
+        function updateCh3Sim3Flow(val) {
+            sim33State.flowLevel = parseInt(val, 10);
+            const names = ["Very Slow", "Slow", "Medium Speed", "Fast", "Very Fast"];
+            const lbl = document.getElementById('ch3-s3-flow-lbl');
+            if (lbl) lbl.textContent = names[sim33State.flowLevel - 1];
+        }
+
+        function render3D_3_3() {
+            init3DViewer('viewer-3-3', [
+                { color: '#38bdf8', text: 'High Pressure P₁ (Slow v₁)' },
+                { color: '#fbbf24', text: 'Low Pressure P₂ (Fast v₂)' },
+                { color: '#34d399', text: 'Airfoil Lift Force' }
+            ], (group, camera, scene, ui) => {
+                camera.position.set(0, 1.2, 8.6);
+
+                // Venturi Group
+                const venturiGroup = new THREE.Group();
+                group.add(venturiGroup);
+
+                const glassMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.25, side: THREE.DoubleSide });
+                const leftWide = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 2.0, 28, 1, true).rotateZ(Math.PI / 2), glassMat);
+                leftWide.position.set(-2.1, -0.8, 0);
+                const throat = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 1.8, 28, 1, true).rotateZ(Math.PI / 2), glassMat);
+                throat.position.set(0, -0.8, 0);
+                const rightWide = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 2.0, 28, 1, true).rotateZ(Math.PI / 2), glassMat);
+                rightWide.position.set(2.1, -0.8, 0);
+                const c1 = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.95, 0.4, 28, 1, true).rotateZ(Math.PI / 2), glassMat);
+                c1.position.set(-1.0, -0.8, 0);
+                const c2 = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.45, 0.4, 28, 1, true).rotateZ(Math.PI / 2), glassMat);
+                c2.position.set(1.0, -0.8, 0);
+                venturiGroup.add(leftWide, throat, rightWide, c1, c2);
+
+                const col1Tube = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 2.5, 20, 1, true), glassMat);
+                col1Tube.position.set(-2.1, 1.15, 0);
+                const col2Tube = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 2.5, 20, 1, true), glassMat);
+                col2Tube.position.set(0, 0.8, 0);
+                venturiGroup.add(col1Tube, col2Tube);
+
+                const col1Fill = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1.0, 20), new THREE.MeshStandardMaterial({ color: 0x38bdf8 }));
+                const col2Fill = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 1.0, 20), new THREE.MeshStandardMaterial({ color: 0xfbbf24 }));
+                venturiGroup.add(col1Fill, col2Fill);
+
+                // Wing Group
+                const wingGroup = new THREE.Group();
+                wingGroup.visible = false;
+                group.add(wingGroup);
+
+                const airfoilShape = new THREE.Shape();
+                airfoilShape.moveTo(-2.2, 0);
+                airfoilShape.bezierCurveTo(-1.2, 0.95, 0.6, 0.65, 2.3, 0.02);
+                airfoilShape.bezierCurveTo(0.8, -0.15, -1.2, -0.22, -2.2, 0);
+                const extrudeGeom = new THREE.ExtrudeGeometry(airfoilShape, { depth: 2.2, bevelEnabled: true, bevelSize: 0.05, bevelThickness: 0.05 });
+                extrudeGeom.translate(0, 0, -1.1);
+                wingGroup.add(new THREE.Mesh(extrudeGeom, new THREE.MeshStandardMaterial({ color: 0x6366f1, roughness: 0.35 })));
+
+                const liftArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(-0.2, 0.55, 0), 1.8, 0x34d399, 0.35, 0.22);
+                wingGroup.add(liftArrow);
+
+                const airParticles = [];
+                for (let i = 0; i < 18; i++) {
+                    const p = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), new THREE.MeshStandardMaterial({ color: 0x67e8f9 }));
+                    p.position.set(-3.0 + (i * 0.34), i % 2 === 0 ? 0.65 : -0.55, ((i % 3) - 1) * 0.5);
+                    group.add(p);
+                    airParticles.push({ mesh: p, isTop: i % 2 === 0 });
+                }
+
+                ui.label('P₁ များ (အမြင့်တိုင်မြင့်)', [-2.1, 2.5, 0], '#7dd3fc', venturiGroup);
+                ui.label('P₂ နည်း (အမြင့်တိုင်နိမ့်)', [0, 2.15, 0], '#fde047', venturiGroup);
+                ui.label('အပေါ်လေစီးမြန် → ဖိအားနည်း (P_top)', [0, 1.3, 0], '#fde047', wingGroup);
+                ui.label('အောက်ဖိအားများ → Lift ↑', [0, -0.9, 0], '#86efac', wingGroup);
+
+                return (dt) => {
+                    const isWing = sim33State.mode === 'wing';
+                    const flowLevel = sim33State.flowLevel;
+
+                    venturiGroup.visible = !isWing;
+                    wingGroup.visible = isWing;
+
+                    const h1 = 1.9;
+                    const h2 = Math.max(0.35, 1.9 - flowLevel * 0.31);
+                    col1Fill.scale.y = h1;
+                    col1Fill.position.set(-2.1, 0.05 + h1 / 2, 0);
+                    col2Fill.scale.y = h2;
+                    col2Fill.position.set(0, -0.35 + h2 / 2, 0);
+                    liftArrow.setLength(0.8 + flowLevel * 0.32, 0.32, 0.2);
+
+                    airParticles.forEach(p => {
+                        const x = p.mesh.position.x;
+                        if (!isWing) {
+                            const inThroat = Math.abs(x) < 1.0;
+                            const spd = flowLevel * (inThroat ? 1.8 : 0.75);
+                            p.mesh.position.x += spd * dt;
+                            p.mesh.position.y = -0.8 + (p.isTop ? 0.25 : -0.25) * (inThroat ? 0.45 : 1.0);
+                        } else {
+                            const spd = flowLevel * (p.isTop ? 1.55 : 0.85);
+                            p.mesh.position.x += spd * dt;
+                            const curve = Math.max(0, 1 - (x * x) / 5.0);
+                            p.mesh.position.y = p.isTop ? (0.35 + 0.65 * curve) : (-0.35 - 0.12 * curve);
+                        }
+                        if (p.mesh.position.x > 3.1) p.mesh.position.x = -3.1;
+                    });
+
+                    const dp = (flowLevel * flowLevel * 0.28).toFixed(2);
+                    if (!isWing) {
+                        ui.info(`<b>Venturi Effect (ΔP = ${dp} kPa)</b> — ကျဉ်းသောလည်ပင်း (Throat) တွင် အလျင် v₂ မြန်လာသောကြောင့် ဖိအား P₂ ကျဆင်းပြီး အလယ်ဖိအားပြွန် အရည်မျက်နှာပြင် နိမ့်ဆင်းသွားသည်။`);
+                    } else {
+                        ui.info(`<b>Airfoil Lift (လေယာဉ်တောင်ပံ ပင့်အား)</b> — တောင်ပံအပေါ်ဘက် ခုံးနေသဖြင့် လေစီးနှုန်းပိုမြန်ပြီး ဖိအားနည်းသွားကာ အောက်ဘက်မှ ဖိအားပိုများသဖြင့် <strong>အပေါ်သို့ ပင့်အား (Lift)</strong> ဖြစ်ပေါ်သည်။`);
+                    }
+                };
+            });
+        }
+
+        // 3D Viewer 3.4: Capillary Action (Water Rise vs Mercury Depression)
+        let sim34State = { isMercury: false, radiusMm: 0.50 };
+        function setCh3Sim4Liquid(liq) {
+            sim34State.isMercury = (liq === 'mercury');
+            const wBtn = document.getElementById('btn-34-water');
+            const mBtn = document.getElementById('btn-34-mercury');
+            if (wBtn && mBtn) {
+                if (sim34State.isMercury) {
+                    mBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white transition';
+                    wBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                } else {
+                    wBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white transition';
+                    mBtn.className = 'px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition';
+                }
+            }
+        }
+        function updateCh3Sim4Radius(val) {
+            sim34State.radiusMm = parseFloat(val);
+            const lbl = document.getElementById('ch3-s4-radius-lbl');
+            if (lbl) lbl.textContent = `${sim34State.radiusMm.toFixed(2)} mm`;
+        }
+
+        function render3D_3_4() {
+            init3DViewer('viewer-3-4', [
+                { color: '#38bdf8', text: 'Water (Concave Meniscus, Rises)' },
+                { color: '#cbd5e1', text: 'Mercury (Convex Meniscus, Depresses)' }
+            ], (group, camera, scene, ui) => {
+                camera.position.set(0, 1.2, 7.4);
+
+                const beakerGlass = new THREE.Mesh(
+                    new THREE.CylinderGeometry(1.85, 1.85, 2.9, 36, 1, true),
+                    new THREE.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.22, side: THREE.DoubleSide })
+                );
+                beakerGlass.position.y = -0.3;
+                group.add(beakerGlass);
+
+                const reservoirMat = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.55 });
+                const reservoir = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 1.8, 1.4, 36), reservoirMat);
+                reservoir.position.y = -1.05;
+                group.add(reservoir);
+
+                const capTube = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.28, 0.28, 3.4, 28, 1, true),
+                    new THREE.MeshStandardMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.35, side: THREE.DoubleSide })
+                );
+                capTube.position.y = 0.2;
+                group.add(capTube);
+
+                const colMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8 });
+                const capLiquid = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 1.0, 28), colMat);
+                group.add(capLiquid);
+
+                const heightLbl = ui.label('Water Rise: h = +2.98 cm', [0, 1.6, 0], '#7dd3fc');
+                ui.label('Capillary Tube (r)', [1.2, 0.5, 0], '#fda4af');
+
+                return () => {
+                    const isMerc = sim34State.isMercury;
+                    const r = sim34State.radiusMm;
+                    const rScale = r / 0.50;
+                    capTube.scale.set(rScale, 1, rScale);
+
+                    const hCm = isMerc ? (-0.525 / r) : (1.49 / r);
+                    const visualDeltaY = Math.max(-0.9, Math.min(1.65, hCm * 0.42));
+                    const topY = -0.35 + visualDeltaY;
+                    const bottomY = -1.5;
+                    const colHeight = Math.max(0.15, topY - bottomY);
+
+                    capLiquid.scale.set(rScale * 0.92, colHeight, rScale * 0.92);
+                    capLiquid.position.y = bottomY + colHeight / 2;
+
+                    if (isMerc) {
+                        reservoirMat.color.setHex(0x94a3b8);
+                        reservoirMat.opacity = 0.85;
+                        colMat.color.setHex(0xcbd5e1);
+                        heightLbl.innerHTML = `Mercury Depression: h = ${hCm.toFixed(2)} cm`;
+                        heightLbl.style.borderColor = '#fbbf24';
+                        ui.info(`<b>Mercury in Glass (Cohesion &gt; Adhesion, θ ≈ 140°)</b> — ပြဒါးအချင်းချင်း ဆွဲငင်အားပိုကြီးသဖြင့် မျက်နှာပြင် <strong>ခုံး (Convex)</strong> ပြီး ပြွန်အတွင်း <b>${Math.abs(hCm).toFixed(2)} cm</b> နိမ့်ဆင်းသည်။`);
+                    } else {
+                        reservoirMat.color.setHex(0x0ea5e9);
+                        reservoirMat.opacity = 0.55;
+                        colMat.color.setHex(0x38bdf8);
+                        heightLbl.innerHTML = `Water Rise: h = +${hCm.toFixed(2)} cm`;
+                        heightLbl.style.borderColor = '#38bdf8';
+                        ui.info(`<b>Water in Glass (Adhesion &gt; Cohesion, θ ≈ 0°)</b> — ဖန်သားနှင့် ကပ်တွယ်အားပိုကြီးသဖြင့် မျက်နှာပြင် <strong>ခွက် (Concave)</strong> ပြီး ပြွန်အတွင်း <b>+${hCm.toFixed(2)} cm</b> မြင့်တက်သည်။`);
+                    }
+                };
+            });
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE CALCULATORS & SIMULATORS
+        // ==========================================
+        function runContinuityCalc() {
+            const a1 = parseFloat(document.getElementById('calc-a1')?.value) || 10;
+            const v1 = parseFloat(document.getElementById('calc-v1')?.value) || 2;
+            const a2 = parseFloat(document.getElementById('calc-a2')?.value) || 2.5;
+            const v2 = (a1 * v1) / a2;
+            const qCm3 = a1 * v1;
+            const qM3 = qCm3 * 1e-6;
+            const out = document.getElementById('cont-calc-out');
+            if (out) {
+                out.innerHTML = `
+                    <div class="grid sm:grid-cols-2 gap-3 text-xs sm:text-sm myanmar-text">
+                        <div class="p-3.5 rounded-xl bg-white/10 border border-white/15">
+                            <div class="text-xs text-cyan-300 font-bold">Outlet Velocity (v₂ = A₁v₁ / A₂)</div>
+                            <div class="font-mono font-bold text-amber-300 text-base mt-1">v₂ = ${v2.toFixed(2)} m/s</div>
+                            <div class="text-xs text-slate-300 mt-1">ပိုက်ဝ ${(a1 / a2).toFixed(2)} ဆ ကျဉ်းသွား၍ အလျင် ${(v2 / v1).toFixed(2)} ဆ မြန်လာသည်</div>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-white/10 border border-white/15">
+                            <div class="text-xs text-emerald-300 font-bold">Volume Flow Rate (Q = A₁v₁)</div>
+                            <div class="font-mono font-bold text-white text-base mt-1">${qM3.toExponential(2)} m³ s⁻¹</div>
+                            <div class="text-xs text-slate-300 mt-1">(${qCm3.toFixed(1)} cm³ s⁻¹) — ပိုက်တစ်လျှောက် ကိန်းသေဖြစ်သည်</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function runBernoulliCalc() {
+            const rho = parseFloat(document.getElementById('bern-rho')?.value) || 1000;
+            const v1 = parseFloat(document.getElementById('bern-v1')?.value) || 2;
+            const v2 = parseFloat(document.getElementById('bern-v2')?.value) || 6;
+            const dp = 0.5 * rho * (v2 * v2 - v1 * v1);
+            const out = document.getElementById('bern-calc-out');
+            if (out) {
+                out.innerHTML = `
+                    <div class="p-3.5 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm myanmar-text">
+                        <div class="text-xs text-amber-300 font-bold">Pressure Difference (ΔP = P₁ − P₂ = ½ρ(v₂² − v₁²))</div>
+                        <div class="font-mono font-bold text-white text-base mt-1">ΔP = ${dp.toLocaleString()} Pa (${(dp / 1000).toFixed(2)} kPa)</div>
+                        <p class="text-slate-200 mt-1">အလျင် ${v1} m/s မှ ${v2} m/s သို့ မြန်လာသောအခါ ကျဉ်းသောအပိုင်းတွင် ဖိအား <strong>${(dp / 1000).toFixed(2)} kPa</strong> လျော့နည်းသွားသည်။</p>
+                    </div>
+                `;
+            }
+        }
+
+        const CH3_SCENARIOS = {
+            'cont': {
+                title: '1. Equation of Continuity (ရေပိုက်ခေါင်း အလျင်တွက်ချက်ခြင်း)',
+                given: 'A₁ = 8.0 cm², v₁ = 1.5 m/s, A₂ = 2.0 cm²',
+                formula: 'A₁v₁ = A₂v₂  ⇒  v₂ = (A₁v₁) / A₂',
+                steps: 'v₂ = (8.0 × 1.5) / 2.0 = 12.0 / 2.0 = 6.0 m/s · Volume Flow Rate Q = A₁v₁ = (8.0 × 10⁻⁴ m²)(1.5 m/s) = 1.2 × 10⁻³ m³ s⁻¹'
+            },
+            'bern': {
+                title: '2. Bernoulli\'s Equation (ရေပြင်ညီပိုက် ဖိအားခြားနားချက်)',
+                given: 'ρ = 1000 kg m⁻³, v₁ = 2.0 m/s, v₂ = 5.0 m/s, h₁ = h₂',
+                formula: 'P₁ + ½ρv₁² = P₂ + ½ρv₂²  ⇒  P₁ − P₂ = ½ρ(v₂² − v₁²)',
+                steps: 'P₁ − P₂ = 0.5 × 1000 × (5.0² − 2.0²) = 500 × (25 − 4) = 500 × 21 = 10,500 Pa (10.5 kPa)'
+            },
+            'cap': {
+                title: '3. Capillary Action (ဖန်ပြွန်ငယ်အတွင်း ရေမြင့်တက်မှု)',
+                given: 'γ = 0.073 N m⁻¹, θ = 0° (cos 0° = 1), ρ = 1000 kg m⁻³, g = 9.8 m s⁻², r = 0.25 mm = 2.5 × 10⁻⁴ m',
+                formula: 'h = (2γ cos θ) / (ρ g r)',
+                steps: 'h = (2 × 0.073 × 1) / (1000 × 9.8 × 2.5 × 10⁻⁴) = 0.146 / 2.45 ≈ 0.0596 m = 5.96 cm'
+            },
+            'stokes': {
+                title: '4. Stokes\' Law (စေးပျစ်သောအရည်ထဲ ကျဆင်းသည့် စက်လုံး၏ ခုခံအား)',
+                given: 'η = 0.85 Pa·s (Glycerin), r = 2.0 mm = 2.0 × 10⁻³ m, v = 0.40 m/s',
+                formula: 'Fd = 6 π η r v',
+                steps: 'Fd = 6 × 3.1416 × 0.85 × (2.0 × 10⁻³) × 0.40 ≈ 0.0128 N (1.28 × 10⁻² N)'
+            }
+        };
+
+        function runCh3ScenarioSim() {
+            const key = document.getElementById('ch3-sim-select')?.value || 'cont';
+            const d = CH3_SCENARIOS[key];
+            const out = document.getElementById('ch3-sim-output');
+            if (out && d) {
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-2 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">${d.title}</div>
+                        <div class="text-slate-200"><strong>Given:</strong> <span class="font-mono">${d.given}</span></div>
+                        <div class="p-2.5 rounded-xl bg-slate-900/80 font-mono text-cyan-300 font-bold">${d.formula}</div>
+                        <div class="text-emerald-200"><strong>Calculation:</strong> ${d.steps}</div>
+                    </div>
+                `;
+            }
+        }
+
+        const CH3_QUIZ = [
+            {
+                q: "1. ဖြတ်ပိုင်းဧရိယာ မတူညီသော ပိုက်တစ်ခုအတွင်း ငွေ့ရည်စီးဆင်းနေစဉ် ကျဉ်းသောအပိုင်း (smaller area) သို့ ရောက်သောအခါ ငွေ့ရည်၏ အလျင် (speed) မည်သို့ပြောင်းလဲသနည်း။",
+                options: [
+                    "လျော့နည်းသွားသည် (Decreases)",
+                    "တိုးလာသည် (Increases)",
+                    "ပြောင်းလဲမှု မရှိပါ (Remains unchanged)",
+                    "သုည ဖြစ်သွားသည်"
+                ],
+                answer: 1,
+                explanation: "Equation of Continuity (A₁v₁ = A₂v₂) အရ Volume flow rate ကိန်းသေဖြစ်ရန် ဧရိယာ A ကျဉ်းသွားပါက အလျင် v တိုးလာရပါသည်။"
+            },
+            {
+                q: "2. Bernoulli's Equation အရ ရေပြင်ညီပိုက်တစ်ခုအတွင်း အရည်စီးဆင်းနှုန်း (speed) မြန်သောနေရာတွင် ဖိအား (pressure) မည်သို့ရှိသနည်း။",
+                options: [
+                    "ဖိအား ပိုများသည် (Higher pressure)",
+                    "ဖိအား လျော့နည်းသည် (Lower pressure)",
+                    "ဖိအား တူညီသည် (Same pressure)",
+                    "သိပ်သည်းဆပေါ်တွင်သာ မူတည်သည်"
+                ],
+                answer: 1,
+                explanation: "ရေပြင်ညီပိုက် (h₁ = h₂) အတွက် P + ½ρv² = constant ဖြစ်သောကြောင့် အလျင် v မြန်သောနေရာတွင် ဖိအား P လျော့နည်းပါသည်။"
+            },
+            {
+                q: "3. ပြဒါး (Mercury) ထည့်ထားသော ခွက်ထဲသို့ ဖန်ပြွန်ငယ် (Capillary tube) စိုက်လိုက်ပါက ပြဒါးမျက်နှာပြင်သည် အဘယ်ကြောင့် နိမ့်ဆင်းသွားသနည်း။",
+                options: [
+                    "Adhesion force က Cohesion force ထက် ကြီးသောကြောင့်",
+                    "Cohesion force က Adhesion force ထက် ကြီးသောကြောင့်",
+                    "ပြဒါးတွင် Surface tension မရှိသောကြောင့်",
+                    "လေထုဖိအား မရှိသောကြောင့်"
+                ],
+                answer: 1,
+                explanation: "ပြဒါးမော်လီကျူးအချင်းချင်း ဆွဲငင်အား (Cohesion) သည် ဖန်သားနှင့် ဆွဲငင်အား (Adhesion) ထက် ပိုကြီးသောကြောင့် မျက်နှာပြင်ခုံး (convex) ပြီး ပြွန်အတွင်း နိမ့်ဆင်းသွားပါသည်။"
+            }
+        ];
+
+        function checkCh3Quiz(qIdx, oIdx) {
+            const item = CH3_QUIZ[qIdx];
+            const fb = document.getElementById(`ch3-q-fb-${qIdx}`);
+            if (!item || !fb) return;
+            const isCorrect = oIdx === item.answer;
+            fb.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900', 'bg-rose-50', 'border-rose-200', 'text-rose-900');
+            if (isCorrect) {
+                fb.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+                fb.innerHTML = `<strong>✅ မှန်ကန်ပါသည်!</strong> ${item.explanation}`;
+            } else {
+                fb.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-900');
+                fb.innerHTML = `<strong>❌ ပြန်လည်စဉ်းစားကြည့်ပါ:</strong> ${item.explanation}`;
+            }
+        }
+
+        // ==========================================
+        // 4. ARTICLE TEMPLATES (OVERVIEW + 3.1 - 3.4 + WORKED)
+        // ==========================================
+        const ARTICLES = {
+            'overview': {
+                badge: 'Chapter 3 Master Summary Table',
+                title: 'Fluid Dynamics ပုံသေနည်းချုပ်နှင့် ခြုံငုံရှင်းလင်းချက်',
+                subtitle: 'Laminar & Turbulent Flow, Equation of Continuity, Bernoulli\'s Equation, Surface Tension, Capillarity & Viscosity',
+                html: `
+                    <!-- Master Formula Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Grade 12 Physics • Chapter 3</span>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900">အခန်း (၃) အဓိက ပုံသေနည်းများ နှိုင်းယှဉ်ဇယား (Exam Must-Know)</h3>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-cyan-100 text-cyan-900 font-semibold self-start">Chapter 3 Summary</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ခေါင်းစဉ် (Topic)</th>
+                                        <th class="p-3">ပုံသေနည်း (Formula)</th>
+                                        <th class="p-3">SI Unit</th>
+                                        <th class="p-3">အဓိက သဘောတရား</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white myanmar-text">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">1. Volume Flow Rate</td>
+                                        <td class="p-3 font-mono font-bold text-cyan-700">Q = V / t = A v</td>
+                                        <td class="p-3 font-mono">m³ s⁻¹</td>
+                                        <td class="p-3">တစ်စက္ကန့်အတွင်း စီးဖြတ်သွားသော ငွေ့ရည်ထုထည်</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">2. Equation of Continuity</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-700">A₁v₁ = A₂v₂</td>
+                                        <td class="p-3 font-mono">m³ s⁻¹</td>
+                                        <td class="p-3">ပိုက်ဝကျဉ်းလေ (A ငယ်လေ) စီးဆင်းအလျင် (v) မြန်လေ</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">3. Bernoulli's Equation</td>
+                                        <td class="p-3 font-mono font-bold text-indigo-700">P + ½ρv² + ρgh = const</td>
+                                        <td class="p-3 font-mono">Pa (N m⁻²)</td>
+                                        <td class="p-3">အလျင်မြန်သော နေရာတွင် ဖိအားလျော့နည်းသည်</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">4. Torricelli's Theorem</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">v = √(2gh)</td>
+                                        <td class="p-3 font-mono">m s⁻¹</td>
+                                        <td class="p-3">ရေစည်အနက် h ရှိ အပေါက်မှ ရေပန်းထွက်အလျင်</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">5. Surface Tension</td>
+                                        <td class="p-3 font-mono font-bold text-sky-700">γ = F / l</td>
+                                        <td class="p-3 font-mono">N m⁻¹</td>
+                                        <td class="p-3">အရည်မျက်နှာပြင်ပေါ်ရှိ တစ်ယူနစ်အရှည်ပေါ် သက်ရောက်အား</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">6. Capillary Action</td>
+                                        <td class="p-3 font-mono font-bold text-rose-700">h = (2γ cos θ) / (ρgr)</td>
+                                        <td class="p-3 font-mono">m</td>
+                                        <td class="p-3">ပြွန်ငယ်အချင်းဝက် r ကျဉ်းလေ အရည်တက်/ဆင်း အမြင့် |h| များလေ</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">7. Stokes' Law & Viscosity</td>
+                                        <td class="p-3 font-mono font-bold text-purple-700">Fd = 6πηrv</td>
+                                        <td class="p-3 font-mono">N (η: Pa·s)</td>
+                                        <td class="p-3">စေးပျစ်သော ငွေ့ရည်ထဲရွေ့လျားသည့် စက်လုံးပေါ်သက်ရောက် ခုခံအား</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900">🧠 Chapter 3 အပိုင်းတစ်ခုချင်းစီသို့ အမြန်သွားရန်</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <button onclick="selectArticle('3.1')" class="p-4 rounded-2xl bg-cyan-50 border border-cyan-200 text-left hover:bg-cyan-100 transition">
+                                <div class="font-bold text-cyan-950 text-sm">3.1 Fluid Flow →</div>
+                                <p class="text-cyan-800 mt-1">Laminar နှင့် Turbulent စီးဆင်းမှု 3D Lab နှင့် Ideal Fluid</p>
+                            </button>
+                            <button onclick="selectArticle('3.2')" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left hover:bg-emerald-100 transition">
+                                <div class="font-bold text-emerald-950 text-sm">3.2 Continuity →</div>
+                                <p class="text-emerald-800 mt-1">3D Converging Nozzle (A₁v₁ = A₂v₂) နှင့် အလျင်တွက်စက်</p>
+                            </button>
+                            <button onclick="selectArticle('3.3')" class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-left hover:bg-indigo-100 transition">
+                                <div class="font-bold text-indigo-950 text-sm">3.3 Bernoulli →</div>
+                                <p class="text-indigo-800 mt-1">Venturi Pipe & လေယာဉ်တောင်ပံ ပင့်အား 3D နှင့် ဖိအားတွက်စက်</p>
+                            </button>
+                            <button onclick="selectArticle('3.4')" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-left hover:bg-rose-100 transition">
+                                <div class="font-bold text-rose-950 text-sm">3.4 Capillarity & Viscosity →</div>
+                                <p class="text-rose-800 mt-1">ရေနှင့် ပြဒါး 3D ပြွန်ငယ်၊ Surface Tension နှင့် Stokes' Law</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Page-by-Page Explanation -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">📖 Chapter 3 ကို စာမျက်နှာအလိုက် ရှင်းလင်းချက် (ဘာတွေပါပြီး ဘာတွေပြောထားလဲ)</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၁။ Master Table (ဤစာမျက်နှာ)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ရူပဗေဒတွင် စီးဆင်းနိုင်သော အရည် (Liquids) နှင့် ဓာတ်ငွေ့ (Gases) နှစ်မျိုးလုံးကို <b>Fluid (ငွေ့ရည်)</b> ဟု ခေါ်သည်။ အခန်း (၃) တစ်ခုလုံး၏ အဓိက ပုံသေနည်း (၇) ခုနှင့် SI ယူနစ်များကို တစ်နေရာတည်း စုစည်းပေးထားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+                                <div class="font-bold text-sky-950 text-base">၂။ Article 3.1 — Fluid Flow & Ideal Fluids</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ချောမွေ့တသမတ်တည်း စီးဆင်းသော <b>Laminar flow</b> နှင့် ဝဲဂယက်ထစီးဆင်းသော <b>Turbulent flow</b> တို့ကို 3D ပိုက်အတွင်း လက်တွေ့နှိုင်းယှဉ်ပြထားပြီး Ideal fluid ၏ ဂုဏ်သတ္တိများကို ရှင်းပြထားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၃။ Article 3.2 — Equation of Continuity</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဒြပ်ထုတည်မြဲမှု (Conservation of Mass) အရ ပိုက်ဝကျဉ်းသွားလျှင် စီးဆင်းအလျင် မြန်လာပုံ (<b>A₁v₁ = A₂v₂</b>) ကို 3D Nozzle နှင့် တွက်စက်ဖြင့် စမ်းသပ်နိုင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">၄။ Article 3.3 — Bernoulli's Equation</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">စွမ်းအင်တည်မြဲမှု (Conservation of Energy) အရ အလျင်မြန်သောနေရာတွင် ဖိအားလျော့နည်းပုံကို Venturi Manometer နှင့် လေယာဉ်တောင်ပံ ပင့်အား (Airfoil Lift) 3D ဖြင့် ပြသထားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၅။ Article 3.4 — Capillarity & Viscosity</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">လက်တွေ့အရည်များ၏ မျက်နှာပြင်တင်းအား၊ ရေနှင့် ပြဒါး ပြွန်ငယ်အတွင်း တက်/ဆင်းပုံ (3D) နှင့် စေးပျစ်မှုခုခံအား Stokes' Law တို့ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200 space-y-1.5">
+                                <div class="font-bold text-slate-900 text-base">🔑 Chapter 3 တစ်ခုလုံး၏ အဓိကစိတ်ကူး</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဒြပ်ထုတည်မြဲမှု (<b>A₁v₁ = A₂v₂</b>) → စွမ်းအင်တည်မြဲမှု (<b>P + ½ρv² + ρgh = const</b>) → လက်တွေ့အရည် ဂုဏ်သတ္တိများ (<b>Surface Tension, Capillarity, Viscosity</b>) ဟူ၍ အဆင့်ဆင့် ဆက်စပ်နေသည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            '3.1': {
+                badge: 'Article 3.1',
+                title: 'Introduction to Fluid Flow & Ideal Fluids',
+                subtitle: 'Laminar (Streamline) Flow နှင့် Turbulent Flow 3D Lab နှင့် စံပြငွေ့ရည်၏ ဂုဏ်သတ္တိများ',
+                html: `
+                    <!-- 3D Viewer 3.1 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Interactive 3D Fluid Lab 3.1</span>
+                                <h3 class="text-lg font-bold text-slate-900">Laminar Flow vs. Turbulent Flow in a 3D Pipe</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button id="btn-31-lam" onclick="setCh3Sim1Mode('laminar')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 text-white transition">🌊 Laminar Flow</button>
+                                <button id="btn-31-turb" onclick="setCh3Sim1Mode('turbulent')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition">🌪️ Turbulent Flow</button>
+                            </div>
+                        </div>
+                        <div id="viewer-3-1" class="canvas-container"></div>
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <label for="ch3-s1-speed">Flow Velocity (စီးဆင်းအလျင် v):</label>
+                                    <span id="ch3-s1-speed-lbl" class="font-mono text-cyan-700">2.0 m/s</span>
+                                </div>
+                                <input id="ch3-s1-speed" type="range" min="0.5" max="5.0" step="0.5" value="2.0" oninput="updateCh3Sim1Speed(this.value)" class="w-full accent-cyan-600 cursor-pointer">
+                            </div>
+                            <span class="text-xs text-slate-500">v ≥ 3.5 m/s သို့ တင်ကြည့်ပါက Turbulent သို့ ပြောင်းလဲသွားမည်</span>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Explanation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">🔬 Article 3.1 အသေးစိတ်ရှင်းလင်းချက် — ငွေ့ရည်စီးဆင်းပုံ (၂) မျိုးနှင့် Ideal Fluid</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၁။ Laminar (Streamline) Flow</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ငွေ့ရည်အမှုန်တိုင်းသည် ချောမွေ့တသမတ်တည်းသော လမ်းကြောင်း (Streamlines) အတိုင်း ရွေ့လျားပြီး လမ်းကြောင်းများ အချင်းချင်း ဖြတ်သန်းခြင်း မရှိပါ။ အမှတ်တစ်ခုကို ဖြတ်သွားသော အမှုန်တိုင်း၏ အလျင်သည် ကိန်းသေဖြစ်သည် (ဥပမာ- ညင်သာသော ပင်လယ်လေပြေ)။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၂။ Turbulent Flow (ရုန်းရင်းဆန်ခတ် စီးဆင်းမှု)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">စီးဆင်းနှုန်း အလွန်မြန်လာသောအခါ (Critical speed ကျော်လွန်လျှင်) သို့မဟုတ် အတားအဆီးများနှင့် တွေ့သောအခါ အလျင်ပမာဏနှင့် ဦးတည်ရာတို့ အဆက်မပြတ် ပြောင်းလဲကာ <b>ဝဲဂယက်များ (Eddies / Vortices)</b> ဖြစ်ပေါ်စီးဆင်းသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၃။ Ideal Fluid ၏ အခြေခံ သတ်မှတ်ချက် (၄) ချက်</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Equation of Continuity နှင့် Bernoulli's Equation တို့ကို အသုံးပြုရန် ငွေ့ရည်သည် <b>(က) Incompressible</b> (သိပ်သည်းဆ ρ ကိန်းသေ)၊ <b>(ခ) Non-viscous</b> (စေးပျစ်မှု ပွတ်တိုက်အား မရှိ)၊ <b>(ဂ) Steady / Laminar</b> (တည်ငြိမ်စွာ စီးဆင်း) နှင့် <b>(ဃ) Irrotational</b> (ဝဲလှည့်ခြင်း မရှိ) ဖြစ်ရမည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+                                <div class="font-bold text-sky-950 text-base">၄။ Streamline မျဉ်းကြောင်းများ၏ ဂုဏ်သတ္တိ</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Streamline ပေါ်ရှိ မည်သည့်အမှတ်တွင်မဆို ဆွဲထားသော ထိမျဉ်း (Tangent) သည် ထိုအမှတ်ရှိ ငွေ့ရည်အလျင် (Velocity vector) ၏ ဦးတည်ရာကို ပြသည်။ Streamline နှစ်ခုသည် မည်သည့်အခါမျှ ဖြတ်သန်း (Cross) ခြင်း မရှိပါ။</p>
+                            </div>
+                        </div>
+
+                        <!-- SVG Diagram -->
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-slate-900 text-sm">ပုံ — Laminar Flow နှင့် Turbulent Flow နှိုင်းယှဉ်ပုံ</div>
+                            <svg viewBox="0 0 680 150" class="w-full max-w-2xl mx-auto">
+                                <rect x="10" y="15" width="310" height="120" rx="14" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+                                <text x="165" y="36" text-anchor="middle" font-size="12" font-weight="bold" fill="#164e63">Laminar Flow (ချောမွေ့တသမတ်တည်း)</text>
+                                <g stroke="#0284c7" stroke-width="2.5" fill="none">
+                                    <line x1="35" y1="58" x2="295" y2="58"/><polygon points="290,54 298,58 290,62" fill="#0284c7"/>
+                                    <line x1="35" y1="82" x2="295" y2="82"/><polygon points="290,78 298,82 290,86" fill="#0284c7"/>
+                                    <line x1="35" y1="106" x2="295" y2="106"/><polygon points="290,102 298,106 290,110" fill="#0284c7"/>
+                                </g>
+
+                                <rect x="360" y="15" width="310" height="120" rx="14" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+                                <text x="515" y="36" text-anchor="middle" font-size="12" font-weight="bold" fill="#78350f">Turbulent Flow (ဝဲဂယက်များ ဖြစ်ပေါ်)</text>
+                                <path d="M385,60 Q430,45 460,75 T535,65 T610,85 T650,60" fill="none" stroke="#d97706" stroke-width="2.5"/>
+                                <path d="M385,95 Q440,115 475,80 T555,105 T635,75" fill="none" stroke="#ea580c" stroke-width="2.5"/>
+                                <circle cx="515" cy="82" r="14" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="4 3"/>
+                            </svg>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_3_1()
+            },
+
+            '3.2': {
+                badge: 'Article 3.2',
+                title: 'Equation of Continuity for Fluids',
+                subtitle: 'ဒြပ်ထုတည်မြဲမှု နိယာမနှင့် ထုထည်စီးဆင်းနှုန်း တသမတ်တည်းရှိခြင်း (A₁v₁ = A₂v₂)',
+                html: `
+                    <!-- 3D Viewer 3.2 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Interactive 3D Fluid Lab 3.2</span>
+                            <h3 class="text-lg font-bold text-slate-900">3D Converging Nozzle: Equation of Continuity (A₁v₁ = A₂v₂)</h3>
+                        </div>
+                        <div id="viewer-3-2" class="canvas-container"></div>
+
+                        <div class="grid sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                            <div>
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <label for="ch3-s2-ratio">Area Ratio (A₁ / A₂):</label>
+                                    <span id="ch3-s2-ratio-lbl" class="font-mono text-emerald-700">4.0× (A₁/A₂)</span>
+                                </div>
+                                <input id="ch3-s2-ratio" type="range" min="1.5" max="6.0" step="0.5" value="4.0" oninput="updateCh3Sim2Params()" class="w-full accent-emerald-600 cursor-pointer">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <label for="ch3-s2-inlet">Inlet Speed (v₁):</label>
+                                    <span id="ch3-s2-inlet-lbl" class="font-mono text-sky-700">1.5 m/s</span>
+                                </div>
+                                <input id="ch3-s2-inlet" type="range" min="0.5" max="3.0" step="0.5" value="1.5" oninput="updateCh3Sim2Params()" class="w-full accent-sky-600 cursor-pointer">
+                            </div>
+                            <div id="ch3-s2-telemetry" class="sm:col-span-2 p-3 rounded-xl bg-slate-900 text-slate-100 text-xs space-y-1"></div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Continuity Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🧮 Interactive Equation of Continuity Calculator (A₁v₁ = A₂v₂)</h3>
+                            <span class="text-xs text-slate-200">တန်ဖိုးများ ရိုက်ထည့်၍ v₂ နှင့် Q ကို တွက်ချက်ပါ</span>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-200 mb-1">Inlet Area A₁ (cm²)</label>
+                                <input id="calc-a1" type="number" value="10" step="0.5" oninput="runContinuityCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-200 mb-1">Inlet Speed v₁ (m/s)</label>
+                                <input id="calc-v1" type="number" value="2" step="0.5" oninput="runContinuityCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-200 mb-1">Outlet Area A₂ (cm²)</label>
+                                <input id="calc-a2" type="number" value="2.5" step="0.5" oninput="runContinuityCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+                        <div id="cont-calc-out"></div>
+                    </div>
+
+                    <!-- Detailed Explanation -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">🔬 Article 3.2 အသေးစိတ်ရှင်းလင်းချက် — ဘာကြောင့် ပိုက်ကျဉ်းလျှင် ရေပိုမြန်သလဲ?</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၁။ Conservation of Mass (ဒြပ်ထုတည်မြဲမှု)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဖိသိပ်၍မရသော (Incompressible, ρ = const) အရည်တစ်ခုသည် ပိုက်ထဲသို့ အချိန် Δt အတွင်း ဒြပ်ထု Δm ဝင်ရောက်ပါက အခြားတစ်ဖက်မှလည်း ဒြပ်ထု Δm ပြန်ထွက်ရမည်။ ρA₁v₁Δt = ρA₂v₂Δt ဖြစ်သောကြောင့် <b>A₁v₁ = A₂v₂</b> ရရှိသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+                                <div class="font-bold text-sky-950 text-base">၂။ Volume Flow Rate (Q = Av)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဖြတ်ပိုင်းဧရိယာ (A) နှင့် စီးဆင်းအလျင် (v) တို့၏ မြှောက်လဒ်ကို <b>Volume Flow Rate (Q = V/t)</b> ဟုခေါ်ပြီး ယူနစ်မှာ <b>m³ s⁻¹</b> ဖြစ်သည်။ ပိုက်တစ်လျှောက် နေရာတိုင်းတွင် Q တန်ဖိုး တူညီသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၃။ အချင်းဝက် (r) သို့မဟုတ် အချင်း (d) နှင့် ဆက်သွယ်ချက်</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">စက်ဝိုင်းပုံပိုက်များအတွက် A = πr² = πd²/4 ဖြစ်သဖြင့် <b>r₁²v₁ = r₂²v₂</b> (သို့) <b>d₁²v₁ = d₂²v₂</b> ဖြစ်သည်။ ပိုက်အချင်းဝက် တစ်ဝက် (r/2) လျော့သွားလျှင် အလျင်သည် <b>၄ ဆ (4v)</b> မြန်လာသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၄။ နေ့စဉ်ဘဝ လက်တွေ့ဥပမာများ</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဥယျာဉ်ရေဖျန်းပိုက်ခေါင်းကို လက်မဖြင့် တစ်စိတ်တစ်ပိုင်း ပိတ်လိုက်လျှင် ထွက်ပေါက်ဧရိယာ (A₂) ကျဉ်းသွားပြီး ရေပန်းထွက်အလျင် (v₂) မြန်လာကာ အဝေးသို့ ရောက်ရှိခြင်း ဖြစ်သည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => {
+                    render3D_3_2();
+                    updateCh3Sim2Params();
+                    runContinuityCalc();
+                }
+            },
+
+            '3.3': {
+                badge: 'Article 3.3',
+                title: "Bernoulli's Equation & Applications",
+                subtitle: 'ဖိအား၊ အလျင်နှင့် အမြင့် ဆက်သွယ်ချက် (P + ½ρv² + ρgh = const) နှင့် လေယာဉ်တောင်ပံ ပင့်အား',
+                html: `
+                    <!-- 3D Viewer 3.3 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Interactive 3D Fluid Lab 3.3</span>
+                                <h3 class="text-lg font-bold text-slate-900">3D Venturi Manometer Columns & Airplane Wing Lift</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button id="btn-33-venturi" onclick="setCh3Sim3Mode('venturi')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white transition">🧪 Venturi Pipe</button>
+                                <button id="btn-33-wing" onclick="setCh3Sim3Mode('wing')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition">✈️ Airplane Wing</button>
+                            </div>
+                        </div>
+                        <div id="viewer-3-3" class="canvas-container"></div>
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <label for="ch3-s3-flow">Flow Speed Control:</label>
+                                    <span id="ch3-s3-flow-lbl" class="font-mono text-indigo-700">Medium Speed</span>
+                                </div>
+                                <input id="ch3-s3-flow" type="range" min="1" max="5" step="1" value="3" oninput="updateCh3Sim3Flow(this.value)" class="w-full accent-indigo-600 cursor-pointer">
+                            </div>
+                            <span class="text-xs text-slate-500">အလျင်မြန်လေ ကျဉ်းသောနေရာတွင် ဖိအားပိုကျလေ ဖြစ်သည်</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Bernoulli Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">📊 Interactive Bernoulli Pressure Drop Calculator (h₁ = h₂)</h3>
+                            <span class="text-xs text-slate-200">P₁ − P₂ = ½ρ(v₂² − v₁²)</span>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-200 mb-1">Fluid Density ρ (kg/m³)</label>
+                                <input id="bern-rho" type="number" value="1000" step="100" oninput="runBernoulliCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-200 mb-1">Wide Section Speed v₁ (m/s)</label>
+                                <input id="bern-v1" type="number" value="2" step="0.5" oninput="runBernoulliCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-200 mb-1">Throat Speed v₂ (m/s)</label>
+                                <input id="bern-v2" type="number" value="6" step="0.5" oninput="runBernoulliCalc()" class="w-full px-3 py-2 rounded-xl bg-slate-900/80 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+                        <div id="bern-calc-out"></div>
+                    </div>
+
+                    <!-- Detailed Explanation -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">🔬 Article 3.3 အသေးစိတ်ရှင်းလင်းချက် — Bernoulli's Equation နှင့် လက်တွေ့အသုံးချမှုများ</h3>
+                        <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-center">
+                            <div class="font-mono font-bold text-indigo-950 text-base sm:text-lg">P₁ + ½ρv₁² + ρgh₁ = P₂ + ½ρv₂² + ρgh₂ = constant</div>
+                            <p class="text-xs text-slate-600 mt-1">P = Pressure energy per unit volume · ½ρv² = Kinetic energy per unit volume · ρgh = Potential energy per unit volume</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+                                <div class="font-bold text-sky-950 text-base">၁။ Venturi Effect (ပိုက်ကျဉ်းအတွင်း ဖိအားကျဆင်းခြင်း)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ရေပြင်ညီပိုက် (h₁ = h₂) အတွက် <b>P₁ + ½ρv₁² = P₂ + ½ρv₂²</b> ဖြစ်သည်။ ကျဉ်းသောနေရာတွင် v₂ &gt; v₁ ဖြစ်လာသဖြင့် Kinetic energy တိုးလာပြီး ဖိအား <b>P₂ &lt; P₁</b> သို့ ကျဆင်းသွားသည်။ ဤသဘောတရားဖြင့် Venturi meter က ပိုက်အတွင်း စီးဆင်းနှုန်းကို တိုင်းတာသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၂။ Airplane Wing Lift (လေယာဉ်တောင်ပံ ပင့်အား)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">လေယာဉ်တောင်ပံ (Airfoil) ၏ အပေါ်မျက်နှာပြင်သည် ခုံးနေသဖြင့် အပေါ်မှဖြတ်စီးသော လေအလျင် ပိုမြန် (v_top &gt; v_bottom) ပြီး ဖိအားနည်းသွား (P_top &lt; P_bottom) ကာ အောက်မှအပေါ်သို့ <b>Dynamic Lift</b> ဖြစ်ပေါ်စေသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၃။ Atomizer / Perfume Sprayer (ရေမွှေးဖျန်းဘူး)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">လေဘောလုံးကို ညှစ်လိုက်သောအခါ ဒေါင်လိုက်ပြွန်ထိပ်မှ လေအလျင်မြန်စွာ ဖြတ်သန်းသွားသဖြင့် ထိုနေရာတွင် ဖိအားနည်းသွားသည်။ ပုလင်းအတွင်းရှိ လေထုဖိအားက အရည်ကို ပြွန်အတိုင်း အပေါ်သို့ တွန်းတင်ပေးသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၄။ Torricelli's Theorem (v = √2gh)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အပေါ်ဖွင့်ထားသော ရေတိုင်ကီကြီး၏ ရေမျက်နှာပြင်အောက် အနက် h ရှိ အပေါက်ငယ်မှ ရေပန်းထွက်အလျင်သည် အမြင့် h မှ လွတ်လပ်စွာ ပြုတ်ကျလာသော အရာဝတ္ထု၏ အလျင် <b>v = √(2gh)</b> နှင့် တူညီသည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => {
+                    render3D_3_3();
+                    runBernoulliCalc();
+                }
+            },
+
+            '3.4': {
+                badge: 'Article 3.4',
+                title: 'Surface Tension, Capillary Action & Viscosity',
+                subtitle: 'မျက်နှာပြင်တင်းအား (γ = F/l)၊ ပြွန်ငယ်အတွင်း အရည်တက်/ဆင်းခြင်း 3D နှင့် Stokes\' Law (F = 6πηrv)',
+                html: `
+                    <!-- 3D Viewer 3.4 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Interactive 3D Fluid Lab 3.4</span>
+                                <h3 class="text-lg font-bold text-slate-900">3D Capillary Action: Water Rise vs. Mercury Depression</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button id="btn-34-water" onclick="setCh3Sim4Liquid('water')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white transition">💧 Water (Adhesion &gt; Cohesion)</button>
+                                <button id="btn-34-mercury" onclick="setCh3Sim4Liquid('mercury')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-200 text-slate-700 hover:bg-slate-300 transition">⚪ Mercury (Cohesion &gt; Adhesion)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-3-4" class="canvas-container"></div>
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="flex-1">
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <label for="ch3-s4-radius">Capillary Tube Radius (ပြွန်အချင်းဝက် r):</label>
+                                    <span id="ch3-s4-radius-lbl" class="font-mono text-rose-700">0.50 mm</span>
+                                </div>
+                                <input id="ch3-s4-radius" type="range" min="0.25" max="1.00" step="0.05" value="0.50" oninput="updateCh3Sim4Radius(this.value)" class="w-full accent-rose-600 cursor-pointer">
+                            </div>
+                            <span class="text-xs text-slate-500">ပြွန်အချင်းဝက် r ကျဉ်းလေ အရည်တက်/ဆင်း အမြင့် |h| ပိုများလေ ဖြစ်သည်</span>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Explanation -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">🔬 Article 3.4 အသေးစိတ်ရှင်းလင်းချက် — လက်တွေ့အရည်များ၏ ဂုဏ်သတ္တိ (၃) မျိုး</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1.5">
+                                <div class="font-bold text-sky-950 text-base">၁။ Surface Tension (γ = F / l)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အရည်မျက်နှာပြင်ရှိ မော်လီကျူးများသည် အတွင်းဘက်ရှိ မော်လီကျူးများ၏ ဆွဲငင်အား (Cohesive force) ကို ခံရသောကြောင့် မျက်နှာပြင်ဧရိယာ အနည်းဆုံးဖြစ်အောင် ကျုံ့ဝင်ကာ တင်းနေသော အမြှေးပါးကဲ့သို့ ဖြစ်နေသည်။ ထို့ကြောင့် မိုးရေစက်များ လုံးဝန်းနေပြီး ရေပိုးကောင်များ ရေပေါ်လမ်းလျှောက်နိုင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၂။ Cohesion vs. Adhesion & Capillary Action</div>
+                                <p class="text-slate-700 text-sm leading-relaxed"><b>Cohesion:</b> အမျိုးအစားတူ မော်လီကျူးချင်း ဆွဲငင်အား။ <b>Adhesion:</b> မတူညီသော အရာဝတ္ထု (ဥပမာ- ရေနှင့် ဖန်သား) ကြား ဆွဲငင်အား။ ရေတွင် Adhesion &gt; Cohesion ဖြစ်၍ မျက်နှာပြင်ခွက် (Concave, θ ≈ 0°) ပြီး မြင့်တက်သည်။ ပြဒါးတွင် Cohesion &gt; Adhesion ဖြစ်၍ မျက်နှာပြင်ခုံး (Convex, θ ≈ 140°) ပြီး နိမ့်ဆင်းသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၃။ Viscosity (စေးပျစ်မှု, η)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ငွေ့ရည်အလွှာများ တစ်ခုပေါ်တစ်ခု လျှောတိုက်စီးဆင်းရာတွင် ဖြစ်ပေါ်သော အတွင်းပွတ်တိုက်ခုခံအား (Internal friction) ဖြစ်သည်။ ပျားရည်နှင့် စက်ဆီတို့သည် ရေထက် Viscosity (η) ပိုများသည်။ အပူချိန်တက်လာလျှင် အရည်များ၏ Viscosity လျော့နည်းသွားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1.5">
+                                <div class="font-bold text-purple-950 text-base">၄။ Stokes' Law (Fd = 6πηrv) & Terminal Velocity</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အချင်းဝက် r ရှိသော စက်လုံးတစ်လုံး စေးပျစ်မှု η ရှိသော ငွေ့ရည်ထဲတွင် အလျင် v ဖြင့် ရွေ့လျားပါက ခုခံအား <b>Fd = 6πηrv</b> သက်ရောက်သည်။ အောက်ဆွဲအားနှင့် အပေါ်ပင့်အား+ခုခံအား ညီမျှသွားချိန်တွင် ကိန်းသေအလျင် <b>Terminal velocity (vt)</b> ဖြင့် ဆက်ကျဆင်းသည်။</p>
+                            </div>
+                        </div>
+
+                        <!-- SVG Diagram -->
+                        <div class="space-y-2 pt-2">
+                            <div class="font-bold text-slate-900 text-sm">ပုံ — Water (Concave Meniscus) နှင့် Mercury (Convex Meniscus) နှိုင်းယှဉ်ပုံ</div>
+                            <svg viewBox="0 0 640 175" class="w-full max-w-xl mx-auto">
+                                <rect x="20" y="12" width="270" height="150" rx="14" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+                                <text x="155" y="34" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">Water in Glass (Adhesion &gt; Cohesion)</text>
+                                <rect x="135" y="45" width="40" height="105" fill="none" stroke="#475569" stroke-width="2"/>
+                                <path d="M135,70 Q155,84 175,70 L175,150 L135,150 Z" fill="#38bdf8" opacity="0.75"/>
+                                <text x="155" y="115" text-anchor="middle" font-size="11" font-weight="bold" fill="#0c4a6e">Rises (+h)</text>
+
+                                <rect x="350" y="12" width="270" height="150" rx="14" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+                                <text x="485" y="34" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">Mercury in Glass (Cohesion &gt; Adhesion)</text>
+                                <rect x="465" y="45" width="40" height="105" fill="none" stroke="#475569" stroke-width="2"/>
+                                <path d="M465,112 Q485,98 505,112 L505,150 L465,150 Z" fill="#94a3b8" opacity="0.85"/>
+                                <text x="485" y="136" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">Depresses (−h)</text>
+                            </svg>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_3_4()
+            },
+
+            'worked': {
+                badge: 'Fluid Problem Simulator, Exam Q&A & Quiz',
+                title: 'အခန်း (၃) တွက်ချက်မှု Simulator၊ စာမေးပွဲမေးခွန်းဟောင်း အဖြေများ နှင့် Quiz',
+                subtitle: 'ပုစ္ဆာတွက်နည်း အဆင့်ဆင့် လေ့ကျင့်ရန် Simulator နှင့် စာမေးပွဲအမေးများဆုံး မေးခွန်းများ',
+                html: `
+                    <!-- Interactive Problem Simulator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🧮 Interactive Chapter 3 Worked Problem Simulator</h3>
+                            <span class="text-xs text-slate-200">ပုစ္ဆာအမျိုးအစားကို ရွေးချယ်၍ တွက်နည်းအဆင့်ဆင့် ကြည့်ပါ</span>
+                        </div>
+                        <div class="max-w-xl text-xs">
+                            <label class="block text-slate-200 mb-1">ပုစ္ဆာအမျိုးအစား ရွေးပါ (Select Problem Type)</label>
+                            <select id="ch3-sim-select" onchange="runCh3ScenarioSim()" class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-white/20 text-white font-bold">
+                                <option value="cont">1. Equation of Continuity (A₁v₁ = A₂v₂)</option>
+                                <option value="bern">2. Bernoulli's Equation Pressure Drop (ΔP)</option>
+                                <option value="cap">3. Capillary Tube Rise Height (h = 2γ cos θ / ρgr)</option>
+                                <option value="stokes">4. Stokes' Law Viscous Drag Force (Fd = 6πηrv)</option>
+                            </select>
+                        </div>
+                        <div id="ch3-sim-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Exam Q&A -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4 text-xs sm:text-sm myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900">✍️ စာမေးပွဲတွင် မေးလေ့ရှိသော မေးခွန်းနှင့် အဖြေများ</h3>
+
+                        <div class="p-4 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                            <div class="font-bold text-cyan-950">Q1. Why does water flow faster when you partially cover the opening of a garden hose with your thumb?</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> According to the <strong>Equation of Continuity (A₁v₁ = A₂v₂)</strong>, for an incompressible fluid in steady flow, the volume flow rate (Av) remains constant. Covering part of the opening reduces the cross-sectional area (A₂), so the speed of the emerging water (v₂) must increase proportionally.
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                            <div class="font-bold text-indigo-950">Q2. Explain how an airplane wing generates dynamic lift based on Bernoulli's principle.</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> The upper surface of an airfoil (wing) is more curved than the lower surface, forcing air flowing over the top to travel faster than air beneath it (<strong>v_top &gt; v_bottom</strong>). By <strong>Bernoulli's equation</strong>, higher air speed creates lower pressure above the wing (<strong>P_top &lt; P_bottom</strong>). This pressure difference produces an upward net force called <strong>dynamic lift</strong>.
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                            <div class="font-bold text-rose-950">Q3. Why does water rise in a narrow glass capillary tube while mercury is depressed?</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> For water in glass, the <strong>adhesive force</strong> between water and glass molecules is stronger than the <strong>cohesive force</strong> between water molecules, forming a concave meniscus (θ ≈ 0°) that pulls water upward. For mercury in glass, cohesive forces are much stronger than adhesive forces, forming a convex meniscus (θ ≈ 140°) that depresses the mercury level.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Self-Check Quiz -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Chapter 3 Self-Check Quiz</span>
+                            <h3 class="text-xl font-bold text-slate-900">နားလည်မှု စစ်ဆေးရန် မေးခွန်းများ (အဖြေနှိပ်၍ စစ်ဆေးပါ)</h3>
+                        </div>
+                        <div class="space-y-4">
+                            ${CH3_QUIZ.map((item, qIdx) => `
+                                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                                    <div class="font-bold text-slate-900 text-sm sm:text-base">${item.q}</div>
+                                    <div class="grid sm:grid-cols-2 gap-2.5">
+                                        ${item.options.map((opt, oIdx) => `
+                                            <button onclick="checkCh3Quiz(${qIdx}, ${oIdx})" class="text-left p-3 rounded-xl bg-white border border-slate-200 hover:border-cyan-400 hover:bg-cyan-50/50 text-xs sm:text-sm font-medium text-slate-700 transition">
+                                                ${opt}
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                    <div id="ch3-q-fb-${qIdx}" class="hidden text-xs sm:text-sm p-3 rounded-xl border"></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Exam Answering Tips -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">🧭 စာမေးပွဲဖြေနည်းလမ်း — Given → Unit Conversion → Formula → Answer</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၁။ ယူနစ်ပြောင်းလဲခြင်း (SI Units)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ဧရိယာ <b>cm²</b> ပေးထားလျှင် <b>× 10⁻⁴ m²</b> သို့လည်းကောင်း၊ အချင်းဝက် <b>mm</b> ပေးထားလျှင် <b>× 10⁻³ m</b> သို့လည်းကောင်း ဦးစွာပြောင်းပါ။ (မှတ်ချက်- A₁v₁ = A₂v₂ တစ်ခုတည်းတွင်သာ A₁ နှင့် A₂ ယူနစ်တူလျှင် cm² အတိုင်း တိုက်ရိုက်သုံးနိုင်သည်)။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                                <div class="font-bold text-amber-950 text-base">၂။ အချင်း (Diameter d) နှင့် အချင်းဝက် (Radius r)</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">ပုစ္ဆာတွင် Diameter (d) ပေးထားပါက <b>r = d / 2</b> ဖြင့် အချင်းဝက် အရင်ရှာပြီးမှ A = πr² သို့မဟုတ် h = 2γ cos θ / ρgr ထဲသို့ အစားသွင်းပါ။</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runCh3ScenarioSim()
+            }
+        };
+
+        // ==========================================
+        // 5. NAVIGATION & UI CONTROLLER
+        // ==========================================
+        function selectArticle(id) {
+            currentArticleId = id;
+            const article = ARTICLES[id];
+            if (!article) return;
+
+            clearActiveScenes();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-50', 'text-cyan-950', 'border-cyan-200', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                const badge = btn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-cyan-600', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const activeBtn = document.getElementById(`nav-${id}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                activeBtn.classList.add('bg-cyan-50', 'text-cyan-950', 'border-cyan-200', 'shadow-xs');
+                const badge = activeBtn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-cyan-600', 'text-white');
+                }
+            }
+
+            const container = document.getElementById('content-container');
+            const ids = ['overview', '3.1', '3.2', '3.3', '3.4', 'worked'];
+            const idx = ids.indexOf(id);
+            const prevId = idx > 0 ? ids[idx - 1] : null;
+            const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800 mb-2">
+                        ${article.badge}
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${article.title}</h1>
+                    <p class="mt-1 text-sm sm:text-base text-slate-600 font-medium">${article.subtitle}</p>
+                </div>
+
+                ${article.html}
+
+                <div class="pt-4 pb-8 flex items-center justify-between gap-4 border-t border-slate-200">
+                    ${prevId ? `
+                        <button onclick="selectArticle('${prevId}')" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-cyan-300 hover:bg-cyan-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> ယခင်အပိုင်း (${prevId === 'overview' ? 'Master Table' : prevId})
+                        </button>
+                    ` : '<div></div>'}
+
+                    ${nextId ? `
+                        <button onclick="selectArticle('${nextId}')" class="px-5 py-3 rounded-2xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            နောက်တစ်ပိုင်း (${nextId === 'worked' ? 'Simulator & Q&A' : nextId}) <span>→</span>
+                        </button>
+                    ` : `
+                        <a href="index.html" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            Chapter 1 သို့ ပြန်သွားရန် <span>🏠</span>
+                        </a>
+                    `}
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileSidebar();
+
+            if (typeof article.onMount === 'function') {
+                setTimeout(() => article.onMount(), 50);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        window.onload = function() {
+            selectArticle('overview');
+        };
+    </script>
+</body>
+</html>
