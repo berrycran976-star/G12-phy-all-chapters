@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grade 12 Physics - Chapter 7: Interference, Diffraction and Polarization</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D Double-Slit Interference, Diffraction Grating & Light Polarization Labs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.85;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 430px;
+            }
+        }
+        .myanmar-text {
+            line-height: 1.98;
+        }
+        .formula-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+        .math-box {
+            font-family: 'Inter', monospace;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+        /* 3D Viewer Overlay UI (Matches Chapters 4, 5 & 6 Structure) */
+        .v3d-ui { position: absolute; inset: 0; pointer-events: none; font-family: 'Inter','Noto Sans Myanmar',sans-serif; }
+        .v3d-btn { position: absolute; top: 8px; right: 10px; pointer-events: auto; font-size: 11px; font-weight: 600; color: #e0e7ff; background: rgba(15,23,42,.75); border: 1px solid rgba(129,140,248,.45); padding: 3px 10px; border-radius: 9999px; cursor: pointer; }
+        .v3d-hint { position: absolute; top: 10px; left: 10px; font-size: 10.5px; color: #cbd5e1; transition: opacity .4s; }
+        .v3d-zoom { position: absolute; right: 10px; top: 38px; display: flex; flex-direction: column; gap: 6px; }
+        .v3d-zoom button { pointer-events: auto; width: 30px; height: 30px; border-radius: 9999px; font-size: 16px; font-weight: 700; line-height: 1; color: #e0e7ff; background: rgba(15,23,42,.78); border: 1px solid rgba(129,140,248,.45); cursor: pointer; }
+        .v3d-labels { position: absolute; inset: 0; }
+        .v3d-label { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; font-size: 11px; line-height: 1.35; font-weight: 600; color: #f8fafc; background: rgba(15,23,42,.84); border: 1px solid #818cf8; border-radius: .6rem; padding: 2px 8px; will-change: transform; }
+        .v3d-info { position: absolute; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.6; color: #e2e8f0; background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14); border-radius: .8rem; padding: 7px 11px; }
+        .v3d-info b { color: #93c5fd; }
+        /* Clean Mathematical Typography */
+        .mx { font-family: 'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif; font-size: 1.1em; font-weight: 500; letter-spacing: .01em; }
+        .mx i { font-style: italic; }
+        .mx .nb { display: inline-block; white-space: nowrap; margin-right: .2em; }
+        .mx .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .25em; line-height: 1.3; }
+        .mx .fr > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .3em .08em; }
+        .mx .fr > span:last-child { padding: .08em .3em 0; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-white font-bold shadow">
+                Ch7
+            </div>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p class="text-xs text-slate-500">Interference, Diffraction & Polarization</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Open Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Left Sidebar Taskbar (Matches Chapters 4, 5 & 6 Structure) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:shadow-none">
+            <!-- Brand Header + Chapter Switcher -->
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/25 text-indigo-200 border border-indigo-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Grade 12 Physics
+                    </span>
+                    <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10" aria-label="Close Navigation">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <h2 class="mt-3 text-lg font-bold tracking-tight leading-snug">Chapter 7: Interference, Diffraction and Polarization</h2>
+                <p class="mt-1 text-xs text-indigo-200/85">Young's Double-Slit, Single-Slit Diffraction, Grating, Malus's & Brewster's Laws</p>
+
+                <!-- Cross-Chapter Page Navigation Bar -->
+                <div class="mt-4 pt-3 border-t border-white/15 grid grid-cols-5 gap-1.5">
+                    <a href="../index.html" class="text-center py-1.5 px-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition" title="Home">🏠</a>
+                    <a href="../chapter1.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 1</a>
+                    <a href="chapter2.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 2</a>
+                    <a href="chapter3.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 3</a>
+                    <a href="chapter4.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 4</a>
+                    <a href="chapter5.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 5</a>
+                    <a href="chapter6.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 6</a>
+                    <a href="chapter7.html" class="text-center py-1.5 px-1 rounded-lg bg-indigo-500 text-xs font-semibold text-white shadow-xs">Ch 7</a>
+                    <a href="chapter8.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 8</a>
+                    <a href="chapter9.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 9</a>
+                    <a href="chapter10.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 10</a>
+                    <a href="chapter11.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 11</a>
+                    <a href="chapter12.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 12</a>
+                    <a href="chapter13.html" class="col-span-2 text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 13</a>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Chapter 7 လေ့လာရန် အပိုင်းများ (5 ခု)
+                </div>
+
+                <button onclick="selectArticle('overview')" id="nav-overview" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">🌈</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">အခန်း (၇) မိတ်ဆက် & Formula Table</div>
+                        <div class="text-xs opacity-80 mt-0.5">Wave Optics ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('7.1')" id="nav-7.1" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">7.1</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Interference of Light (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">Young's Double-Slit, Fringe Spacing (Δy = λL/d) & Thin Films</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('7.2')" id="nav-7.2" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">7.2</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Diffraction of Light & Grating (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">Single-Slit Minima (a sinθ = mλ) & Diffraction Grating (d sinθ = mλ)</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('7.3')" id="nav-7.3" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">7.3</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Polarization of Light (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">Transverse EM Wave, Malus's Law (I = I₁ cos²θ) & Brewster's Law</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('worked')" id="nav-worked" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">✍️</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Wave Optics Calculator & Exam Q&A</div>
+                        <div class="text-xs opacity-80 mt-0.5">Double-Slit / Grating / Malus တွက်စက်နှင့် စာမေးပွဲမေးခွန်းအဖြေများ</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Footer Tip -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200/80 text-xs text-indigo-950 flex items-start gap-2.5">
+                    <span class="text-base">💡</span>
+                    <span><strong>Exam Tip:</strong> Double-slit နှင့် Grating တို့တွင် <span class="mx"><i>d</i> sin<i>θ</i> = <i>mλ</i></span> သည် <strong>Bright Maxima</strong> ဖြစ်ပြီး Single-slit တွင် <span class="mx"><i>a</i> sin<i>θ</i> = <i>mλ</i></span> သည် <strong>Dark Minima</strong> ဖြစ်သည်ကို မမှားပါစေနှင့်။</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+            <div id="content-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-8">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & THREE.JS ENGINE MANAGER
+        // ==========================================
+        let currentArticleId = 'overview';
+        let activeScenes = [];
+
+        function clearActiveScenes() {
+            activeScenes.forEach(item => {
+                if (item.animId) cancelAnimationFrame(item.animId);
+                if (item.renderer) item.renderer.dispose();
+            });
+            activeScenes = [];
+        }
+
+        function init3DViewer(containerId, buildSceneCallback, legendItems = []) {
+            const container = document.getElementById(containerId);
+            if (!container || typeof THREE === 'undefined') return null;
+            container.querySelectorAll('canvas,.v3d-ui').forEach(n => n.remove());
+            activeScenes = activeScenes.filter(r => {
+                if (r.cid === containerId) {
+                    cancelAnimationFrame(r.animId);
+                    r.renderer.dispose();
+                    return false;
+                }
+                return true;
+            });
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 380;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1.4, 7.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const legendHtml = legendItems.length
+                ? `<div class="v3d-legend" style="position:absolute;top:8px;left:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;font-weight:700;color:#e2e8f0;background:rgba(15,23,42,.72);padding:3px 9px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);">
+                    ${legendItems.map(it => `<span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${it.color};margin-right:4px;"></i>${it.text}</span>`).join('')}
+                   </div>`
+                : '';
+
+            const ui = document.createElement('div');
+            ui.className = 'v3d-ui';
+            ui.innerHTML = `
+                ${legendHtml}
+                <button type="button" class="v3d-btn">🏷️ ရှင်းလင်းချက်: ON</button>
+                <div class="v3d-zoom"><button type="button" data-z="in" title="Zoom In">+</button><button type="button" data-z="out" title="Zoom Out">−</button><button type="button" data-z="reset" title="Reset View">⟲</button></div>
+                <div class="v3d-labels"></div>
+                <div class="v3d-hint" style="top:${legendItems.length ? '36px' : '10px'};">👆 ဆွဲ၍လှည့်ပါ · + − ဖြင့် ချုံ့ချဲ့ပါ</div>
+                <div class="v3d-info"></div>`;
+            container.appendChild(ui);
+
+            const labelBox = ui.querySelector('.v3d-labels');
+            const labels = [];
+            const api = {
+                label(text, pos, color = '#818cf8', obj) {
+                    const el = document.createElement('div');
+                    el.className = 'v3d-label';
+                    el.style.borderColor = color;
+                    el.innerHTML = text;
+                    labelBox.appendChild(el);
+                    labels.push({ el, obj, pos: pos.clone ? pos.clone() : new THREE.Vector3(...pos) });
+                },
+                info(html) { ui.querySelector('.v3d-info').innerHTML = html; }
+            };
+
+            const btn = ui.querySelector('.v3d-btn');
+            btn.addEventListener('click', () => {
+                const on = labelBox.style.display === 'none';
+                labelBox.style.display = on ? '' : 'none';
+                btn.textContent = '🏷️ ရှင်းလင်းချက်: ' + (on ? 'ON' : 'OFF');
+            });
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.92);
+            dirLight1.position.set(6, 9, 7);
+            scene.add(dirLight1);
+            const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.5);
+            dirLight2.position.set(-6, -4, -5);
+            scene.add(dirLight2);
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            const customUpdate = buildSceneCallback(rootGroup, camera, scene, api);
+            camera.lookAt(0, 0, 0);
+            const camPos0 = camera.position.clone();
+            let zoom = 1;
+            const setZoom = z => { zoom = Math.max(0.55, Math.min(2.3, z)); };
+
+            ui.querySelector('.v3d-zoom').addEventListener('click', e => {
+                const k = e.target.dataset.z;
+                if (k === 'in') setZoom(zoom * 1.25);
+                else if (k === 'out') setZoom(zoom / 1.25);
+                else if (k === 'reset') { zoom = 1; rootGroup.rotation.set(0, 0, 0); autoRotate = true; }
+            });
+
+            let isDragging = false, prevX = 0, prevY = 0, autoRotate = true;
+            const onDown = (x, y) => { isDragging = true; autoRotate = false; prevX = x; prevY = y; ui.querySelector('.v3d-hint').style.opacity = 0; };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                rootGroup.rotation.y += (x - prevX) * 0.01;
+                rootGroup.rotation.x = Math.max(-1.1, Math.min(1.1, rootGroup.rotation.x + (y - prevY) * 0.01));
+                prevX = x; prevY = y;
+            };
+            const onUp = () => { isDragging = false; };
+
+            const domElem = renderer.domElement;
+            domElem.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+            domElem.addEventListener('wheel', e => { e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onUp);
+            domElem.addEventListener('touchstart', e => { if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchmove', e => { if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchend', onUp);
+
+            window.addEventListener('resize', () => {
+                if (!container.isConnected || !container.clientWidth) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            const sceneRecord = { renderer, animId: null, cid: containerId };
+            activeScenes.push(sceneRecord);
+
+            const clock = new THREE.Clock();
+            const v = new THREE.Vector3();
+            function animate() {
+                sceneRecord.animId = requestAnimationFrame(animate);
+                const elapsed = clock.getElapsedTime();
+                if (autoRotate) rootGroup.rotation.y += 0.0028;
+                if (typeof customUpdate === 'function') customUpdate(elapsed, rootGroup);
+                camera.position.copy(camPos0).multiplyScalar(1 / zoom);
+                renderer.render(scene, camera);
+
+                const W = container.clientWidth, H = container.clientHeight;
+                scene.updateMatrixWorld();
+                labels.forEach(l => {
+                    v.copy(l.pos);
+                    (l.obj || rootGroup).localToWorld(v).project(camera);
+                    l.el.style.opacity = l.obj && !l.obj.visible ? 0 : 1;
+                    const hw = l.el.offsetWidth / 2 + 4;
+                    const x = Math.max(hw, Math.min(W - hw, (v.x * 0.5 + 0.5) * W));
+                    const y = Math.max(14, Math.min(H - 96, (-v.y * 0.5 + 0.5) * H));
+                    l.el.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px)`;
+                });
+            }
+            animate();
+        }
+
+        function createSphere(radius, colorHex, x = 0, y = 0, z = 0) {
+            const geo = new THREE.SphereGeometry(radius, 28, 28);
+            const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.28, metalness: 0.15 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            return mesh;
+        }
+
+        // ==========================================
+        // 2. SPECIFIC 3D VISUALIZATIONS FOR CHAPTER 7
+        // ==========================================
+
+        // 3D Viewer 7.1: Young's Double-Slit Interference vs Wave Superposition
+        function render3D_7_1(mode) {
+            if (mode === 'double-slit') {
+                init3DViewer('viewer-7-1', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.5, 8.2);
+
+                    // Coherent Laser Source on Left
+                    const laser = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.28, 0.28, 0.9, 24).rotateZ(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 })
+                    );
+                    laser.position.set(-3.4, 0, 0);
+                    group.add(laser);
+
+                    // Double-Slit Barrier (3 segments leaving 2 slits S1 at y=+0.65, S2 at y=-0.65)
+                    const barrierMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.6 });
+                    const topWall = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.1, 2.2), barrierMat);
+                    topWall.position.set(-1.6, 1.35, 0);
+                    const midWall = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.95, 2.2), barrierMat);
+                    midWall.position.set(-1.6, 0, 0);
+                    const botWall = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.1, 2.2), barrierMat);
+                    botWall.position.set(-1.6, -1.35, 0);
+                    group.add(topWall, midWall, botWall);
+
+                    // Slit Glowing Markers S1 & S2
+                    const s1 = createSphere(0.12, 0xf87171, -1.6, 0.65, 0);
+                    const s2 = createSphere(0.12, 0xf87171, -1.6, -0.65, 0);
+                    group.add(s1, s2);
+
+                    // Expanding Cylindrical Wavelets from S1 & S2
+                    const rings1 = [], rings2 = [];
+                    for (let i = 0; i < 4; i++) {
+                        const r1 = new THREE.Mesh(
+                            new THREE.TorusGeometry(0.55, 0.025, 10, 48, Math.PI * 0.75),
+                            new THREE.MeshBasicMaterial({ color: 0xf87171, transparent: true, opacity: 0.75 })
+                        );
+                        r1.position.set(-1.6, 0.65, 0);
+                        r1.rotation.z = -Math.PI * 0.375;
+                        group.add(r1);
+                        rings1.push({ mesh: r1, offset: i * 0.25 });
+
+                        const r2 = new THREE.Mesh(
+                            new THREE.TorusGeometry(0.55, 0.025, 10, 48, Math.PI * 0.75),
+                            new THREE.MeshBasicMaterial({ color: 0xfb923c, transparent: true, opacity: 0.75 })
+                        );
+                        r2.position.set(-1.6, -0.65, 0);
+                        r2.rotation.z = -Math.PI * 0.375;
+                        group.add(r2);
+                        rings2.push({ mesh: r2, offset: i * 0.25 });
+                    }
+
+                    // Observation Screen on Right with Bright & Dark Interference Fringes
+                    const screen = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.18, 3.6, 2.4),
+                        new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.8 })
+                    );
+                    screen.position.set(2.9, 0, 0);
+                    group.add(screen);
+
+                    // Bright Fringes (m = 0, ±1, ±2)
+                    const fringeY = [0, 0.68, -0.68, 1.36, -1.36];
+                    fringeY.forEach((fy, idx) => {
+                        const brightness = idx === 0 ? 1.0 : idx < 3 ? 0.85 : 0.65;
+                        const band = new THREE.Mesh(
+                            new THREE.BoxGeometry(0.22, 0.22, 2.2),
+                            new THREE.MeshBasicMaterial({ color: new THREE.Color(brightness, 0.18 * brightness, 0.18 * brightness) })
+                        );
+                        band.position.set(2.88, fy, 0);
+                        group.add(band);
+                    });
+
+                    ui.label('Coherent Monochromatic Laser (λ)', [-3.2, 0.85, 0], '#fca5a5');
+                    ui.label('Double Slits S₁ & S₂ (Separation d)', [-1.6, 2.15, 0], '#cbd5e1');
+                    ui.label('Screen (Distance L): Bright (Δr = mλ) & Dark Fringes', [2.4, -2.15, 0], '#f87171');
+                    ui.info('<b>Young\'s Double-Slit Interference (<span class="mx">Δ<i>y</i> = <i>λL</i> / <i>d</i></span>):</b> ကြိမ်နှုန်းတူညီသော Coherent အလင်းလှိုင်း ၂ ခု ထပ်မိသောအခါ လမ်းကြောင်းကွာခြားချက် <span class="mx">Δ<i>r</i> = <i>d</i> sin<i>θ</i> = <i>mλ</i></span> နေရာများတွင် <strong>အလင်းစင်း (Bright Fringes)</strong> နှင့် <span class="mx">(<i>m</i> + ½)<i>λ</i></span> နေရာများတွင် <strong>အမှောင်စင်း (Dark Fringes)</strong> များ အစဉ်လိုက် ဖြစ်ပေါ်သည်။');
+
+                    return (t) => {
+                        rings1.forEach(p => {
+                            const prog = (t * 0.5 + p.offset) % 1.0;
+                            p.mesh.scale.setScalar(0.5 + prog * 7.2);
+                            p.mesh.material.opacity = Math.max(0, 0.8 * (1 - prog));
+                        });
+                        rings2.forEach(p => {
+                            const prog = (t * 0.5 + p.offset) % 1.0;
+                            p.mesh.scale.setScalar(0.5 + prog * 7.2);
+                            p.mesh.material.opacity = Math.max(0, 0.8 * (1 - prog));
+                        });
+                    };
+                }, [
+                    { color: '#ef4444', text: 'Wave 1 (S₁)' },
+                    { color: '#fb923c', text: 'Wave 2 (S₂)' },
+                    { color: '#f87171', text: 'Bright Fringes' }
+                ]);
+            } else {
+                // Wave Superposition (Constructive vs Destructive)
+                init3DViewer('viewer-7-1', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 8.0);
+
+                    const w1Nodes = [], w2Nodes = [], resNodes = [];
+                    const count = 26;
+                    for (let i = 0; i < count; i++) {
+                        const x = -3.1 + (i / (count - 1)) * 6.2;
+                        const p1 = createSphere(0.09, 0x38bdf8, x, 1.15, 0);
+                        const p2 = createSphere(0.09, 0xfbbf24, x, 0, 0);
+                        const pr = createSphere(0.12, 0x10b981, x, -1.25, 0);
+                        group.add(p1, p2, pr);
+                        w1Nodes.push({ mesh: p1, x });
+                        w2Nodes.push({ mesh: p2, x });
+                        resNodes.push({ mesh: pr, x });
+                    }
+
+                    ui.label('Wave 1 (y₁ = A sin(kx − ωt))', [-2.0, 1.75, 0], '#38bdf8');
+                    ui.label('Wave 2 (y₂)', [-2.0, 0.55, 0], '#fbbf24');
+                    ui.label('Resultant Superposition (y = y₁ + y₂)', [-1.8, -0.65, 0], '#34d399');
+                    ui.info('<b>Principle of Superposition (လှိုင်းထပ်ခြင်း နိယာမ):</b> လှိုင်း ၂ ခု ထပ်တူကျ (<strong>In-phase, Δr = mλ</strong>) ပါက လှိုင်းအမြင့် ၂ ဆတိုးပြီး <strong>Constructive Interference (အလင်းပိုတောက်)</strong> ဖြစ်ကာ၊ ဆန့်ကျင်ဘက်ကျ (<strong>Out-of-phase by λ/2</strong>) ပါက အချင်းချင်းချေဖျက်ပြီး <strong>Destructive Interference (အမှောင်)</strong> ဖြစ်ပေါ်သည်။');
+
+                    return (t) => {
+                        const k = 2.0;
+                        const w = 3.2;
+                        // Smoothly morph phase shift between 0 (constructive) and PI (destructive)
+                        const phaseShift = (Math.sin(t * 0.7) > 0) ? 0 : Math.PI;
+                        for (let i = 0; i < count; i++) {
+                            const x = w1Nodes[i].x;
+                            const y1 = 0.38 * Math.sin(k * x - w * t);
+                            const y2 = 0.38 * Math.sin(k * x - w * t + phaseShift);
+                            w1Nodes[i].mesh.position.y = 1.15 + y1;
+                            w2Nodes[i].mesh.position.y = 0.0 + y2;
+                            resNodes[i].mesh.position.y = -1.25 + (y1 + y2);
+                            resNodes[i].mesh.material.color.setHex(phaseShift === 0 ? 0x10b981 : 0xf43f5e);
+                        }
+                    };
+                }, [
+                    { color: '#38bdf8', text: 'Wave 1' },
+                    { color: '#fbbf24', text: 'Wave 2' },
+                    { color: '#10b981', text: 'Constructive (2A)' },
+                    { color: '#f43f5e', text: 'Destructive (0)' }
+                ]);
+            }
+        }
+
+        // 3D Viewer 7.2: Single-Slit Diffraction vs Diffraction Grating
+        function render3D_7_2(mode) {
+            if (mode === 'single-slit') {
+                init3DViewer('viewer-7-2', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.4, 8.0);
+
+                    // Single-Slit Aperture Barrier (Slit width a)
+                    const barrierMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.6 });
+                    const upper = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.45, 2.2), barrierMat);
+                    upper.position.set(-2.0, 1.12, 0);
+                    const lower = new THREE.Mesh(new THREE.BoxGeometry(0.18, 1.45, 2.2), barrierMat);
+                    lower.position.set(-2.0, -1.12, 0);
+                    group.add(upper, lower);
+
+                    // Expanding Diffracted Wavefronts
+                    const arcs = [];
+                    for (let i = 0; i < 5; i++) {
+                        const arc = new THREE.Mesh(
+                            new THREE.TorusGeometry(0.55, 0.03, 12, 48, Math.PI * 0.72),
+                            new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85 })
+                        );
+                        arc.position.set(-2.0, 0, 0);
+                        arc.rotation.z = -Math.PI * 0.36;
+                        group.add(arc);
+                        arcs.push({ mesh: arc, offset: i * 0.2 });
+                    }
+
+                    // Screen with Wide Central Maximum (W = 2λL/a) and narrower Side Maxima
+                    const screen = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.18, 3.6, 2.4),
+                        new THREE.MeshStandardMaterial({ color: 0x0f172a })
+                    );
+                    screen.position.set(2.7, 0, 0);
+                    group.add(screen);
+
+                    // Central Wide Bright Band
+                    const centralBand = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.23, 0.92, 2.2),
+                        new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+                    );
+                    centralBand.position.set(2.68, 0, 0);
+                    group.add(centralBand);
+
+                    // Secondary Side Maxima
+                    [-1.05, 1.05].forEach(sy => {
+                        const sideBand = new THREE.Mesh(
+                            new THREE.BoxGeometry(0.22, 0.36, 2.2),
+                            new THREE.MeshBasicMaterial({ color: 0x0284c7 })
+                        );
+                        sideBand.position.set(2.68, sy, 0);
+                        group.add(sideBand);
+                    });
+
+                    ui.label('Single Slit (Width a)', [-2.0, 2.05, 0], '#cbd5e1');
+                    ui.label('Wide Central Bright Maximum (W = 2λL / a)', [1.8, 0.65, 0], '#38bdf8');
+                    ui.label('First Dark Minimum (a sinθ = 1·λ)', [1.9, -0.68, 0], '#f87171');
+                    ui.info('<b>Single-Slit Diffraction (<span class="mx"><i>a</i> sin<i>θ</i> = <i>mλ</i></span> for Dark Minima):</b> ကျဉ်းမြောင်းသော အပေါက်ငယ် (Slit width <b>a</b>) ကို အလင်းဖြတ်သွားသောအခါ လှိုင်းကွေ့ဖြာထွက်မှု (Diffraction) ဖြစ်ပေါ်ပြီး အလယ်ဗဟိုတွင် <strong>အလွန်ကျယ်ပြန့်တောက်ပသော Central Maximum (<span class="mx"><i>W</i> = 2<i>λL</i>/<i>a</i></span>)</strong> နှင့် ဘေးတစ်ဖက်တစ်ချက်တွင် အမှောင်စင်းနှင့် အလင်းစင်းငယ်များ ဖြစ်ပေါ်သည်။');
+
+                    return (t) => {
+                        arcs.forEach(p => {
+                            const prog = (t * 0.55 + p.offset) % 1.0;
+                            p.mesh.scale.setScalar(0.5 + prog * 7.6);
+                            p.mesh.material.opacity = Math.max(0, 0.85 * (1 - prog));
+                        });
+                    };
+                }, [
+                    { color: '#38bdf8', text: 'Central Max (W = 2λL/a)' },
+                    { color: '#0284c7', text: 'Secondary Maxima' }
+                ]);
+            } else {
+                // Diffraction Grating Splitting White Light into Spectra
+                init3DViewer('viewer-7-2', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.4, 8.2);
+
+                    // Incident White Light Beam
+                    const whiteBeam = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.08, 0.08, 1.8, 16).rotateZ(Math.PI / 2),
+                        new THREE.MeshBasicMaterial({ color: 0xffffff })
+                    );
+                    whiteBeam.position.set(-2.7, 0, 0);
+                    group.add(whiteBeam);
+
+                    // Diffraction Grating Plate (Many closely spaced slits d = 1/N)
+                    const grating = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.14, 2.6, 2.2),
+                        new THREE.MeshStandardMaterial({ color: 0x818cf8, transparent: true, opacity: 0.55 })
+                    );
+                    grating.position.set(-1.75, 0, 0);
+                    group.add(grating);
+
+                    // Central m = 0 White Beam
+                    const m0Beam = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.06, 0.06, 4.4, 16).rotateZ(Math.PI / 2),
+                        new THREE.MeshBasicMaterial({ color: 0xffffff })
+                    );
+                    m0Beam.position.set(0.5, 0, 0);
+                    group.add(m0Beam);
+
+                    // First-Order (m = ±1) Dispersed Rainbow Rays (Violet bends less, Red bends more!)
+                    const spectrumData = [
+                        { color: 0x8b5cf6, angle: 0.24 },  // Violet (shorter λ -> smaller θ)
+                        { color: 0x10b981, angle: 0.34 },  // Green
+                        { color: 0xef4444, angle: 0.45 }   // Red (longer λ -> larger θ)
+                    ];
+                    spectrumData.forEach(sp => {
+                        [-1, 1].forEach(sign => {
+                            const len = 4.6;
+                            const ray = new THREE.Mesh(
+                                new THREE.CylinderGeometry(0.045, 0.045, len, 14).rotateZ(Math.PI / 2),
+                                new THREE.MeshBasicMaterial({ color: sp.color })
+                            );
+                            const theta = sign * sp.angle;
+                            ray.rotation.z = theta;
+                            ray.position.set(-1.75 + (len / 2) * Math.cos(theta), (len / 2) * Math.sin(theta), 0);
+                            group.add(ray);
+                        });
+                    });
+
+                    // Screen on Right
+                    const screen = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.18, 3.8, 2.4),
+                        new THREE.MeshStandardMaterial({ color: 0x0f172a })
+                    );
+                    screen.position.set(2.8, 0, 0);
+                    group.add(screen);
+
+                    ui.label('Incident White Light', [-2.8, 0.55, 0], '#ffffff');
+                    ui.label('Diffraction Grating (d = 1/N)', [-1.75, 1.65, 0], '#a5b4fc');
+                    ui.label('m = 0 Central White Maximum', [1.4, 0.28, 0], '#ffffff');
+                    ui.label('m = 1 Spectrum (Red bends more than Violet: d sinθ = mλ)', [1.1, 1.65, 0], '#fca5a5');
+                    ui.info('<b>Diffraction Grating (<span class="mx"><i>d</i> sin<i>θ</i> = <i>mλ</i></span>):</b> အလွန်နီးကပ်သော အစင်းပေါင်းများစွာပါဝင်သည့် Grating ကို အလင်းဖြူဖြတ်သွားသောအခါ အလယ်တွင် <strong>m = 0 အဖြူရောင်အစင်း</strong> နှင့် ဘေးတစ်ဖက်တစ်ချက်တွင် <strong>m = 1, 2 ရောင်စဉ်တန်းများ</strong> ဖြစ်ပေါ်သည် (လှိုင်းအလျားရှည်သော <strong>အနီရောင် Red</strong> သည် အပြင်ဘက်သို့ ပိုကွေ့သည်)။');
+
+                    return () => {};
+                }, [
+                    { color: '#ffffff', text: 'White (m=0)' },
+                    { color: '#8b5cf6', text: 'Violet (Short λ)' },
+                    { color: '#ef4444', text: 'Red (Long λ)' }
+                ]);
+            }
+        }
+
+        // 3D Viewer 7.3: Polarization of Light (Malus's Law & Brewster's Law)
+        function render3D_7_3(mode) {
+            if (mode === 'malus-parallel' || mode === 'malus-crossed') {
+                const isCrossed = mode === 'malus-crossed';
+                init3DViewer('viewer-7-3', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 8.2);
+
+                    // Optical Axis Line
+                    const axis = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.02, 0.02, 7.0, 12).rotateZ(Math.PI / 2),
+                        new THREE.MeshBasicMaterial({ color: 0x64748b })
+                    );
+                    group.add(axis);
+
+                    // Stage 1: Unpolarized Light E-field vectors (oscillating at multiple angles)
+                    const unpolVectors = [];
+                    const angles = [0, Math.PI / 4, Math.PI / 2, (3 * Math.PI) / 4];
+                    angles.forEach((ang, idx) => {
+                        const arrow = new THREE.ArrowHelper(
+                            new THREE.Vector3(0, Math.cos(ang), Math.sin(ang)),
+                            new THREE.Vector3(-2.8 + idx * 0.25, 0, 0),
+                            0.75,
+                            0xfbbf24,
+                            0.18,
+                            0.12
+                        );
+                        group.add(arrow);
+                        unpolVectors.push({ arrow, ang, baseX: -2.9 + idx * 0.35 });
+                    });
+
+                    // Polarizer Filter 1 (Vertical Transmission Axis)
+                    const pol1 = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1.15, 1.15, 0.1, 36).rotateZ(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.38 })
+                    );
+                    pol1.position.set(-1.1, 0, 0);
+                    group.add(pol1);
+
+                    // Stage 2: Vertically Polarized Light between Polarizer and Analyzer (I1 = I0 / 2)
+                    const polVectors = [];
+                    for (let i = 0; i < 4; i++) {
+                        const arrow = new THREE.ArrowHelper(
+                            new THREE.Vector3(0, 1, 0),
+                            new THREE.Vector3(-0.6 + i * 0.45, 0, 0),
+                            0.75,
+                            0x34d399,
+                            0.18,
+                            0.12
+                        );
+                        group.add(arrow);
+                        polVectors.push({ arrow, baseX: -0.6 + i * 0.45 });
+                    }
+
+                    // Analyzer Filter 2 (Parallel 0° vs Crossed 90°)
+                    const pol2 = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1.15, 1.15, 0.1, 36).rotateZ(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: isCrossed ? 0xf43f5e : 0x10b981, transparent: true, opacity: 0.42 })
+                    );
+                    pol2.position.set(1.3, 0, 0);
+                    group.add(pol2);
+
+                    // Stage 3: Transmitted Light after Analyzer (I = I1 cos²θ)
+                    const outVectors = [];
+                    if (!isCrossed) {
+                        for (let i = 0; i < 3; i++) {
+                            const arrow = new THREE.ArrowHelper(
+                                new THREE.Vector3(0, 1, 0),
+                                new THREE.Vector3(1.8 + i * 0.5, 0, 0),
+                                0.75,
+                                0x34d399,
+                                0.18,
+                                0.12
+                            );
+                            group.add(arrow);
+                            outVectors.push({ arrow, baseX: 1.8 + i * 0.5 });
+                        }
+                    }
+
+                    ui.label('Unpolarized Light (I₀)', [-2.6, 1.35, 0], '#fbbf24');
+                    ui.label('Polarizer (I₁ = ½I₀)', [-1.1, -1.45, 0], '#38bdf8');
+                    ui.label(isCrossed ? 'Crossed Analyzer (θ = 90° → I = 0 Dark!)' : 'Parallel Analyzer (θ = 0° → I = I₁)', [1.6, 1.45, 0], isCrossed ? '#fda4af' : '#34d399');
+                    ui.info(isCrossed
+                        ? '<b>Malus\'s Law (<span class="mx"><i>I</i> = <i>I</i>₁ cos²<i>θ</i></span>) — Crossed Polarizers (θ = 90°):</b> Polarizer နှင့် Analyzer တို့၏ ဝင်ရိုးများ ထောင့်မှန် (<strong>90°</strong>) ကျနေသောအခါ <span class="mx">cos 90° = 0</span> ဖြစ်သဖြင့် အလင်းလုံးဝဖြတ်သန်းခွင့်မရဘဲ <strong>အမှောင် (I = 0)</strong> ဖြစ်သွားသည်။ ၎င်းသည် အလင်းကို <strong>Transverse Wave</strong> ဖြစ်ကြောင်း သက်သေပြသည်။'
+                        : '<b>Malus\'s Law (<span class="mx"><i>I</i> = <i>I</i>₁ cos²<i>θ</i></span>) — Parallel Polarizers (θ = 0°):</b> Unpolarized အလင်းသည် ပထမ Polarizer ကိုဖြတ်သန်းပြီးနောက် ပြင်းအားတစ်ဝက် (<span class="mx"><i>I</i>₁ = ½<i>I</i>₀</span>) ရှိသော Linearly Polarized အလင်းဖြစ်လာပြီး ဒုတိယ Analyzer နှင့် တစ်တန်းတည်း (θ = 0°) ဖြစ်ပါက အပြည့်အဝ ဆက်လက်ဖြတ်သန်းသည်။');
+
+                    return (t) => {
+                        unpolVectors.forEach((v, idx) => {
+                            const s = Math.sin(t * 5 + idx);
+                            const dir = new THREE.Vector3(0, Math.cos(v.ang) * (s >= 0 ? 1 : -1), Math.sin(v.ang) * (s >= 0 ? 1 : -1));
+                            v.arrow.setDirection(dir);
+                            v.arrow.setLength(Math.max(0.15, Math.abs(s) * 0.8), 0.16, 0.1);
+                        });
+                        polVectors.forEach((v, idx) => {
+                            const s = Math.sin(t * 5 + idx);
+                            v.arrow.setDirection(new THREE.Vector3(0, s >= 0 ? 1 : -1, 0));
+                            v.arrow.setLength(Math.max(0.15, Math.abs(s) * 0.8), 0.16, 0.1);
+                        });
+                        outVectors.forEach((v, idx) => {
+                            const s = Math.sin(t * 5 + idx + 2);
+                            v.arrow.setDirection(new THREE.Vector3(0, s >= 0 ? 1 : -1, 0));
+                            v.arrow.setLength(Math.max(0.15, Math.abs(s) * 0.8), 0.16, 0.1);
+                        });
+                    };
+                }, [
+                    { color: '#fbbf24', text: 'Unpolarized (I₀)' },
+                    { color: '#38bdf8', text: 'Polarizer' },
+                    { color: '#34d399', text: 'Polarized (I₁)' }
+                ]);
+            } else {
+                // Brewster's Angle Polarization by Reflection (tan θ_p = n2 / n1)
+                init3DViewer('viewer-7-3', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 8.0);
+
+                    // Glass / Water Dielectric Medium Block (Bottom Half)
+                    const glassBlock = new THREE.Mesh(
+                        new THREE.BoxGeometry(5.6, 1.8, 2.4),
+                        new THREE.MeshStandardMaterial({ color: 0x0284c7, transparent: true, opacity: 0.35 })
+                    );
+                    glassBlock.position.set(0, -0.9, 0);
+                    group.add(glassBlock);
+
+                    // Normal Line (Vertical dashed/thin cylinder)
+                    const normalLine = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.02, 0.02, 3.6, 12),
+                        new THREE.MeshBasicMaterial({ color: 0x94a3b8 })
+                    );
+                    group.add(normalLine);
+
+                    // Incident Unpolarized Ray at Brewster Angle (~56.3° for glass n=1.5)
+                    const thetaP = 0.98; // ~56.3 deg
+                    const incRay = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.05, 0.05, 2.8, 16),
+                        new THREE.MeshBasicMaterial({ color: 0xfbbf24 })
+                    );
+                    incRay.rotation.z = thetaP;
+                    incRay.position.set(-1.4 * Math.sin(thetaP), 1.4 * Math.cos(thetaP), 0);
+                    group.add(incRay);
+
+                    // Reflected 100% Polarized Ray (Perpendicular to Refracted Ray!)
+                    const refRay = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.05, 0.05, 2.8, 16),
+                        new THREE.MeshBasicMaterial({ color: 0x34d399 })
+                    );
+                    refRay.rotation.z = -thetaP;
+                    refRay.position.set(1.4 * Math.sin(thetaP), 1.4 * Math.cos(thetaP), 0);
+                    group.add(refRay);
+
+                    // Refracted Ray at angle theta_r = 90° - theta_p (~33.7°)
+                    const thetaR = Math.PI / 2 - thetaP;
+                    const transRay = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.05, 0.05, 2.2, 16),
+                        new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+                    );
+                    transRay.rotation.z = thetaR;
+                    transRay.position.set(1.1 * Math.sin(thetaR), -1.1 * Math.cos(thetaR), 0);
+                    group.add(transRay);
+
+                    ui.label('Unpolarized Incident Ray (θ_p)', [-2.2, 1.55, 0], '#fbbf24');
+                    ui.label('100% Polarized Reflected Ray (⊥ to Refracted)', [2.1, 1.55, 0], '#34d399');
+                    ui.label('Refracted Ray (90° between Reflected & Refracted)', [1.8, -1.55, 0], '#38bdf8');
+                    ui.info('<b>Brewster\'s Law (<span class="mx">tan <i>θ</i><sub>p</sub> = <i>n</i>₂ / <i>n</i>₁</span>):</b> Unpolarized အလင်းတန်းသည် <strong>Brewster\'s Angle (θ<sub>p</sub>)</strong> ဖြင့် ဖန်/ရေ မျက်နှာပြင်ပေါ်ကျရောက်သောအခါ အလင်းပြန်တန်း (Reflected ray) နှင့် အလင်းယိုင်တန်း (Refracted ray) တို့ <strong>90° ထောင့်မှန်</strong> ကျပြီး အလင်းပြန်တန်းသည် <strong>100% Linearly Polarized</strong> ဖြစ်သွားသည်။');
+
+                    return () => {};
+                }, [
+                    { color: '#fbbf24', text: 'Incident (θ_p)' },
+                    { color: '#34d399', text: '100% Polarized Reflected' },
+                    { color: '#38bdf8', text: 'Refracted (90°)' }
+                ]);
+            }
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE CHAPTER 7 CALCULATORS
+        // ==========================================
+        function switchCh7CalcInputs() {
+            const mode = document.getElementById('ch7-calc-mode')?.value || 'doubleslit';
+            ['doubleslit', 'singleslit', 'grating', 'malus'].forEach(k => {
+                const el = document.getElementById(`ch7-in-${k}`);
+                if (el) el.classList.toggle('hidden', mode !== k);
+            });
+            runCh7Calculator();
+        }
+
+        function runCh7Calculator() {
+            const mode = document.getElementById('ch7-calc-mode')?.value || 'doubleslit';
+            const out = document.getElementById('ch7-calc-output');
+            if (!out) return;
+
+            if (mode === 'doubleslit') {
+                const lamNm = parseFloat(document.getElementById('ds-lam')?.value || '600');
+                const dMm = parseFloat(document.getElementById('ds-d')?.value || '0.5');
+                const L = parseFloat(document.getElementById('ds-L')?.value || '2.0');
+                const m = parseInt(document.getElementById('ds-m')?.value || '3', 10);
+
+                const lam = lamNm * 1e-9;
+                const d = dMm * 1e-3;
+                const dy = (lam * L) / d; // meters
+                const ymBright = m * dy;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Young's Double-Slit: Δy = λL / d &nbsp;|&nbsp; y<sub>m</sub> (Bright) = m λL / d</div>
+                        <div class="font-mono text-sky-300">Fringe Spacing Δy = (${lamNm}×10⁻⁹ × ${L}) / (${dMm}×10⁻³) = <strong>${(dy * 1000).toFixed(3)} mm</strong></div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Position of m = ${m} Bright Fringe y_${m} = ${(ymBright * 1000).toFixed(3)} mm</div>
+                    </div>
+                `;
+            } else if (mode === 'singleslit') {
+                const lamNm = parseFloat(document.getElementById('ss-lam')?.value || '550');
+                const aMm = parseFloat(document.getElementById('ss-a')?.value || '0.2');
+                const L = parseFloat(document.getElementById('ss-L')?.value || '1.5');
+
+                const lam = lamNm * 1e-9;
+                const a = aMm * 1e-3;
+                const y1 = (lam * L) / a;
+                const W = 2 * y1;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Single-Slit Diffraction: First Minimum y₁ = λL / a &nbsp;|&nbsp; Central Max Width W = 2λL / a</div>
+                        <div class="font-mono text-sky-300">First Dark Fringe y₁ = <strong>${(y1 * 1000).toFixed(3)} mm</strong></div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Width of Central Bright Maximum W = ${(W * 1000).toFixed(3)} mm</div>
+                    </div>
+                `;
+            } else if (mode === 'grating') {
+                const linesPerMm = parseFloat(document.getElementById('gr-n')?.value || '500');
+                const lamNm = parseFloat(document.getElementById('gr-lam')?.value || '500');
+                const m = parseInt(document.getElementById('gr-m')?.value || '2', 10);
+
+                const d = (1e-3) / linesPerMm; // meters
+                const lam = lamNm * 1e-9;
+                const sinTheta = (m * lam) / d;
+                const mMax = Math.floor(d / lam);
+
+                if (sinTheta <= 1) {
+                    const thetaDeg = (Math.asin(sinTheta) * 180) / Math.PI;
+                    out.innerHTML = `
+                        <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                            <div class="font-bold text-amber-300">Diffraction Grating: d = 1 / N = ${d.toExponential(3)} m &nbsp;|&nbsp; d sinθ = mλ</div>
+                            <div class="font-mono text-emerald-300 font-bold text-base">Order m = ${m} Diffraction Angle θ = ${thetaDeg.toFixed(2)}° &nbsp;(Max possible order m_max = ${mMax})</div>
+                        </div>
+                    `;
+                } else {
+                    out.innerHTML = `
+                        <div class="p-4 rounded-2xl bg-rose-500/20 border border-rose-400/40 space-y-1 text-xs sm:text-sm myanmar-text">
+                            <div class="font-bold text-rose-300">sinθ = ${sinTheta.toFixed(2)} &gt; 1 (Order m = ${m} cannot be observed!)</div>
+                            <div class="font-mono text-amber-200">Maximum observable order m_max = ⌊d / λ⌋ = ${mMax}</div>
+                        </div>
+                    `;
+                }
+            } else {
+                const I0 = parseFloat(document.getElementById('ml-i0')?.value || '100');
+                const thetaDeg = parseFloat(document.getElementById('ml-th')?.value || '60');
+                const n2 = parseFloat(document.getElementById('ml-n2')?.value || '1.5');
+
+                const I1 = 0.5 * I0;
+                const rad = (thetaDeg * Math.PI) / 180;
+                const I2 = I1 * Math.pow(Math.cos(rad), 2);
+                const brewsterDeg = (Math.atan(n2) * 180) / Math.PI;
+
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Malus's Law: I₁ = ½I₀ = ${I1.toFixed(2)} W/m², &nbsp; I = I₁ cos²θ &nbsp;|&nbsp; Brewster's Law: tan θ_p = n</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Transmitted Intensity I = ${I1.toFixed(2)} × cos²(${thetaDeg}°) = ${I2.toFixed(2)} W m⁻²</div>
+                        <div class="font-mono text-sky-300">Brewster's Polarizing Angle (for n = ${n2}): θ_p = arctan(${n2}) = <strong>${brewsterDeg.toFixed(2)}°</strong></div>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // 4. ARTICLE TEMPLATES (OVERVIEW + 7.1 - 7.3 + WORKED)
+        // ==========================================
+        const ARTICLES = {
+            'overview': {
+                badge: 'Chapter 7 Master Overview & Formula Table',
+                title: 'အခန်း (၇) အလင်းလှိုင်းထပ်ခြင်း၊ ကွေ့ခြင်းနှင့် ပိုလာရိုက်ဇေးရှင်း',
+                subtitle: 'Interference, Diffraction and Polarization — ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်',
+                html: `
+                    <!-- Master Formula Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Grade 12 Physics Chapter 7</span>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900">အခန်း (၇) အဓိက ပုံသေနည်းများနှင့် စည်းမျဉ်းများ ဇယားချုပ်</h3>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 font-semibold self-start">Exam Must-Know</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ခေါင်းစဉ် (Topic)</th>
+                                        <th class="p-3">ပုံသေနည်း (Formula)</th>
+                                        <th class="p-3">အခြေအနေနှင့် မှတ်ချက် (Conditions)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">1. Wavelength in Medium</td>
+                                        <td class="p-3 font-mono font-bold text-cyan-700">λ<sub>n</sub> = λ / n &nbsp;&nbsp;(n = c / v)</td>
+                                        <td class="p-3">Frequency f remains unchanged in any medium</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">2. Young's Double-Slit Interference</td>
+                                        <td class="p-3 font-mono font-bold text-rose-700">Bright: d sinθ = mλ &nbsp;|&nbsp; Dark: d sinθ = (m + ½)λ<br>y<sub>m</sub> (Bright) = m λ L / d &nbsp;|&nbsp; Δy = λ L / d</td>
+                                        <td class="p-3">m = 0, ±1, ±2, ... (d = slit separation, L = screen dist)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">3. Thin-Film Interference</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">Bright: 2 n t = (m + ½)λ &nbsp;|&nbsp; Dark: 2 n t = mλ</td>
+                                        <td class="p-3">For 1 phase reversal (180° / λ/2 shift when n<sub>2</sub> &gt; n<sub>1</sub>)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">4. Single-Slit Diffraction</td>
+                                        <td class="p-3 font-mono font-bold text-indigo-700">Dark Minima: a sinθ = mλ &nbsp;|&nbsp; y<sub>m</sub> = m λ L / a<br>Central Bright Max Width: W = 2 λ L / a</td>
+                                        <td class="p-3">m = ±1, ±2, ±3, ... (a = slit width; m ≠ 0)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">5. Diffraction Grating</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-700">Bright Maxima: d sinθ = mλ &nbsp;&nbsp;(d = 1 / N)</td>
+                                        <td class="p-3">N = lines per unit length; m<sub>max</sub> = ⌊d / λ⌋</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">6. Malus's Law & Brewster's Law</td>
+                                        <td class="p-3 font-mono font-bold text-purple-700">I<sub>1</sub> = ½ I<sub>0</sub> &nbsp;|&nbsp; I = I<sub>1</sub> cos²θ &nbsp;|&nbsp; tan θ<sub>p</sub> = n<sub>2</sub> / n<sub>1</sub></td>
+                                        <td class="p-3">θ<sub>p</sub> + θ<sub>r</sub> = 90° at Brewster's polarizing angle</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900">🧠 Chapter 7 အပိုင်းတစ်ခုချင်းစီသို့ အမြန်သွားရန်</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <button onclick="selectArticle('7.1')" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-left hover:bg-rose-100 transition">
+                                <div class="font-bold text-rose-950 text-sm">7.1 Interference (3D) →</div>
+                                <p class="text-rose-800 mt-1">Young's Double-Slit 3D Wavefronts နှင့် Thin-Film Interference</p>
+                            </button>
+                            <button onclick="selectArticle('7.2')" class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-left hover:bg-indigo-100 transition">
+                                <div class="font-bold text-indigo-950 text-sm">7.2 Diffraction (3D) →</div>
+                                <p class="text-indigo-800 mt-1">Single-Slit Diffraction နှင့် Diffraction Grating 3D Spectrum</p>
+                            </button>
+                            <button onclick="selectArticle('7.3')" class="p-4 rounded-2xl bg-purple-50 border border-purple-200 text-left hover:bg-purple-100 transition">
+                                <div class="font-bold text-purple-950 text-sm">7.3 Polarization (3D) →</div>
+                                <p class="text-purple-800 mt-1">Malus's Law (3D Filters) နှင့် Brewster's Angle Reflection</p>
+                            </button>
+                            <button onclick="selectArticle('worked')" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left hover:bg-emerald-100 transition">
+                                <div class="font-bold text-emerald-950 text-sm">Calculator & Exam Q&A →</div>
+                                <p class="text-emerald-800 mt-1">Wave Optics တွက်ချက်စက်နှင့် စာမေးပွဲမေးခွန်းအဖြေများ</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Big-Picture Chapter Roadmap -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">📖 Chapter 7 တစ်ခန်းလုံး၏ အနှစ်ချုပ် ရှင်းလင်းချက်</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၁။ Article 7.1 — Interference of Light</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Coherent အလင်းလှိုင်း ၂ ခု ထပ်မိခြင်းကြောင့် Constructive (အလင်းစင်း) နှင့် Destructive (အမှောင်စင်း) များ ဖြစ်ပေါ်ပုံ၊ Young's Double-Slit (<span class="mx">Δ<i>y</i> = <i>λL</i>/<i>d</i></span>) နှင့် ဆပ်ပြာပူဖောင်း/ဆီပါးလွှာများ၏ <strong>Thin-Film Interference</strong> တို့ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">၂။ Article 7.2 — Diffraction of Light</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အပေါက်ကျဉ်း (Single Slit) သို့မဟုတ် အစွန်းများကို ဖြတ်သန်းစဉ် အလင်းလှိုင်း ကွေ့ဖြာထွက်မှု (<span class="mx"><i>a</i> sin<i>θ</i> = <i>mλ</i></span>) နှင့် <strong>Diffraction Grating (<span class="mx"><i>d</i> sin<i>θ</i> = <i>mλ</i></span>)</strong> ဖြင့် အလင်းရောင်စဉ်များ ခွဲခြမ်းစိတ်ဖြာပုံကို လေ့လာရမည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1.5">
+                                <div class="font-bold text-purple-950 text-base">၃။ Article 7.3 — Polarization of Light</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အလင်းသည် <strong>Transverse Electromagnetic Wave</strong> ဖြစ်ကြောင်း သက်သေပြသည့် Polarization ဖြစ်စဉ်၊ <strong>Malus's Law (<span class="mx"><i>I</i> = <i>I</i>₁ cos²<i>θ</i></span>)</strong> နှင့် အလင်းပြန်ခြင်းဖြင့် Polarize ဖြစ်စေသော <strong>Brewster's Law (<span class="mx">tan <i>θ</i><sub>p</sub> = <i>n</i></span>)</strong> တို့ ပါဝင်သည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            '7.1': {
+                badge: 'Article 7.1',
+                title: 'Interference of Light (Young\'s Double-Slit & Thin Films)',
+                subtitle: 'အလင်းလှိုင်းထပ်ခြင်း၊ Young ၏ နှစ်ပေါက်စမ်းသပ်ချက်နှင့် ပါးလွှာသောအလွှာ လှိုင်းထပ်ခြင်း (3D)',
+                html: `
+                    <!-- 3D Viewer 7.1 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Interactive 3D Wave Optics Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Young's Double-Slit Interference နှင့် Wave Superposition 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_7_1('double-slit')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🔦 Young's Double-Slit (Δy = λL/d)</button>
+                                <button onclick="render3D_7_1('superposition')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">〰️ Constructive vs Destructive</button>
+                            </div>
+                        </div>
+                        <div id="viewer-7-1" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold">7.1</span>
+                            Coherent Sources, Young's Double-Slit နှင့် Thin-Film Interference
+                        </h3>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-xs sm:text-sm">
+                            <div class="font-bold text-slate-900 text-base">📌 Sustained Interference ရရှိရန် လိုအပ်ချက် (Conditions)</div>
+                            <p class="text-slate-700">
+                                တည်ငြိမ်သော အလင်းနှင့် အမှောင်စင်းများ (Sustained interference pattern) မြင်တွေ့ရန် အလင်းရင်းမြစ် ၂ ခုသည် <strong>Coherent Sources</strong> ဖြစ်ရမည် — ဆိုလိုသည်မှာ (၁) <strong>ကြိမ်နှုန်း/လှိုင်းအလျား တူညီ (Monochromatic)</strong> ရမည်၊ (၂) <strong>Phase difference ကိန်းသေ (Constant phase relationship)</strong> ရှိရမည်။
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2">
+                                <div class="font-bold text-rose-950 text-base">1. Young's Double-Slit Equations</div>
+                                <div class="p-3 rounded-xl bg-white border border-rose-200 text-xs font-mono space-y-1">
+                                    <div>• Constructive (Bright): d sinθ = m λ &nbsp;(m = 0, ±1, ±2...)</div>
+                                    <div>• Destructive (Dark): d sinθ = (m + ½) λ</div>
+                                    <div>• Fringe Position: y<sub>m</sub> (Bright) = m λ L / d</div>
+                                    <div class="text-rose-800 font-bold">• Fringe Spacing: Δy = y<sub>m+1</sub> − y<sub>m</sub> = λ L / d</div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                                <div class="font-bold text-amber-950 text-base">2. Thin-Film Interference (ပါးလွှာသော အလွှာ)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    ဆပ်ပြာပူဖောင်း (Soap bubble) သို့မဟုတ် ရေပေါ်ရှိ ဆီပါးလွှာ (Oil film) ၏ အပေါ်မျက်နှာပြင်နှင့် အောက်မျက်နှာပြင်တို့မှ ပြန်လာသော အလင်းလှိုင်း ၂ ခု ထပ်မိခြင်းကြောင့် ရောင်စုံဖြစ်ပေါ်သည်။ အလင်းယိုင်ညွှန်းကိန်း ပိုများသော ကြားခံနယ် (n<sub>2</sub> &gt; n<sub>1</sub>) မှ အလင်းပြန်လျှင် <strong>180° (λ/2) Phase Reversal</strong> ဖြစ်ပေါ်သည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-amber-200 text-xs font-mono space-y-1">
+                                    <div>• Bright (Constructive): 2 n t = (m + ½) λ</div>
+                                    <div>• Dark (Destructive): 2 n t = m λ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_7_1('double-slit')
+            },
+
+            '7.2': {
+                badge: 'Article 7.2',
+                title: 'Diffraction of Light (Single-Slit & Diffraction Grating)',
+                subtitle: 'အလင်းလှိုင်းကွေ့ခြင်း၊ Single-Slit Diffraction နှင့် Diffraction Grating 3D',
+                html: `
+                    <!-- 3D Viewer 7.2 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Interactive 3D Diffraction Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Single-Slit Diffraction နှင့် Diffraction Grating 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_7_2('single-slit')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition">🌊 Single-Slit Diffraction (W = 2λL/a)</button>
+                                <button onclick="render3D_7_2('grating')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-purple-600 text-white hover:bg-purple-700 transition">🌈 Diffraction Grating (d sinθ = mλ)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-7-2" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Single-Slit vs Grating Comparison -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">7.2</span>
+                            Single-Slit Diffraction နှင့် Diffraction Grating နှိုင်းယှဉ်ချက်
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">1. Single-Slit Diffraction (Slit Width = a)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    အပေါက်ကျဉ်းတစ်ခုတည်းကို အလင်းဖြတ်သွားသောအခါ အပေါက်၏ အပေါ်ခြမ်းနှင့် အောက်ခြမ်းမှ Huygens wavelets များ အချင်းချင်းနှောင့်ယှက်ခြင်းကြောင့် အမှောင်စင်း (Dark minima) များ ဖြစ်ပေါ်သည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-indigo-200 text-xs font-mono space-y-1">
+                                    <div>• Dark Minima: a sinθ = m λ &nbsp;(m = ±1, ±2, ±3...)</div>
+                                    <div>• Position of m-th Dark Fringe: y<sub>m</sub> = m λ L / a</div>
+                                    <div class="text-indigo-900 font-bold">• Width of Central Bright Max: W = 2 y₁ = 2 λ L / a</div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+                                <div class="font-bold text-emerald-950 text-base">2. Diffraction Grating (Slit Spacing d = 1/N)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    တစ်မီလီမီတာလျှင် အစင်းရာပေါင်းများစွာ (N lines/mm) ထွင်းထားသော Grating သည် အလွန်ပြတ်သားတောက်ပသော <strong>Principal Maxima</strong> လိုင်းများကို ထုတ်ပေးသည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-emerald-200 text-xs font-mono space-y-1">
+                                    <div>• Grating Spacing: d = 1 / N</div>
+                                    <div>• Principal Maxima (Bright): d sinθ = m λ &nbsp;(m = 0, 1, 2...)</div>
+                                    <div class="text-emerald-900 font-bold">• Maximum Order: m<sub>max</sub> = ⌊d / λ⌋ (since sinθ ≤ 1)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_7_2('single-slit')
+            },
+
+            '7.3': {
+                badge: 'Article 7.3',
+                title: 'Polarization of Light (Malus\'s Law & Brewster\'s Law)',
+                subtitle: 'အလင်း၏ Transverse ဂုဏ်သတ္တိ၊ Malus ၏ နိယာမနှင့် Brewster ၏ အလင်းပြန်ထောင့် (3D)',
+                html: `
+                    <!-- 3D Viewer 7.3 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-purple-600">Interactive 3D Polarization Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Polarizer / Analyzer (Malus's Law) နှင့် Brewster's Angle 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_7_3('malus-parallel')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">☀️ Parallel Filters (θ = 0°)</button>
+                                <button onclick="render3D_7_3('malus-crossed')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🌑 Crossed Filters (θ = 90°)</button>
+                                <button onclick="render3D_7_3('brewster')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-purple-600 text-white hover:bg-purple-700 transition">📐 Brewster's Angle (tan θ_p = n)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-7-3" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Malus's Law & Brewster's Law Breakdown -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-sm font-bold">7.3</span>
+                            Polarization နည်းလမ်းများနှင့် အဓိက နိယာမ (၂) ခု
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">1. Polarization by Selective Absorption (Malus's Law)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    <strong>Unpolarized light</strong> (လျှပ်စစ်စက်ကွင်း <span class="mx"><i>E⃗</i></span> ဘက်ပေါင်းစုံ တုန်ခါနေသော အလင်း) သည် ပထမ Polarizer ကို ဖြတ်သန်းသောအခါ ပြင်းအားတစ်ဝက် (<span class="mx"><i>I</i><sub>1</sub> = ½<i>I</i><sub>0</sub></span>) ရှိသော <strong>Linearly Polarized Light</strong> ဖြစ်လာသည်။ ထို့နောက် Transmission axis ထောင့် <strong>θ</strong> စောင်းနေသော ဒုတိယ Analyzer ကို ဖြတ်သန်းသောအခါ ထွက်လာမည့် ပြင်းအားမှာ <strong>Malus's Law</strong> အရ-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-indigo-200 text-xs font-mono space-y-1">
+                                    <div>I<sub>1</sub> = ½ I<sub>0</sub> &nbsp;&nbsp;(After 1st Polarizer)</div>
+                                    <div class="text-indigo-900 font-bold">I = I<sub>1</sub> cos²θ &nbsp;&nbsp;(Malus's Law)</div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-2">
+                                <div class="font-bold text-purple-950 text-base">2. Polarization by Reflection (Brewster's Law)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    Unpolarized အလင်းတန်းသည် လျှပ်စစ်မလျှောက်ကူးသော မျက်နှာပြင် (Dielectric: ဖန်၊ ရေ၊ လမ်းမ) ပေါ်သို့ <strong>Brewster's Angle (θ<sub>p</sub>)</strong> ဖြင့် ကျရောက်သောအခါ အလင်းပြန်တန်းသည် မျက်နှာပြင်နှင့်အပြိုင် 100% Polarized ဖြစ်သွားပြီး အလင်းပြန်တန်းနှင့် အလင်းယိုင်တန်းတို့ <strong>90° ထောင့်မှန်</strong> ကျသည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-purple-200 text-xs font-mono space-y-1">
+                                    <div class="text-purple-900 font-bold">tan θ<sub>p</sub> = n<sub>2</sub> / n<sub>1</sub> &nbsp;(or tan θ<sub>p</sub> = n in air)</div>
+                                    <div>θ<sub>p</sub> + θ<sub>r</sub> = 90°</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs sm:text-sm">
+                            <strong>🕶️ လက်တွေ့အသုံးချမှုများ:</strong> Polaroid နေကာမျက်မှန်များ (ရေမျက်နှာပြင်နှင့် လမ်းမမှ အလင်းပြန်စူးရှမှု Glare ကို လျှော့ချခြင်း)၊ LCD/LED ဖန်သားပြင်များ၊ ဓာတ်ပုံကင်မရာ Polarizing filters နှင့် 3D ရုပ်ရှင်မျက်မှန်များ။
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_7_3('malus-parallel')
+            },
+
+            'worked': {
+                badge: 'Interactive Calculator & Exam Q&A',
+                title: 'Double-Slit / Diffraction / Grating / Malus တွက်စက် နှင့် စာမေးပွဲမေးခွန်းအဖြေများ',
+                subtitle: 'Grade 12 Physics Chapter 7 တွက်စာပုံသေနည်းများ စမ်းသပ်တွက်ချက်စက်နှင့် မေးခွန်းအဖြေများ',
+                html: `
+                    <!-- Interactive Chapter 7 Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🌈 Interactive Chapter 7 Wave Optics Calculator</h3>
+                            <span class="text-xs text-slate-300">တွက်ချက်လိုသော ပုံသေနည်းကို ရွေးချယ်ပါ</span>
+                        </div>
+
+                        <div class="max-w-md text-xs">
+                            <label class="block text-slate-300 mb-1">ပုံသေနည်း အမျိုးအစား ရွေးပါ</label>
+                            <select id="ch7-calc-mode" onchange="switchCh7CalcInputs()" class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                <option value="doubleslit">1. Young's Double-Slit Fringes (Δy = λL / d)</option>
+                                <option value="singleslit">2. Single-Slit Diffraction Central Width (W = 2λL / a)</option>
+                                <option value="grating">3. Diffraction Grating Angle & Max Order (d sinθ = mλ)</option>
+                                <option value="malus">4. Malus's Law (I = I₁ cos²θ) & Brewster's Angle (tan θ_p = n)</option>
+                            </select>
+                        </div>
+
+                        <!-- Double-Slit Inputs -->
+                        <div id="ch7-in-doubleslit" class="grid sm:grid-cols-4 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Wavelength λ (nm)</label>
+                                <input id="ds-lam" type="number" value="600" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Slit Separation d (mm)</label>
+                                <input id="ds-d" type="number" step="0.05" value="0.5" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Screen Distance L (m)</label>
+                                <input id="ds-L" type="number" step="0.1" value="2.0" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Bright Order m</label>
+                                <input id="ds-m" type="number" value="3" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Single-Slit Inputs -->
+                        <div id="ch7-in-singleslit" class="hidden grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Wavelength λ (nm)</label>
+                                <input id="ss-lam" type="number" value="550" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Slit Width a (mm)</label>
+                                <input id="ss-a" type="number" step="0.05" value="0.2" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Screen Distance L (m)</label>
+                                <input id="ss-L" type="number" step="0.1" value="1.5" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Grating Inputs -->
+                        <div id="ch7-in-grating" class="hidden grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Grating Lines N (lines/mm)</label>
+                                <input id="gr-n" type="number" value="500" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Wavelength λ (nm)</label>
+                                <input id="gr-lam" type="number" value="500" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Diffraction Order m</label>
+                                <input id="gr-m" type="number" value="2" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Malus & Brewster Inputs -->
+                        <div id="ch7-in-malus" class="hidden grid sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Unpolarized Intensity I₀ (W/m²)</label>
+                                <input id="ml-i0" type="number" value="100" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Analyzer Angle θ (degrees)</label>
+                                <input id="ml-th" type="number" value="60" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Refractive Index n (for Brewster)</label>
+                                <input id="ml-n2" type="number" step="0.05" value="1.5" oninput="runCh7Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <div id="ch7-calc-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Worked Examples & Exam Q&A -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4 text-xs sm:text-sm myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900">✍️ စာမေးပွဲတွင် မေးလေ့ရှိသော Textbook တွက်စာနှင့် မေးခွန်းအဖြေများ</h3>
+
+                        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                            <div class="font-bold text-rose-950">Q1 (Young's Double-Slit): Monochromatic light of wavelength 600 nm falls on two slits separated by 0.50 mm. If the screen is 2.0 m away, find (a) the fringe spacing Δy and (b) the distance of the 3rd bright fringe from the central maximum.</div>
+                            <div class="bg-slate-900 text-amber-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>(a) Δy = λ L / d = (600 × 10⁻⁹ m × 2.0 m) / (0.50 × 10⁻³ m) = 2.4 × 10⁻³ m = 2.4 mm</div>
+                                <div>(b) y₃ = 3 Δy = 3 × 2.4 mm = 7.2 mm</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                            <div class="font-bold text-indigo-950">Q2 (Diffraction Grating): A diffraction grating has 500 lines per mm. Find the angle of diffraction for the second-order (m = 2) bright line using light of wavelength 500 nm.</div>
+                            <div class="bg-slate-900 text-emerald-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>Grating spacing d = 1 mm / 500 = 2.0 × 10⁻⁶ m</div>
+                                <div>d sinθ = m λ  ⇒  sinθ = (2 × 500 × 10⁻⁹) / (2.0 × 10⁻⁶) = 0.50  ⇒  θ = 30°</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1.5">
+                            <div class="font-bold text-purple-950">Q3 (Concept Question): How does polarization prove that light is a transverse wave rather than a longitudinal wave?</div>
+                            <p class="text-slate-800">
+                                <strong>Ans:</strong> Only <strong>transverse waves</strong> have oscillations perpendicular to the direction of wave propagation, allowing their vibrations to be restricted to a single plane by a polarizer and completely blocked when a second analyzer is rotated by 90° (crossed polarizers). Longitudinal waves (such as sound waves in air) oscillate parallel to propagation and cannot be polarized.
+                            </p>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runCh7Calculator()
+            }
+        };
+
+        // ==========================================
+        // 5. NAVIGATION & UI CONTROLLER (Matches Chapters 4, 5 & 6 UI)
+        // ==========================================
+        function selectArticle(id) {
+            currentArticleId = id;
+            const article = ARTICLES[id];
+            if (!article) return;
+
+            clearActiveScenes();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                const badge = btn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-indigo-600', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const activeBtn = document.getElementById(`nav-${id}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                const badge = activeBtn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-indigo-600', 'text-white');
+                }
+            }
+
+            const container = document.getElementById('content-container');
+            const ids = ['overview', '7.1', '7.2', '7.3', 'worked'];
+            const labels = {
+                'overview': 'အခန်း (၇) မိတ်ဆက်',
+                '7.1': '7.1 Interference',
+                '7.2': '7.2 Diffraction',
+                '7.3': '7.3 Polarization',
+                'worked': 'Calculator & Q&A'
+            };
+            const idx = ids.indexOf(id);
+            const prevId = idx > 0 ? ids[idx - 1] : null;
+            const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 mb-2">
+                        ${article.badge}
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${article.title}</h1>
+                    <p class="mt-1 text-sm sm:text-base text-slate-600 font-medium">${article.subtitle}</p>
+                </div>
+
+                ${article.html}
+
+                <div class="pt-4 pb-8 flex items-center justify-between gap-4 border-t border-slate-200">
+                    ${prevId ? `
+                        <button onclick="selectArticle('${prevId}')" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> ယခင်အပိုင်း (${labels[prevId]})
+                        </button>
+                    ` : `
+                        <a href="chapter6.html" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> Chapter 6 သို့ ပြန်သွားရန်
+                        </a>
+                    `}
+
+                    ${nextId ? `
+                        <button onclick="selectArticle('${nextId}')" class="px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            နောက်တစ်ပိုင်း (${labels[nextId]}) <span>→</span>
+                        </button>
+                    ` : `
+                        <a href="chapter8.html" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            Chapter 8 သို့ ဆက်သွားရန် <span>→</span>
+                        </a>
+                    `}
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileSidebar();
+
+            if (typeof article.onMount === 'function') {
+                setTimeout(() => article.onMount(), 50);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        window.onload = function() {
+            try {
+                selectArticle('overview');
+            } catch (err) {
+                console.error('Initialization error:', err);
+            }
+        };
+    </script>
+</body>
+</html>
