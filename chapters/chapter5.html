@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Grade 12 Physics - Chapter 5: Thermal Physics (Heat Transfer & Thermodynamics)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js for 3D Heat Transfer, Kinetic Theory Gas Box & Thermodynamic Piston-Cylinder -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            line-height: 1.85;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 100%);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+            touch-action: none;
+        }
+        @media (min-width: 768px) {
+            .canvas-container {
+                height: 430px;
+            }
+        }
+        .myanmar-text {
+            line-height: 1.98;
+        }
+        .formula-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+        .math-box {
+            font-family: 'Inter', monospace;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+        }
+        /* 3D Viewer Overlay UI (Matches Chapter 4 Structure) */
+        .v3d-ui { position: absolute; inset: 0; pointer-events: none; font-family: 'Inter','Noto Sans Myanmar',sans-serif; }
+        .v3d-btn { position: absolute; top: 8px; right: 10px; pointer-events: auto; font-size: 11px; font-weight: 600; color: #e0e7ff; background: rgba(15,23,42,.75); border: 1px solid rgba(129,140,248,.45); padding: 3px 10px; border-radius: 9999px; cursor: pointer; }
+        .v3d-hint { position: absolute; top: 10px; left: 10px; font-size: 10.5px; color: #cbd5e1; transition: opacity .4s; }
+        .v3d-zoom { position: absolute; right: 10px; top: 38px; display: flex; flex-direction: column; gap: 6px; }
+        .v3d-zoom button { pointer-events: auto; width: 30px; height: 30px; border-radius: 9999px; font-size: 16px; font-weight: 700; line-height: 1; color: #e0e7ff; background: rgba(15,23,42,.78); border: 1px solid rgba(129,140,248,.45); cursor: pointer; }
+        .v3d-labels { position: absolute; inset: 0; }
+        .v3d-label { position: absolute; left: 0; top: 0; white-space: nowrap; text-align: center; font-size: 11px; line-height: 1.35; font-weight: 600; color: #f8fafc; background: rgba(15,23,42,.84); border: 1px solid #818cf8; border-radius: .6rem; padding: 2px 8px; will-change: transform; }
+        .v3d-info { position: absolute; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; line-height: 1.6; color: #e2e8f0; background: rgba(15,23,42,.88); border: 1px solid rgba(255,255,255,.14); border-radius: .8rem; padding: 7px 11px; }
+        .v3d-info b { color: #93c5fd; }
+        /* Clean Mathematical Typography */
+        .mx { font-family: 'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif; font-size: 1.1em; font-weight: 500; letter-spacing: .01em; }
+        .mx i { font-style: italic; }
+        .mx .nb { display: inline-block; white-space: nowrap; margin-right: .2em; }
+        .mx .fr { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; margin: 0 .25em; line-height: 1.3; }
+        .mx .fr > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .3em .08em; }
+        .mx .fr > span:last-child { padding: .08em .3em 0; }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Mobile Top Header -->
+    <header class="lg:hidden sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center text-white font-bold shadow">
+                Ch5
+            </div>
+            <div>
+                <h1 class="text-sm font-bold text-slate-900 leading-tight">Grade 12 Physics</h1>
+                <p class="text-xs text-slate-500">Thermal Physics & Thermodynamics</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" aria-label="Open Navigation">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Mobile Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Left Sidebar Taskbar (Matches Chapter 4 Structure) -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 lg:static lg:inset-auto transition-transform duration-300 ease-in-out flex flex-col shadow-xl lg:shadow-none">
+            <!-- Brand Header + Chapter Switcher -->
+            <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-950 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/25 text-indigo-200 border border-indigo-400/30">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Grade 12 Physics
+                    </span>
+                    <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10" aria-label="Close Navigation">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <h2 class="mt-3 text-lg font-bold tracking-tight leading-snug">Chapter 5: Thermal Physics (Heat Transfer & Thermodynamics)</h2>
+                <p class="mt-1 text-xs text-indigo-200/85">Conduction, Convection, Radiation, Ideal Gas, Kinetic Theory & Thermodynamics</p>
+
+                <!-- Cross-Chapter Page Navigation Bar -->
+                <div class="mt-4 pt-3 border-t border-white/15 grid grid-cols-5 gap-1.5">
+                    <a href="../index.html" class="text-center py-1.5 px-1 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition" title="Home">🏠</a>
+                    <a href="../chapter1.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 1</a>
+                    <a href="chapter2.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 2</a>
+                    <a href="chapter3.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 3</a>
+                    <a href="chapter4.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 4</a>
+                    <a href="chapter5.html" class="text-center py-1.5 px-1 rounded-lg bg-indigo-500 text-xs font-semibold text-white shadow-xs">Ch 5</a>
+                    <a href="chapter6.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 6</a>
+                    <a href="chapter7.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 7</a>
+                    <a href="chapter8.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 8</a>
+                    <a href="chapter9.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 9</a>
+                    <a href="chapter10.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 10</a>
+                    <a href="chapter11.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 11</a>
+                    <a href="chapter12.html" class="text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 12</a>
+                    <a href="chapter13.html" class="col-span-2 text-center py-1.5 px-1 rounded-lg bg-white/10 hover:bg-white/25 text-xs font-semibold text-white transition">Ch 13</a>
+                </div>
+            </div>
+
+            <!-- Navigation List -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                <div class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    Chapter 5 လေ့လာရန် အပိုင်းများ (6 ခု)
+                </div>
+
+                <button onclick="selectArticle('overview')" id="nav-overview" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">🔥</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">အခန်း (၅) မိတ်ဆက် & Formula Table</div>
+                        <div class="text-xs opacity-80 mt-0.5">Thermal Physics ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('5.1')" id="nav-5.1" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">5.1</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Thermal Energy Transfer (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">Conduction, Convection & Radiation (Stefan-Boltzmann Law)</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('5.2')" id="nav-5.2" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">5.2</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Temperature & The Ideal Gas</div>
+                        <div class="text-xs opacity-80 mt-0.5">Boyle's, Charles's, Gay-Lussac's Laws နှင့် PV = nRT</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('5.3')" id="nav-5.3" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">5.3</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Kinetic Theory of Ideal Gas (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">3D မော်လီကျူးရွေ့လျားမှု၊ P = ⅓ρv̄² နှင့် v<sub>rms</sub> = √(3RT/M)</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('5.4')" id="nav-5.4" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">5.4</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Thermodynamics & Heat Engines (3D)</div>
+                        <div class="text-xs opacity-80 mt-0.5">First Law (ΔU = Q − W), Processes နှင့် Carnot Efficiency</div>
+                    </div>
+                </button>
+
+                <button onclick="selectArticle('worked')" id="nav-worked" class="nav-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-start gap-3 border border-transparent">
+                    <span class="nav-badge shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold">✍️</span>
+                    <div>
+                        <div class="font-bold text-sm leading-snug">Thermal Calculator & Exam Q&A</div>
+                        <div class="text-xs opacity-80 mt-0.5">Conduction / Radiation / Gas / Carnot တွက်စက်နှင့် မေးခွန်းအဖြေများ</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Footer Tip -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50">
+                <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200/80 text-xs text-indigo-950 flex items-start gap-2.5">
+                    <span class="text-base">🌡️</span>
+                    <span><strong>Stefan-Boltzmann Law (<span class="mx"><i>P</i> = <i>σeAT</i>⁴</span>)</strong> နှင့် Ideal Gas တွက်စာများတွင် အပူချိန် <strong>T</strong> ကို အမြဲတမ်း <strong>Kelvin (<span class="mx"><i>T</i> = <i>t</i>°C + 273</span>)</strong> သို့ ပြောင်းရမည်။</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+            <div id="content-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-10 space-y-8">
+                <!-- Dynamic Content Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. GLOBAL STATE & THREE.JS ENGINE MANAGER
+        // ==========================================
+        let currentArticleId = 'overview';
+        let activeScenes = [];
+
+        function clearActiveScenes() {
+            activeScenes.forEach(item => {
+                if (item.animId) cancelAnimationFrame(item.animId);
+                if (item.renderer) item.renderer.dispose();
+            });
+            activeScenes = [];
+        }
+
+        function init3DViewer(containerId, buildSceneCallback, legendItems = []) {
+            const container = document.getElementById(containerId);
+            if (!container || typeof THREE === 'undefined') return null;
+            container.querySelectorAll('canvas,.v3d-ui').forEach(n => n.remove());
+            activeScenes = activeScenes.filter(r => {
+                if (r.cid === containerId) {
+                    cancelAnimationFrame(r.animId);
+                    r.renderer.dispose();
+                    return false;
+                }
+                return true;
+            });
+
+            const width = container.clientWidth || 600;
+            const height = container.clientHeight || 380;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1.4, 7.8);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            const legendHtml = legendItems.length
+                ? `<div class="v3d-legend" style="position:absolute;top:8px;left:10px;display:flex;flex-wrap:wrap;gap:8px;font-size:11px;font-weight:700;color:#e2e8f0;background:rgba(15,23,42,.72);padding:3px 9px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);">
+                    ${legendItems.map(it => `<span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${it.color};margin-right:4px;"></i>${it.text}</span>`).join('')}
+                   </div>`
+                : '';
+
+            const ui = document.createElement('div');
+            ui.className = 'v3d-ui';
+            ui.innerHTML = `
+                ${legendHtml}
+                <button type="button" class="v3d-btn">🏷️ ရှင်းလင်းချက်: ON</button>
+                <div class="v3d-zoom"><button type="button" data-z="in" title="Zoom In">+</button><button type="button" data-z="out" title="Zoom Out">−</button><button type="button" data-z="reset" title="Reset View">⟲</button></div>
+                <div class="v3d-labels"></div>
+                <div class="v3d-hint" style="top:${legendItems.length ? '36px' : '10px'};">👆 ဆွဲ၍လှည့်ပါ · + − ဖြင့် ချုံ့ချဲ့ပါ</div>
+                <div class="v3d-info"></div>`;
+            container.appendChild(ui);
+
+            const labelBox = ui.querySelector('.v3d-labels');
+            const labels = [];
+            const api = {
+                label(text, pos, color = '#818cf8', obj) {
+                    const el = document.createElement('div');
+                    el.className = 'v3d-label';
+                    el.style.borderColor = color;
+                    el.innerHTML = text;
+                    labelBox.appendChild(el);
+                    labels.push({ el, obj, pos: pos.clone ? pos.clone() : new THREE.Vector3(...pos) });
+                },
+                info(html) { ui.querySelector('.v3d-info').innerHTML = html; }
+            };
+
+            const btn = ui.querySelector('.v3d-btn');
+            btn.addEventListener('click', () => {
+                const on = labelBox.style.display === 'none';
+                labelBox.style.display = on ? '' : 'none';
+                btn.textContent = '🏷️ ရှင်းလင်းချက်: ' + (on ? 'ON' : 'OFF');
+            });
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.92);
+            dirLight1.position.set(6, 9, 7);
+            scene.add(dirLight1);
+            const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.5);
+            dirLight2.position.set(-6, -4, -5);
+            scene.add(dirLight2);
+
+            const rootGroup = new THREE.Group();
+            scene.add(rootGroup);
+
+            const customUpdate = buildSceneCallback(rootGroup, camera, scene, api);
+            camera.lookAt(0, 0, 0);
+            const camPos0 = camera.position.clone();
+            let zoom = 1;
+            const setZoom = z => { zoom = Math.max(0.55, Math.min(2.3, z)); };
+
+            ui.querySelector('.v3d-zoom').addEventListener('click', e => {
+                const k = e.target.dataset.z;
+                if (k === 'in') setZoom(zoom * 1.25);
+                else if (k === 'out') setZoom(zoom / 1.25);
+                else if (k === 'reset') { zoom = 1; rootGroup.rotation.set(0, 0, 0); autoRotate = true; }
+            });
+
+            let isDragging = false, prevX = 0, prevY = 0, autoRotate = true;
+            const onDown = (x, y) => { isDragging = true; autoRotate = false; prevX = x; prevY = y; ui.querySelector('.v3d-hint').style.opacity = 0; };
+            const onMove = (x, y) => {
+                if (!isDragging) return;
+                rootGroup.rotation.y += (x - prevX) * 0.01;
+                rootGroup.rotation.x = Math.max(-1.1, Math.min(1.1, rootGroup.rotation.x + (y - prevY) * 0.01));
+                prevX = x; prevY = y;
+            };
+            const onUp = () => { isDragging = false; };
+
+            const domElem = renderer.domElement;
+            domElem.addEventListener('mousedown', e => onDown(e.clientX, e.clientY));
+            domElem.addEventListener('wheel', e => { e.preventDefault(); setZoom(zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1)); }, { passive: false });
+            window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', onUp);
+            domElem.addEventListener('touchstart', e => { if (e.touches.length === 1) onDown(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchmove', e => { if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+            domElem.addEventListener('touchend', onUp);
+
+            window.addEventListener('resize', () => {
+                if (!container.isConnected || !container.clientWidth) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+
+            const sceneRecord = { renderer, animId: null, cid: containerId };
+            activeScenes.push(sceneRecord);
+
+            const clock = new THREE.Clock();
+            const v = new THREE.Vector3();
+            function animate() {
+                sceneRecord.animId = requestAnimationFrame(animate);
+                const elapsed = clock.getElapsedTime();
+                if (autoRotate) rootGroup.rotation.y += 0.0032;
+                if (typeof customUpdate === 'function') customUpdate(elapsed, rootGroup);
+                camera.position.copy(camPos0).multiplyScalar(1 / zoom);
+                renderer.render(scene, camera);
+
+                const W = container.clientWidth, H = container.clientHeight;
+                scene.updateMatrixWorld();
+                labels.forEach(l => {
+                    v.copy(l.pos);
+                    (l.obj || rootGroup).localToWorld(v).project(camera);
+                    l.el.style.opacity = l.obj && !l.obj.visible ? 0 : 1;
+                    const hw = l.el.offsetWidth / 2 + 4;
+                    const x = Math.max(hw, Math.min(W - hw, (v.x * 0.5 + 0.5) * W));
+                    const y = Math.max(14, Math.min(H - 96, (-v.y * 0.5 + 0.5) * H));
+                    l.el.style.transform = `translate(-50%,-50%) translate(${x}px,${y}px)`;
+                });
+            }
+            animate();
+        }
+
+        function createSphere(radius, colorHex, x = 0, y = 0, z = 0) {
+            const geo = new THREE.SphereGeometry(radius, 28, 28);
+            const mat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.28, metalness: 0.15 });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.position.set(x, y, z);
+            return mesh;
+        }
+
+        // ==========================================
+        // 2. SPECIFIC 3D VISUALIZATIONS FOR CHAPTER 5
+        // ==========================================
+
+        // 3D Viewer 5.1: Conduction, Convection & Thermal Radiation
+        function render3D_5_1(mode) {
+            if (mode === 'conduction') {
+                init3DViewer('viewer-5-1', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 7.6);
+
+                    // Hot Reservoir Block (Left)
+                    const hotBlock = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.9, 2.2, 2.0),
+                        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 })
+                    );
+                    hotBlock.position.set(-2.7, 0, 0);
+                    group.add(hotBlock);
+
+                    // Cold Reservoir Block (Right)
+                    const coldBlock = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.9, 2.2, 2.0),
+                        new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3 })
+                    );
+                    coldBlock.position.set(2.7, 0, 0);
+                    group.add(coldBlock);
+
+                    // Transparent Metal Rod Outline
+                    const rod = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.75, 0.75, 4.5, 28, 1, true).rotateZ(Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.2, side: THREE.DoubleSide })
+                    );
+                    group.add(rod);
+
+                    // Lattice Atoms vibrating in place (faster & redder near hot end)
+                    const atoms = [];
+                    const cols = 7;
+                    for (let c = 0; c < cols; c++) {
+                        const frac = c / (cols - 1); // 0 = hot, 1 = cold
+                        const x = -1.9 + frac * 3.8;
+                        const color = new THREE.Color().lerpColors(new THREE.Color(0xf87171), new THREE.Color(0x38bdf8), frac);
+                        for (let r = -1; r <= 1; r += 2) {
+                            const atom = new THREE.Mesh(
+                                new THREE.SphereGeometry(0.18, 20, 20),
+                                new THREE.MeshStandardMaterial({ color })
+                            );
+                            atom.position.set(x, r * 0.32, (c % 2 === 0 ? 0.22 : -0.22));
+                            group.add(atom);
+                            atoms.push({ mesh: atom, baseX: x, baseY: r * 0.32, amp: 0.14 * (1 - 0.75 * frac), freq: 16 - 8 * frac, phase: c * 0.9 });
+                        }
+                    }
+
+                    // Heat Flow Arrow
+                    const heatArrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(-1.8, 1.15, 0), 3.6, 0xfbbf24, 0.35, 0.22);
+                    group.add(heatArrow);
+
+                    ui.label('Hot End (T_hot)', [-2.7, 1.45, 0], '#f87171');
+                    ui.label('Heat Flow H = κA(T_hot − T_cold)/d', [0, 1.55, 0], '#fbbf24');
+                    ui.label('Cold End (T_cold)', [2.7, 1.45, 0], '#38bdf8');
+                    ui.info('<b>Thermal Conduction (အပူလျှောက်ကူးခြင်း):</b> အရာဝတ္ထုတစ်ခုလုံး ရွေ့လျားခြင်းမရှိဘဲ အပူချိန်မြင့်သောအပိုင်းရှိ အက်တမ်များ၏ ပြင်းထန်သော တုန်ခါမှုမှတစ်ဆင့် ဘေးချင်းကပ် အက်တမ်များသို့ အပူစွမ်းအင် လက်ဆင့်ကမ်း စီးဆင်းသွားခြင်း ဖြစ်သည်။');
+
+                    return (t) => {
+                        atoms.forEach(a => {
+                            a.mesh.position.x = a.baseX + Math.sin(t * a.freq + a.phase) * a.amp;
+                            a.mesh.position.y = a.baseY + Math.cos(t * a.freq * 1.1 + a.phase) * a.amp * 0.7;
+                        });
+                    };
+                }, [
+                    { color: '#ef4444', text: 'Hot Reservoir' },
+                    { color: '#fbbf24', text: 'Heat Flow H' },
+                    { color: '#0284c7', text: 'Cold Reservoir' }
+                ]);
+            } else if (mode === 'convection') {
+                init3DViewer('viewer-5-1', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.2, 7.6);
+
+                    // Transparent Fluid Beaker
+                    const tank = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1.9, 1.9, 3.2, 36, 1, true),
+                        new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.18, side: THREE.DoubleSide })
+                    );
+                    group.add(tank);
+
+                    // Bottom Heater Plate
+                    const heater = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1.4, 1.4, 0.22, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3 })
+                    );
+                    heater.position.y = -1.75;
+                    group.add(heater);
+
+                    // Fluid Parcels moving in 2 Convection Loops (Center Up, Sides Down)
+                    const parcels = [];
+                    for (let i = 0; i < 16; i++) {
+                        const side = i % 2 === 0 ? 1 : -1;
+                        const p = createSphere(0.14, 0xf97316, 0, 0, 0);
+                        group.add(p);
+                        parcels.push({ mesh: p, side, offset: (i / 16) * Math.PI * 2 });
+                    }
+
+                    ui.label('Cooler Fluid Sinks (Higher Density)', [-2.1, 0.6, 0], '#38bdf8');
+                    ui.label('Warm Fluid Rises (Lower Density)', [0, 0.2, 0], '#fb923c');
+                    ui.label('Heat Source (Bottom)', [0, -2.15, 0], '#f87171');
+                    ui.info('<b>Thermal Convection (အပူသယ်ဆောင်စီးဆင်းခြင်း):</b> အရည်နှင့် ဓာတ်ငွေ့များကို အောက်ခြေမှ အပူပေးသောအခါ ပူလာသောအရည်များ ပြန့်ကား၍ သိပ်သည်းဆလျော့နည်းကာ အပေါ်သို့တက်ပြီး အပေါ်မှ အေးသောအရည်များ အောက်သို့ဆင်းသက်ခြင်းဖြင့် <strong>Convection Currents</strong> ဖြစ်ပေါ်သည်။');
+
+                    return (t) => {
+                        parcels.forEach(item => {
+                            const theta = t * 1.6 + item.offset;
+                            // Loop around center: x goes from 0 (up) to side*1.35 (down)
+                            const x = item.side * (0.72 + 0.68 * Math.sin(theta));
+                            const y = 1.25 * Math.cos(theta);
+                            item.mesh.position.set(x, y, Math.sin(theta * 2) * 0.25);
+
+                            // Color shifts from hot orange at bottom/center to cool cyan at top/outer
+                            const warmth = Math.max(0, Math.min(1, (1.3 - y) / 2.6));
+                            item.mesh.material.color.lerpColors(new THREE.Color(0x38bdf8), new THREE.Color(0xf97316), warmth);
+                        });
+                    };
+                }, [
+                    { color: '#f97316', text: 'Warm Rising Fluid' },
+                    { color: '#38bdf8', text: 'Cool Sinking Fluid' }
+                ]);
+            } else {
+                // Thermal Radiation (Stefan-Boltzmann Law)
+                init3DViewer('viewer-5-1', (group, camera, scene, ui) => {
+                    camera.position.set(0, 1.3, 7.6);
+
+                    // Hot Glowing Body
+                    const hotBody = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.95, 36, 36),
+                        new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xd97706, emissiveIntensity: 0.45, roughness: 0.25 })
+                    );
+                    group.add(hotBody);
+
+                    // Expanding Electromagnetic Radiation Rings in Vacuum
+                    const waves = [];
+                    for (let i = 0; i < 4; i++) {
+                        const ring = new THREE.Mesh(
+                            new THREE.TorusGeometry(1.1, 0.04, 16, 64),
+                            new THREE.MeshBasicMaterial({ color: 0xfde047, transparent: true, opacity: 0.85 })
+                        );
+                        group.add(ring);
+                        waves.push({ mesh: ring, offset: i * 0.25 });
+                    }
+
+                    ui.label('Hot Object at Absolute Temp T (K)', [0, 1.35, 0], '#fbbf24');
+                    ui.label('Electromagnetic IR Waves (No Medium Needed)', [2.1, -1.65, 0], '#fde047');
+                    ui.info('<b>Thermal Radiation (<span class="mx"><i>P</i> = <i>σeAT</i>⁴</span>):</b> ကြားခံနယ် (Medium) မလိုအပ်ဘဲ လေဟာနယ် (Vacuum) ကိုဖြတ်၍ အနီအောက်ရောင်ခြည် (IR) လျှပ်စစ်သံလိုက်လှိုင်းများဖြင့် အပူစွမ်းအင် ထုတ်လွှတ်ခြင်း ဖြစ်သည်။');
+
+                    return (t) => {
+                        hotBody.scale.setScalar(1 + 0.04 * Math.sin(t * 6));
+                        waves.forEach(w => {
+                            const prog = (t * 0.65 + w.offset) % 1.0;
+                            const scale = 1.0 + prog * 2.4;
+                            w.mesh.scale.setScalar(scale);
+                            w.mesh.material.opacity = Math.max(0, 0.9 * (1 - prog));
+                        });
+                    };
+                }, [
+                    { color: '#f59e0b', text: 'Radiating Body (T)' },
+                    { color: '#fde047', text: 'IR EM Waves' }
+                ]);
+            }
+        }
+
+        // 3D Viewer 5.3: Kinetic Theory of Ideal Gas Box
+        function render3D_5_3(tempMode) {
+            const isHighTemp = tempMode === '600K';
+            init3DViewer('viewer-5-3', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.4, 8.0);
+
+                // Transparent Cubic Gas Container (4 x 4 x 4)
+                const boxSize = 3.6;
+                const boxGeo = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+                const edges = new THREE.EdgesGeometry(boxGeo);
+                const wireBox = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: isHighTemp ? 0xf87171 : 0x38bdf8 }));
+                const glassBox = new THREE.Mesh(
+                    boxGeo,
+                    new THREE.MeshStandardMaterial({ color: isHighTemp ? 0xef4444 : 0x0ea5e9, transparent: true, opacity: 0.08, side: THREE.DoubleSide })
+                );
+                group.add(wireBox, glassBox);
+
+                // Gas Molecules bouncing elastically inside container
+                const molecules = [];
+                const speedScale = isHighTemp ? 1.414 : 1.0; // v_rms proportional to sqrt(T)
+                for (let i = 0; i < 28; i++) {
+                    const m = createSphere(0.13, isHighTemp ? 0xfb7185 : 0x38bdf8, 0, 0, 0);
+                    m.position.set(
+                        (Math.random() - 0.5) * 2.8,
+                        (Math.random() - 0.5) * 2.8,
+                        (Math.random() - 0.5) * 2.8
+                    );
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.acos(2 * Math.random() - 1);
+                    const baseSpd = (0.045 + Math.random() * 0.025) * speedScale;
+                    const vel = new THREE.Vector3(
+                        baseSpd * Math.sin(phi) * Math.cos(theta),
+                        baseSpd * Math.sin(phi) * Math.sin(theta),
+                        baseSpd * Math.cos(phi)
+                    );
+                    group.add(m);
+                    molecules.push({ mesh: m, vel });
+                }
+
+                ui.label(isHighTemp ? 'T = 600 K (v_rms × 1.41, Pressure × 2)' : 'T = 300 K (Room Temperature)', [0, 2.25, 0], isHighTemp ? '#fda4af' : '#7dd3fc');
+                ui.label('Elastic Wall Collisions → Gas Pressure P = ⅓ρv̄²', [0, -2.25, 0], '#fde047');
+                ui.info(isHighTemp
+                    ? '<b>High Temperature (T = 600 K):</b> Kelvin အပူချိန် ၂ ဆတိုးသောအခါ မော်လီကျူးများ၏ ပျမ်းမျှအရွေ့စွမ်းအင် (<span class="mx"><i>KE</i> = 3/2 <i>k</i><sub>B</sub><i>T</i></span>) ၂ ဆတိုးပြီး <span class="mx"><i>v</i><sub>rms</sub></span> သည် <strong>√2 ≈ 1.41 ဆ</strong> ပိုမြန်လာသဖြင့် နံရံနှင့်တိုက်မိသော ဖိအား P ၂ ဆတက်လာသည်။'
+                    : '<b>Kinetic Theory of Ideal Gas (T = 300 K):</b> ဓာတ်ငွေ့မော်လီကျူးများသည် မျဉ်းဖြောင့်အတိုင်း အဆက်မပြတ်ရွေ့လျားပြီး ပုံးနံရံများနှင့် Elastic collision ဖြစ်ပွားရာမှ ဓာတ်ငွေ့ဖိအား (<span class="mx"><i>P</i> = ⅓<i>ρv̄</i>²</span>) ဖြစ်ပေါ်လာသည်။');
+
+                const limit = boxSize / 2 - 0.16;
+                return () => {
+                    molecules.forEach(item => {
+                        item.mesh.position.add(item.vel);
+                        if (item.mesh.position.x > limit || item.mesh.position.x < -limit) {
+                            item.vel.x *= -1;
+                            item.mesh.position.x = Math.sign(item.mesh.position.x) * limit;
+                        }
+                        if (item.mesh.position.y > limit || item.mesh.position.y < -limit) {
+                            item.vel.y *= -1;
+                            item.mesh.position.y = Math.sign(item.mesh.position.y) * limit;
+                        }
+                        if (item.mesh.position.z > limit || item.mesh.position.z < -limit) {
+                            item.vel.z *= -1;
+                            item.mesh.position.z = Math.sign(item.mesh.position.z) * limit;
+                        }
+                    });
+                };
+            }, [
+                { color: isHighTemp ? '#fb7185' : '#38bdf8', text: isHighTemp ? 'Fast Molecules (600 K)' : 'Gas Molecules (300 K)' },
+                { color: '#fde047', text: 'Wall Pressure P' }
+            ]);
+        }
+
+        // 3D Viewer 5.4: Thermodynamic Piston-Cylinder (First Law: ΔU = Q - W)
+        function render3D_5_4(proc) {
+            init3DViewer('viewer-5-4', (group, camera, scene, ui) => {
+                camera.position.set(0, 1.3, 8.0);
+
+                // Transparent Vertical Cylinder
+                const cylMat = new THREE.MeshStandardMaterial({
+                    color: proc === 'adiabatic' ? 0xf59e0b : 0x94a3b8,
+                    transparent: true,
+                    opacity: proc === 'adiabatic' ? 0.35 : 0.22,
+                    side: THREE.DoubleSide
+                });
+                const cylinder = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.35, 3.6, 36, 1, true), cylMat);
+                group.add(cylinder);
+
+                // Base Plate & Burner (for Isobaric / Isothermal)
+                const base = new THREE.Mesh(
+                    new THREE.CylinderGeometry(1.42, 1.42, 0.18, 36),
+                    new THREE.MeshStandardMaterial({ color: 0x475569 })
+                );
+                base.position.y = -1.85;
+                group.add(base);
+
+                const burner = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.9, 1.1, 0.28, 28),
+                    new THREE.MeshStandardMaterial({ color: 0xef4444, emissive: 0xdc2626, emissiveIntensity: 0.45 })
+                );
+                burner.position.y = -2.15;
+                burner.visible = proc !== 'adiabatic';
+                group.add(burner);
+
+                // Gas Volume inside Cylinder
+                const gasMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.35 });
+                const gasVol = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 1.0, 32), gasMat);
+                group.add(gasVol);
+
+                // Movable Piston + Piston Rod
+                const pistonGroup = new THREE.Group();
+                const pistonDisc = new THREE.Mesh(
+                    new THREE.CylinderGeometry(1.32, 1.32, 0.25, 36),
+                    new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.6, roughness: 0.25 })
+                );
+                const pistonRod = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.14, 0.14, 1.8, 20),
+                    new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7 })
+                );
+                pistonRod.position.y = 1.0;
+                pistonGroup.add(pistonDisc, pistonRod);
+                group.add(pistonGroup);
+
+                // Gas Particles inside Cylinder
+                const gasParticles = [];
+                for (let i = 0; i < 16; i++) {
+                    const gp = createSphere(0.1, 0xfbbf24, 0, -1.0, 0);
+                    group.add(gp);
+                    gasParticles.push({
+                        mesh: gp,
+                        rx: ((i % 4) - 1.5) * 0.55,
+                        rz: ((Math.floor(i / 4) % 4) - 1.5) * 0.55,
+                        phase: i * 0.8
+                    });
+                }
+
+                if (proc === 'isobaric') {
+                    ui.label('Movable Piston (Work W = PΔV > 0)', [0, 2.35, 0], '#e2e8f0');
+                    ui.label('Heat Added (+Q) → ΔU = Q − W', [0, -2.45, 0], '#f87171');
+                    ui.info('<b>Isobaric Expansion (ကိန်းသေဖိအား ဖြစ်စဉ်, ΔP = 0):</b> အပူ <b>+Q</b> ပေးသောအခါ ဓာတ်ငွေ့ပြန့်ကားပြီး ပစ္စတင်ကို အပေါ်သို့တွန်းတင်သဖြင့် အလုပ် <b>+W = PΔV</b> လုပ်ဆောင်ကာ အပူချိန်နှင့် အတွင်းစွမ်းအင် (<b>+ΔU</b>) တိုးလာသည်။');
+                } else if (proc === 'isothermal') {
+                    ui.label('Constant Temperature (ΔT = 0 → ΔU = 0)', [0, 2.35, 0], '#34d399');
+                    ui.label('All Heat Added = Work Done (Q = W)', [0, -2.45, 0], '#fbbf24');
+                    ui.info('<b>Isothermal Expansion (ကိန်းသေအပူချိန် ဖြစ်စဉ်, ΔT = 0):</b> အပူချိန် မပြောင်းလဲသောကြောင့် အတွင်းစွမ်းအင်ပြောင်းလဲမှု <b>ΔU = 0</b> ဖြစ်ပြီး ပေးလိုက်သော အပူအားလုံးသည် ပြင်ပအလုပ်အဖြစ် ပြောင်းသွားသည် (<b>Q = W = nRT ln(V_f/V_i)</b>)။');
+                } else {
+                    ui.label('Adiabatic Expansion (Insulated Walls, Q = 0)', [0, 2.35, 0], '#fbbf24');
+                    ui.label('No Heat Input (Q = 0) → ΔU = −W (Gas Cools Down)', [0, -2.45, 0], '#38bdf8');
+                    ui.info('<b>Adiabatic Expansion (အပူအဝင်အထွက် မရှိသော ဖြစ်စဉ်, Q = 0):</b> အပူကာနံရံဖြစ်သဖြင့် အပူလုံးဝမဝင်ဘဲ ဓာတ်ငွေ့ပြန့်ကားရန် မိမိ၏ အတွင်းစွမ်းအင် <b>U</b> ကို အသုံးပြုရသောကြောင့် အပူချိန် ကျဆင်းသွားသည် (<b>ΔU = −W</b>)။');
+                }
+
+                return (t) => {
+                    const wave = 0.5 - 0.5 * Math.cos(t * 1.4); // 0 to 1 smooth expansion
+                    const gasH = 1.1 + wave * 1.65;
+                    const bottomY = -1.75;
+                    const pistonY = bottomY + gasH;
+
+                    pistonGroup.position.y = pistonY;
+                    gasVol.scale.y = gasH;
+                    gasVol.position.y = bottomY + gasH / 2;
+
+                    if (proc === 'isobaric') {
+                        gasMat.color.lerpColors(new THREE.Color(0x38bdf8), new THREE.Color(0xf97316), wave);
+                    } else if (proc === 'isothermal') {
+                        gasMat.color.setHex(0x10b981);
+                    } else {
+                        gasMat.color.lerpColors(new THREE.Color(0xf97316), new THREE.Color(0x38bdf8), wave);
+                    }
+
+                    gasParticles.forEach(gp => {
+                        const normY = 0.15 + 0.7 * (0.5 + 0.5 * Math.sin(t * 4.5 + gp.phase));
+                        gp.mesh.position.set(
+                            gp.rx + Math.sin(t * 5 + gp.phase) * 0.25,
+                            bottomY + normY * gasH,
+                            gp.rz + Math.cos(t * 4.8 + gp.phase) * 0.25
+                        );
+                    });
+                };
+            }, [
+                { color: '#cbd5e1', text: 'Movable Piston' },
+                { color: '#38bdf8', text: 'Ideal Gas' },
+                { color: '#ef4444', text: proc === 'adiabatic' ? 'Insulated (Q=0)' : 'Heat Source (Q)' }
+            ]);
+        }
+
+        // ==========================================
+        // 3. INTERACTIVE THERMAL & GAS CALCULATORS
+        // ==========================================
+        function runIdealGasCalculator() {
+            const solveFor = document.getElementById('gas-solve')?.value || 'P';
+            const n = parseFloat(document.getElementById('gas-n')?.value || '2');
+            const tc = parseFloat(document.getElementById('gas-tc')?.value || '27');
+            const vL = parseFloat(document.getElementById('gas-v')?.value || '10');
+            const pKpa = parseFloat(document.getElementById('gas-p')?.value || '498.8');
+            const out = document.getElementById('gas-output');
+            if (!out) return;
+
+            const R = 8.314;
+            const TK = tc + 273.15;
+            const Vm3 = vL / 1000;
+            const Ppa = pKpa * 1000;
+
+            if (solveFor === 'P') {
+                const calcP = (n * R * TK) / Vm3;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Ideal Gas Law: PV = nRT  (T = ${tc}°C + 273.15 = ${TK.toFixed(2)} K, V = ${Vm3.toFixed(4)} m³)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Pressure P = nRT / V = (${n} × 8.314 × ${TK.toFixed(2)}) / ${Vm3.toFixed(4)} = ${calcP.toFixed(1)} Pa (${(calcP/1000).toFixed(2)} kPa)</div>
+                    </div>
+                `;
+            } else if (solveFor === 'V') {
+                const calcV = (n * R * TK) / Ppa;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Ideal Gas Law: V = nRT / P  (T = ${TK.toFixed(2)} K, P = ${Ppa.toFixed(0)} Pa)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Volume V = (${n} × 8.314 × ${TK.toFixed(2)}) / ${Ppa.toFixed(0)} = ${calcV.toFixed(5)} m³ (${(calcV*1000).toFixed(2)} Liters)</div>
+                    </div>
+                `;
+            } else {
+                const calcTK = (Ppa * Vm3) / (n * R);
+                const calcTC = calcTK - 273.15;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Ideal Gas Law: T = PV / nR</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">Temperature T = (${Ppa.toFixed(0)} × ${Vm3.toFixed(4)}) / (${n} × 8.314) = ${calcTK.toFixed(2)} K (${calcTC.toFixed(2)} °C)</div>
+                    </div>
+                `;
+            }
+        }
+
+        function switchCh5CalcInputs() {
+            const mode = document.getElementById('ch5-calc-mode')?.value || 'conduction';
+            ['cond', 'rad', 'rms', 'carnot'].forEach(k => {
+                const el = document.getElementById(`ch5-in-${k}`);
+                if (el) el.classList.toggle('hidden', mode !== k);
+            });
+            runCh5Calculator();
+        }
+
+        function runCh5Calculator() {
+            const mode = document.getElementById('ch5-calc-mode')?.value || 'conduction';
+            const out = document.getElementById('ch5-calc-output');
+            if (!out) return;
+
+            if (mode === 'conduction') {
+                const k = parseFloat(document.getElementById('c-k')?.value || '401');
+                const A = parseFloat(document.getElementById('c-a')?.value || '0.002');
+                const dt = parseFloat(document.getElementById('c-dt')?.value || '80');
+                const d = parseFloat(document.getElementById('c-d')?.value || '0.5');
+                const H = (k * A * dt) / d;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Rate of Heat Conduction: H = κ A ΔT / d</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">H = (${k} × ${A} × ${dt}) / ${d} = ${H.toFixed(2)} W (J s⁻¹)</div>
+                    </div>
+                `;
+            } else if (mode === 'rad') {
+                const e = parseFloat(document.getElementById('r-e')?.value || '0.95');
+                const A = parseFloat(document.getElementById('r-a')?.value || '1.8');
+                const T = parseFloat(document.getElementById('r-t')?.value || '310');
+                const Ts = parseFloat(document.getElementById('r-ts')?.value || '293');
+                const sigma = 5.67e-8;
+                const Pnet = sigma * e * A * (Math.pow(T, 4) - Math.pow(Ts, 4));
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Stefan-Boltzmann Net Radiation: P_net = σ e A (T⁴ − T_s⁴)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">P_net = 5.67×10⁻⁸ × ${e} × ${A} × (${T}⁴ − ${Ts}⁴) = ${Pnet.toFixed(2)} W</div>
+                    </div>
+                `;
+            } else if (mode === 'rms') {
+                const T = parseFloat(document.getElementById('m-t')?.value || '300');
+                const M = parseFloat(document.getElementById('m-m')?.value || '0.032');
+                const R = 8.314;
+                const vrms = Math.sqrt((3 * R * T) / M);
+                const keAvg = 1.5 * 1.38e-23 * T;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">RMS Speed: v_rms = √(3RT / M) &nbsp;|&nbsp; Avg KE = (3/2) k_B T</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">v_rms = √(3 × 8.314 × ${T} / ${M}) = ${vrms.toFixed(1)} m s⁻¹</div>
+                        <div class="font-mono text-sky-300">Average Molecular KE = ${keAvg.toExponential(3)} J</div>
+                    </div>
+                `;
+            } else {
+                const thC = parseFloat(document.getElementById('e-th')?.value || '327');
+                const tcC = parseFloat(document.getElementById('e-tc')?.value || '27');
+                const Th = thC + 273;
+                const Tc = tcC + 273;
+                const eff = (1 - Tc / Th) * 100;
+                out.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-white/10 border border-white/15 space-y-1.5 text-xs sm:text-sm myanmar-text">
+                        <div class="font-bold text-amber-300">Carnot Ideal Efficiency: η = (1 − T_C / T_H) × 100%  (T_H = ${Th} K, T_C = ${Tc} K)</div>
+                        <div class="font-mono text-emerald-300 font-bold text-base">η_max = (1 − ${Tc} / ${Th}) × 100% = ${eff.toFixed(2)}%</div>
+                    </div>
+                `;
+            }
+        }
+
+        // ==========================================
+        // 4. ARTICLE TEMPLATES (OVERVIEW + 5.1 - 5.4 + WORKED)
+        // ==========================================
+        const ARTICLES = {
+            'overview': {
+                badge: 'Chapter 5 Master Overview & Formula Table',
+                title: 'အခန်း (၅) အပူစွမ်းအင် ကူးပြောင်းခြင်းနှင့် သာမိုဒိုင်းနမစ်',
+                subtitle: 'Thermal Physics (Heat Transfer and Thermodynamics) — ခြုံငုံရှင်းလင်းချက်နှင့် ပုံသေနည်းဇယားချုပ်',
+                html: `
+                    <!-- Master Formula Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Grade 12 Physics Chapter 5</span>
+                                <h3 class="text-lg sm:text-xl font-bold text-slate-900">အခန်း (၅) အဓိက ပုံသေနည်းများနှင့် ကိန်းသေတန်ဖိုးများ ဇယားချုပ်</h3>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 font-semibold self-start">Exam Must-Know</span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ခေါင်းစဉ် (Topic)</th>
+                                        <th class="p-3">ပုံသေနည်း (Formula)</th>
+                                        <th class="p-3">SI Unit & Constants</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">1. Thermal Conduction & Convection</td>
+                                        <td class="p-3 font-mono font-bold text-rose-700">H = ΔQ/Δt = κ A (T<sub>hot</sub> − T<sub>cold</sub>) / d &nbsp;|&nbsp; q = h ΔT</td>
+                                        <td class="p-3">H in Watt (W), κ in W m⁻¹ K⁻¹</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">2. Thermal Radiation (Stefan-Boltzmann)</td>
+                                        <td class="p-3 font-mono font-bold text-amber-700">P = σ e A T⁴ &nbsp;|&nbsp; P<sub>net</sub> = σ e A (T⁴ − T<sub>s</sub>⁴)</td>
+                                        <td class="p-3">σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴, 0 ≤ e ≤ 1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">3. Ideal Gas Law & Gas Laws</td>
+                                        <td class="p-3 font-mono font-bold text-indigo-700">P V = n R T = N k<sub>B</sub> T &nbsp;|&nbsp; P₁V₁/T₁ = P₂V₂/T₂</td>
+                                        <td class="p-3">R = 8.314 J mol⁻¹ K⁻¹, k<sub>B</sub> = 1.38 × 10⁻²³ J K⁻¹</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">4. Kinetic Theory of Ideal Gas</td>
+                                        <td class="p-3 font-mono font-bold text-cyan-700">P = ⅓ ρ v̄² &nbsp;|&nbsp; KE<sub>avg</sub> = 3/2 k<sub>B</sub> T &nbsp;|&nbsp; v<sub>rms</sub> = √(3RT/M)</td>
+                                        <td class="p-3">U = 3/2 n R T (Monatomic ideal gas)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-slate-900">5. First Law & Work by Gas</td>
+                                        <td class="p-3 font-mono font-bold text-emerald-700">ΔU = Q − W &nbsp;|&nbsp; W = P ΔV = P (V<sub>f</sub> − V<sub>i</sub>)</td>
+                                        <td class="p-3">Isochoric: W=0; Isothermal: ΔU=0; Adiabatic: Q=0</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-slate-900">6. Heat Engine & Carnot Efficiency</td>
+                                        <td class="p-3 font-mono font-bold text-purple-700">η = W / Q<sub>H</sub> = 1 − Q<sub>C</sub>/Q<sub>H</sub> &nbsp;|&nbsp; η<sub>Carnot</sub> = 1 − T<sub>C</sub>/T<sub>H</sub></td>
+                                        <td class="p-3">T<sub>C</sub> and T<sub>H</sub> must be in Kelvin (K)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-slate-900">🧠 Chapter 5 အပိုင်းတစ်ခုချင်းစီသို့ အမြန်သွားရန်</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                            <button onclick="selectArticle('5.1')" class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-left hover:bg-rose-100 transition">
+                                <div class="font-bold text-rose-950 text-sm">5.1 Heat Transfer (3D) →</div>
+                                <p class="text-rose-800 mt-1">Conduction, Convection နှင့် Radiation 3D သရုပ်ပြပုံစံများ</p>
+                            </button>
+                            <button onclick="selectArticle('5.2')" class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-left hover:bg-indigo-100 transition">
+                                <div class="font-bold text-indigo-950 text-sm">5.2 Ideal Gas Laws →</div>
+                                <p class="text-indigo-800 mt-1">Boyle's, Charles's Laws နှင့် PV = nRT တွက်ချက်စက်</p>
+                            </button>
+                            <button onclick="selectArticle('5.3')" class="p-4 rounded-2xl bg-cyan-50 border border-cyan-200 text-left hover:bg-cyan-100 transition">
+                                <div class="font-bold text-cyan-950 text-sm">5.3 Kinetic Theory (3D) →</div>
+                                <p class="text-cyan-800 mt-1">3D Gas Box မော်လီကျူးတိုက်ခတ်မှုနှင့် v<sub>rms</sub> တွက်ချက်ပုံ</p>
+                            </button>
+                            <button onclick="selectArticle('5.4')" class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left hover:bg-emerald-100 transition">
+                                <div class="font-bold text-emerald-950 text-sm">5.4 Thermodynamics (3D) →</div>
+                                <p class="text-emerald-800 mt-1">3D Piston Cylinder (ΔU = Q − W) နှင့် Carnot Efficiency</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Big-Picture Chapter Roadmap -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 space-y-4 myanmar-text">
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900">📖 Chapter 5 တစ်ခန်းလုံး၏ အနှစ်ချုပ် ရှင်းလင်းချက်</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                                <div class="font-bold text-rose-950 text-base">၁။ Article 5.1 — Thermal Energy Transfer</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">အပူစွမ်းအင် ကူးပြောင်းနည်း ၃ မျိုးဖြစ်သော <strong>Conduction</strong> (အစိုင်အခဲအတွင်း အက်တမ်တုန်ခါမှုဖြင့်)၊ <strong>Convection</strong> (အရည်/ဓာတ်ငွေ့ စီးကြောင်းများဖြင့်) နှင့် <strong>Radiation</strong> (လေဟာနယ်ထဲ လျှပ်စစ်သံလိုက်လှိုင်းဖြင့်) တို့၏ ပုံသေနည်းများ ပါဝင်သည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                                <div class="font-bold text-indigo-950 text-base">၂။ Article 5.2 — Temperature and the Ideal Gas</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">Kelvin အပူချိန်စကေး၊ Absolute Zero (−273.15°C = 0 K) နှင့် ဓာတ်ငွေ့နိယာမ ၃ ခု (Boyle's, Charles's, Gay-Lussac's) တို့ကို ပေါင်းစည်းထားသော <strong>Ideal Gas Law (PV = nRT = Nk<sub>B</sub>T)</strong> ကို လေ့လာရမည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-1.5">
+                                <div class="font-bold text-cyan-950 text-base">၃။ Article 5.3 — Kinetic Theory of the Ideal Gas</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">မိုက်ခရိုစကုပ်အဆင့် ဓာတ်ငွေ့မော်လီကျူးများ၏ ရွေ့လျားမှုနှင့် မက်ခရိုစကုပ်အဆင့် ဖိအား (P)၊ အပူချိန် (T) တို့၏ ဆက်သွယ်ချက်များ (<span class="mx"><i>P</i> = ⅓<i>ρv̄</i>²</span>, <span class="mx"><i>KE</i><sub>avg</sub> = 3/2 <i>k</i><sub>B</sub><i>T</i></span>, <span class="mx"><i>v</i><sub>rms</sub></span>) ကို ရှင်းပြထားသည်။</p>
+                            </div>
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                                <div class="font-bold text-emerald-950 text-base">၄။ Article 5.4 — Thermodynamics</div>
+                                <p class="text-slate-700 text-sm leading-relaxed">သာမိုဒိုင်းနမစ် ပထမနိယာမ (<strong>ΔU = Q − W</strong>)၊ ဖြစ်စဉ် ၄ မျိုး (Isobaric, Isochoric, Isothermal, Adiabatic) နှင့် အပူအင်ဂျင် (Heat Engine / Carnot Cycle) စွမ်းဆောင်ရည် တွက်ချက်ပုံများ ပါဝင်သည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            '5.1': {
+                badge: 'Article 5.1',
+                title: 'Thermal Energy Transfer (Conduction, Convection & Radiation)',
+                subtitle: 'အပူစွမ်းအင် ကူးပြောင်းခြင်း နည်းလမ်း ၃ မျိုးနှင့် 3D သရုပ်ပြပုံစံများ',
+                html: `
+                    <!-- 3D Viewer 5.1 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Interactive 3D Heat Transfer Lab</span>
+                                <h3 class="text-lg font-bold text-slate-900">Conduction, Convection နှင့် Radiation 3D မြင်ကွင်း</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_5_1('conduction')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🧱 Conduction</button>
+                                <button onclick="render3D_5_1('convection')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition">🌊 Convection</button>
+                                <button onclick="render3D_5_1('radiation')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">☀️ Radiation (σeAT⁴)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-5-1" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Detailed Breakdown -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-sm font-bold">5.1</span>
+                            အပူစွမ်းအင် ကူးပြောင်းခြင်း (၃) မျိုး နှိုင်းယှဉ်ရှင်းလင်းချက်
+                        </h3>
+
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <!-- 5.1.1 Conduction -->
+                            <div class="p-5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2">
+                                <div class="font-bold text-rose-950 text-base">5.1.1 Conduction (အပူလျှောက်ကူးခြင်း)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    ဒြပ်ဝတ္ထုတစ်ခုလုံး ရွေ့လျားခြင်းမရှိဘဲ အပူချိန်မြင့်ရာမှ နိမ့်ရာသို့ အက်တမ်တုန်ခါမှုနှင့် Free electrons များမှတစ်ဆင့် အပူစီးဆင်းခြင်း ဖြစ်သည်။ သတ္တုများသည် အကောင်းဆုံး အပူလျှောက်ကူးပစ္စည်းများ ဖြစ်သည်။
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-rose-200 text-xs font-mono space-y-1">
+                                    <div>H = ΔQ / Δt = κ A (T<sub>hot</sub> − T<sub>cold</sub>) / d</div>
+                                    <div class="text-slate-600">κ = Thermal conductivity (W m⁻¹ K⁻¹)</div>
+                                </div>
+                            </div>
+
+                            <!-- 5.1.2 Convection -->
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-2">
+                                <div class="font-bold text-cyan-950 text-base">5.1.2 Convection (အပူသယ်ဆောင်စီးဆင်းခြင်း)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    အရည် (Liquids) နှင့် ဓာတ်ငွေ့ (Gases) များတွင် ပူလာသော အစိတ်အပိုင်းများ ပြန့်ကားပြီး သိပ်သည်းဆလျော့နည်းကာ အပေါ်သို့တက်ခြင်းဖြင့် အပူသယ်ဆောင်ခြင်း ဖြစ်သည်။ (ဥပမာ- ပင်လယ်လေ၊ ကုန်းလေ တိုက်ခတ်ခြင်း)
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-cyan-200 text-xs font-mono space-y-1">
+                                    <div>q = h ΔT &nbsp; (Heat flux in W m⁻²)</div>
+                                    <div class="text-slate-600">h = Heat transfer coefficient (W m⁻² K⁻¹)</div>
+                                </div>
+                            </div>
+
+                            <!-- 5.1.3 Radiation -->
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                                <div class="font-bold text-amber-950 text-base">5.1.3 Radiation (အပူဖြာထွက်ခြင်း)</div>
+                                <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                                    ကြားခံနယ် (Medium) မလိုဘဲ လေဟာနယ်ကိုဖြတ်၍ လျှပ်စစ်သံလိုက်လှိုင်း (Infrared radiation) ဖြင့် အပူကူးပြောင်းခြင်း ဖြစ်သည်။ <strong>Stefan-Boltzmann Law</strong> အရ-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-amber-200 text-xs font-mono space-y-1">
+                                    <div>P = σ e A T⁴</div>
+                                    <div>P<sub>net</sub> = σ e A (T⁴ − T<sub>s</sub>⁴)</div>
+                                    <div class="text-slate-600">σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Table -->
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">ဂုဏ်သတ္တိ (Feature)</th>
+                                        <th class="p-3">Conduction</th>
+                                        <th class="p-3">Convection</th>
+                                        <th class="p-3">Radiation</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold">ကြားခံနယ် (Medium)</td>
+                                        <td class="p-3">လိုအပ်သည် (အဓိက Solids)</td>
+                                        <td class="p-3">လိုအပ်သည် (Fluids: Liquids/Gases)</td>
+                                        <td class="p-3 text-emerald-700 font-semibold">မလိုအပ်ပါ (Vacuum တွင် ဖြတ်နိုင်)</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold">အမှုန်များ ရွေ့လျားမှု</td>
+                                        <td class="p-3">မူလနေရာတွင်သာ တုန်ခါသည်</td>
+                                        <td class="p-3">အရည်/ဓာတ်ငွေ့ အစုလိုက် ရွေ့လျားသည်</td>
+                                        <td class="p-3">EM Waves အဖြစ် ရွေ့လျားသည်</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_5_1('conduction')
+            },
+
+            '5.2': {
+                badge: 'Article 5.2',
+                title: 'Temperature and the Ideal Gas',
+                subtitle: 'အပူချိန်စကေးများ၊ ဓာတ်ငွေ့နိယာမ (၃) ခုနှင့် စံပြဓာတ်ငွေ့ညီမျှခြင်း (PV = nRT)',
+                html: `
+                    <!-- Interactive Ideal Gas Law Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🧪 Interactive Ideal Gas Law Calculator (PV = nRT)</h3>
+                            <span class="text-xs text-slate-300">R = 8.314 J mol⁻¹ K⁻¹ &nbsp;|&nbsp; T(K) = t(°C) + 273.15</span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">ရှာလိုသောတန်ဖိုး (Solve For)</label>
+                                <select id="gas-solve" onchange="runIdealGasCalculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                    <option value="P">Pressure P (Pa / kPa)</option>
+                                    <option value="V">Volume V (m³ / L)</option>
+                                    <option value="T">Temperature T (K / °C)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Moles n (mol)</label>
+                                <input id="gas-n" type="number" step="0.5" value="2" oninput="runIdealGasCalculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Temp t (°C)</label>
+                                <input id="gas-tc" type="number" value="27" oninput="runIdealGasCalculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Volume V (Liters)</label>
+                                <input id="gas-v" type="number" value="10" oninput="runIdealGasCalculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Pressure P (kPa)</label>
+                                <input id="gas-p" type="number" step="0.1" value="498.8" oninput="runIdealGasCalculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <div id="gas-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Gas Laws & Ideal Gas Explanation -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-sm font-bold">5.2</span>
+                            အပူချိန် (Temperature) နှင့် စံပြဓာတ်ငွေ့ နိယာမများ (Ideal Gas Laws)
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">🌡️ Temperature & Absolute Zero (ပကတိသုည)</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    <strong>Temperature</strong> ဆိုသည်မှာ အရာဝတ္ထုအတွင်းရှိ အမှုန်များ၏ ပျမ်းမျှ ရွေ့လျားအရွေ့စွမ်းအင် (Average translational kinetic energy) ကို တိုင်းတာခြင်း ဖြစ်သည်။
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-indigo-200 text-xs font-mono space-y-1">
+                                    <div>T (K) = t (°C) + 273.15</div>
+                                    <div class="text-slate-600">Absolute Zero: 0 K = −273.15 °C (အနိမ့်ဆုံးဖြစ်နိုင်သော အပူချိန်)</div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2">
+                                <div class="font-bold text-emerald-950 text-base">⚖️ Ideal Gas Equation of State</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    သိပ်သည်းဆနည်းသော ဓာတ်ငွေ့များ (Dilute gases) သည် အောက်ပါ စံပြဓာတ်ငွေ့ညီမျှခြင်းကို လိုက်နာသည်-
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-emerald-200 text-xs font-mono space-y-1">
+                                    <div>P V = n R T &nbsp;&nbsp;(R = 8.314 J mol⁻¹ K⁻¹)</div>
+                                    <div>P V = N k<sub>B</sub> T &nbsp;&nbsp;(k<sub>B</sub> = R / N<sub>A</sub> = 1.38 × 10⁻²³ J K⁻¹)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Three Gas Laws Table -->
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3.5">ဓာတ်ငွေ့နိယာမ (Gas Law)</th>
+                                        <th class="p-3.5">ကိန်းသေ (Constant)</th>
+                                        <th class="p-3.5">ဆက်သွယ်ချက် (Relation & Formula)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3.5 font-bold text-indigo-900">1. Boyle's Law</td>
+                                        <td class="p-3.5">Temperature (T) & Mass (n)</td>
+                                        <td class="p-3.5 font-mono font-bold">P ∝ 1 / V &nbsp;⇒&nbsp; P₁ V₁ = P₂ V₂</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3.5 font-bold text-emerald-900">2. Charles's Law</td>
+                                        <td class="p-3.5">Pressure (P) & Mass (n)</td>
+                                        <td class="p-3.5 font-mono font-bold">V ∝ T &nbsp;⇒&nbsp; V₁ / T₁ = V₂ / T₂</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3.5 font-bold text-amber-900">3. Gay-Lussac's Law</td>
+                                        <td class="p-3.5">Volume (V) & Mass (n)</td>
+                                        <td class="p-3.5 font-mono font-bold">P ∝ T &nbsp;⇒&nbsp; P₁ / T₁ = P₂ / T₂</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runIdealGasCalculator()
+            },
+
+            '5.3': {
+                badge: 'Article 5.3',
+                title: 'Kinetic Theory of the Ideal Gas',
+                subtitle: 'ဓာတ်ငွေ့မော်လီကျူးများ၏ ရွေ့လျားမှုသီအိုရီ (3D Gas Box), P = ⅓ρv̄² နှင့် v_rms',
+                html: `
+                    <!-- 3D Viewer 5.3 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Interactive 3D Molecular Dynamics</span>
+                                <h3 class="text-lg font-bold text-slate-900">3D Ideal Gas Container: အပူချိန်ပြောင်းလဲမှုနှင့် မော်လီကျူးအလျင်</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_5_3('300K')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-sky-600 text-white hover:bg-sky-700 transition">❄️ T = 300 K (Normal Speed)</button>
+                                <button onclick="render3D_5_3('600K')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🔥 T = 600 K (2× Temp → √2 v_rms)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-5-3" class="canvas-container"></div>
+                    </div>
+
+                    <!-- Kinetic Theory Equations -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-sm font-bold">5.3</span>
+                            Kinetic Theory of Gases အခြေခံယူဆချက်များနှင့် ပုံသေနည်းများ
+                        </h3>
+
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 text-sm">
+                            <div class="font-bold text-slate-900">📌 Kinetic Theory ၏ အဓိက ယူဆချက် (၄) ချက်</div>
+                            <ul class="list-disc pl-5 text-slate-700 space-y-1 text-xs sm:text-sm">
+                                <li>ဓာတ်ငွေ့တွင် အလွန်သေးငယ်ပြီး တူညီသော မော်လီကျူး အမြောက်အမြား ပါဝင်သည်။</li>
+                                <li>မော်လီကျူးများသည် ဦးတည်ရာမဲ့ (Random motion) မျဉ်းဖြောင့်အတိုင်း အဆက်မပြတ် ရွေ့လျားနေသည်။</li>
+                                <li>မော်လီကျူးအချင်းချင်း တိုက်မိခြင်းနှင့် နံရံနှင့်တိုက်မိခြင်းတို့သည် <strong>Perfectly Elastic Collisions</strong> (အရွေ့စွမ်းအင် မဆုံးရှုံး) ဖြစ်သည်။</li>
+                                <li>တိုက်မိနေချိန်မှလွဲ၍ မော်လီကျူးအချင်းချင်းကြား ဆွဲငင်အား/တွန်းကန်အား မရှိဟု ယူဆသည်။</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-4 text-xs sm:text-sm">
+                            <div class="p-5 rounded-2xl bg-cyan-50/70 border border-cyan-200 space-y-2">
+                                <div class="font-bold text-cyan-950 text-base">1. Gas Pressure (ဖိအား)</div>
+                                <div class="p-3 rounded-xl bg-white border border-cyan-200 font-mono font-bold text-center text-cyan-900">
+                                    P = ⅓ ρ v̄² = ⅓ (N/V) m v̄²
+                                </div>
+                                <p class="text-slate-700 text-xs">ρ = ဓာတ်ငွေ့သိပ်သည်းဆ (kg m⁻³), v̄² = mean-square speed</p>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">2. Average Kinetic Energy</div>
+                                <div class="p-3 rounded-xl bg-white border border-indigo-200 font-mono font-bold text-center text-indigo-900">
+                                    KE<sub>avg</sub> = ½ m v̄² = 3/2 k<sub>B</sub> T
+                                </div>
+                                <p class="text-slate-700 text-xs">မော်လီကျူးတစ်လုံး၏ ပျမ်းမျှအရွေ့စွမ်းအင်သည် Kelvin အပူချိန် T တစ်ခုတည်းပေါ်တွင်သာ မူတည်သည်။</p>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+                                <div class="font-bold text-amber-950 text-base">3. Root-Mean-Square Speed</div>
+                                <div class="p-3 rounded-xl bg-white border border-amber-200 font-mono font-bold text-center text-amber-900">
+                                    v<sub>rms</sub> = √(3 k<sub>B</sub> T / m) = √(3 R T / M)
+                                </div>
+                                <p class="text-slate-700 text-xs">M = Molar mass (kg mol⁻¹). ပေါ့ပါးသော ဓာတ်ငွေ့ (H₂, He) များသည် လေးလံသော ဓာတ်ငွေ့ (O₂, CO₂) ထက် ပိုမြန်သည်။</p>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_5_3('300K')
+            },
+
+            '5.4': {
+                badge: 'Article 5.4',
+                title: 'Thermodynamics, First Law & Heat Engines',
+                subtitle: 'သာမိုဒိုင်းနမစ် ပထမနိယာမ (ΔU = Q − W), ဖြစ်စဉ် ၄ မျိုး နှင့် Carnot Efficiency (3D)',
+                html: `
+                    <!-- 3D Viewer 5.4 -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Interactive 3D Thermodynamic Cylinder</span>
+                                <h3 class="text-lg font-bold text-slate-900">Piston-Cylinder စနစ်: Isobaric, Isothermal နှင့် Adiabatic 3D</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="render3D_5_4('isobaric')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition">🔥 Isobaric (ΔP = 0)</button>
+                                <button onclick="render3D_5_4('isothermal')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition">🌡️ Isothermal (ΔT = 0)</button>
+                                <button onclick="render3D_5_4('adiabatic')" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-amber-600 text-white hover:bg-amber-700 transition">🛡️ Adiabatic (Q = 0)</button>
+                            </div>
+                        </div>
+                        <div id="viewer-5-4" class="canvas-container"></div>
+                    </div>
+
+                    <!-- First Law & 4 Processes Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5 myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-bold">5.4</span>
+                            First Law of Thermodynamics နှင့် Thermodynamic Processes (၄) မျိုး
+                        </h3>
+
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2">
+                                <div class="font-bold text-indigo-950 text-base">⚖️ First Law of Thermodynamics (ΔU = Q − W)</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    စနစ်တစ်ခု၏ အတွင်းစွမ်းအင်ပြောင်းလဲမှု (<strong>ΔU</strong>) သည် စနစ်အတွင်းသို့ ပေးလိုက်သော အပူ (<strong>Q</strong>) မှ စနစ်က ပြင်ပသို့ လုပ်ဆောင်လိုက်သော အလုပ် (<strong>W</strong>) ကို နုတ်ခြင်းနှင့် ညီမျှသည်။
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-indigo-200 text-xs space-y-1">
+                                    <div>• <strong>+Q:</strong> စနစ်ထဲသို့ အပူဝင်သည် &nbsp;|&nbsp; <strong>−Q:</strong> စနစ်မှ အပူထွက်သည်</div>
+                                    <div>• <strong>+W:</strong> ဓာတ်ငွေ့ပြန့်ကား၍ အလုပ်လုပ်သည် &nbsp;|&nbsp; <strong>−W:</strong> ဓာတ်ငွေ့ကို ဖိသိပ်သည်</div>
+                                </div>
+                            </div>
+
+                            <div class="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-2">
+                                <div class="font-bold text-purple-950 text-base">⚙️ Heat Engine & Carnot Efficiency (η)</div>
+                                <p class="text-slate-700 leading-relaxed">
+                                    အပူအင်ဂျင် (Heat engine) သည် အပူချိန်မြင့်ရာ (T<sub>H</sub>) မှ အပူ Q<sub>H</sub> ကို စုပ်ယူ၍ အလုပ် W လုပ်ဆောင်ပြီး ကျန်အပူ Q<sub>C</sub> ကို အပူချိန်နိမ့်ရာ (T<sub>C</sub>) သို့ စွန့်ထုတ်သည်။
+                                </p>
+                                <div class="p-3 rounded-xl bg-white border border-purple-200 text-xs font-mono space-y-1">
+                                    <div>W = Q<sub>H</sub> − Q<sub>C</sub> &nbsp;|&nbsp; η = W / Q<sub>H</sub> = 1 − (Q<sub>C</sub> / Q<sub>H</sub>)</div>
+                                    <div class="text-purple-900 font-bold">Carnot Ideal Efficiency: η<sub>Carnot</sub> = 1 − (T<sub>C</sub> / T<sub>H</sub>)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4 Processes Summary Table -->
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                                <thead>
+                                    <tr class="bg-slate-900 text-white">
+                                        <th class="p-3">Process (ဖြစ်စဉ်)</th>
+                                        <th class="p-3">ကိန်းသေ (Constant)</th>
+                                        <th class="p-3">Work (W)</th>
+                                        <th class="p-3">First Law Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr>
+                                        <td class="p-3 font-bold text-rose-700">1. Isobaric</td>
+                                        <td class="p-3">Pressure (ΔP = 0)</td>
+                                        <td class="p-3 font-mono">W = P ΔV = P (V<sub>f</sub> − V<sub>i</sub>)</td>
+                                        <td class="p-3 font-mono font-bold">ΔU = Q − P ΔV</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-indigo-700">2. Isochoric</td>
+                                        <td class="p-3">Volume (ΔV = 0)</td>
+                                        <td class="p-3 font-mono">W = 0</td>
+                                        <td class="p-3 font-mono font-bold">ΔU = Q</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold text-emerald-700">3. Isothermal</td>
+                                        <td class="p-3">Temperature (ΔT = 0)</td>
+                                        <td class="p-3 font-mono">W = n R T ln(V<sub>f</sub> / V<sub>i</sub>)</td>
+                                        <td class="p-3 font-mono font-bold">ΔU = 0 ⇒ Q = W</td>
+                                    </tr>
+                                    <tr class="bg-slate-50/70">
+                                        <td class="p-3 font-bold text-amber-700">4. Adiabatic</td>
+                                        <td class="p-3">No Heat Transfer (Q = 0)</td>
+                                        <td class="p-3 font-mono">W = −ΔU</td>
+                                        <td class="p-3 font-mono font-bold">ΔU = −W</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `,
+                onMount: () => render3D_5_4('isobaric')
+            },
+
+            'worked': {
+                badge: 'Interactive Calculator & Exam Q&A',
+                title: 'Conduction / Radiation / RMS / Carnot တွက်စက် နှင့် စာမေးပွဲမေးခွန်းအဖြေများ',
+                subtitle: 'Grade 12 Physics Chapter 5 တွက်စာပုံသေနည်းများ စမ်းသပ်တွက်ချက်စက်နှင့် မေးခွန်းအဖြေများ',
+                html: `
+                    <!-- Interactive Chapter 5 Calculator -->
+                    <div class="formula-card rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <h3 class="text-lg sm:text-xl font-bold text-amber-300">🧮 Interactive Chapter 5 Thermal & Thermodynamics Calculator</h3>
+                            <span class="text-xs text-slate-300">တွက်ချက်လိုသော ပုံသေနည်းကို ရွေးချယ်ပါ</span>
+                        </div>
+
+                        <div class="max-w-md text-xs">
+                            <label class="block text-slate-300 mb-1">ပုံသေနည်း အမျိုးအစား ရွေးပါ</label>
+                            <select id="ch5-calc-mode" onchange="switchCh5CalcInputs()" class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                                <option value="conduction">1. Heat Conduction Rate (H = κAΔT / d)</option>
+                                <option value="rad">2. Stefan-Boltzmann Net Radiation (P_net = σeA(T⁴ − T_s⁴))</option>
+                                <option value="rms">3. Molecular RMS Speed (v_rms = √(3RT / M))</option>
+                                <option value="carnot">4. Carnot Heat Engine Efficiency (η = 1 − T_C / T_H)</option>
+                            </select>
+                        </div>
+
+                        <!-- Conduction Inputs -->
+                        <div id="ch5-in-cond" class="grid sm:grid-cols-4 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Conductivity κ (W/m·K)</label>
+                                <input id="c-k" type="number" value="401" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Area A (m²)</label>
+                                <input id="c-a" type="number" step="0.001" value="0.002" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Temp Diff ΔT (K)</label>
+                                <input id="c-dt" type="number" value="80" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Thickness d (m)</label>
+                                <input id="c-d" type="number" step="0.1" value="0.5" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Radiation Inputs -->
+                        <div id="ch5-in-rad" class="hidden grid sm:grid-cols-4 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Emissivity e (0 to 1)</label>
+                                <input id="r-e" type="number" step="0.05" value="0.95" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Surface Area A (m²)</label>
+                                <input id="r-a" type="number" step="0.1" value="1.8" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Object Temp T (K)</label>
+                                <input id="r-t" type="number" value="310" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Surroundings T_s (K)</label>
+                                <input id="r-ts" type="number" value="293" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- RMS Speed Inputs -->
+                        <div id="ch5-in-rms" class="hidden grid sm:grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Temperature T (Kelvin)</label>
+                                <input id="m-t" type="number" value="300" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Molar Mass M (kg/mol, e.g. O₂ = 0.032)</label>
+                                <input id="m-m" type="number" step="0.001" value="0.032" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Carnot Inputs -->
+                        <div id="ch5-in-carnot" class="hidden grid sm:grid-cols-2 gap-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Hot Reservoir t_H (°C)</label>
+                                <input id="e-th" type="number" value="327" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Cold Reservoir t_C (°C)</label>
+                                <input id="e-tc" type="number" value="27" oninput="runCh5Calculator()" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-white/20 text-white font-bold">
+                            </div>
+                        </div>
+
+                        <div id="ch5-calc-output" class="pt-1"></div>
+                    </div>
+
+                    <!-- Worked Examples & Exam Q&A -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-4 text-xs sm:text-sm myanmar-text">
+                        <h3 class="text-xl font-bold text-slate-900">✍️ စာမေးပွဲတွင် မေးလေ့ရှိသော Textbook တွက်စာနှင့် မေးခွန်းအဖြေများ</h3>
+
+                        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1.5">
+                            <div class="font-bold text-rose-950">Q1 (Thermal Radiation): A naked person has a surface area of 1.8 m² and skin temperature of 37°C (310 K). If the room temperature is 20°C (293 K) and skin emissivity e = 0.95, find the net rate of heat loss by radiation (σ = 5.67 × 10⁻⁸ W m⁻² K⁻⁴).</div>
+                            <div class="bg-slate-900 text-amber-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>P_net = σ e A (T⁴ − T_s⁴)</div>
+                                <div>P_net = (5.67 × 10⁻⁸) × 0.95 × 1.8 × (310⁴ − 293⁴)</div>
+                                <div>P_net = 9.696 × 10⁻⁸ × (9.235 × 10⁹ − 7.370 × 10⁹) = 180.8 W</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1.5">
+                            <div class="font-bold text-indigo-950">Q2 (First Law of Thermodynamics): In an isobaric process at a constant pressure of 2.0 × 10⁵ Pa, a gas absorbs 1500 J of heat and expands from 0.010 m³ to 0.014 m³. Find (a) the work done by the gas and (b) the change in internal energy ΔU.</div>
+                            <div class="bg-slate-900 text-emerald-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>(a) Work done W = P ΔV = (2.0 × 10⁵ Pa) × (0.014 − 0.010) m³ = 800 J</div>
+                                <div>(b) First Law: ΔU = Q − W = 1500 J − 800 J = +700 J (Internal energy increases)</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1.5">
+                            <div class="font-bold text-emerald-950">Q3 (Carnot Heat Engine): A Carnot engine operates between a hot reservoir at 327°C and a cold reservoir at 27°C. What is its maximum possible efficiency?</div>
+                            <div class="bg-slate-900 text-sky-200 p-3.5 rounded-xl font-mono text-xs space-y-1">
+                                <div>T_H = 327 + 273 = 600 K, &nbsp; T_C = 27 + 273 = 300 K</div>
+                                <div>η_Carnot = (1 − T_C / T_H) × 100% = (1 − 300 / 600) × 100% = 50%</div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                onMount: () => runCh5Calculator()
+            }
+        };
+
+        // ==========================================
+        // 5. NAVIGATION & UI CONTROLLER (Matches Chapter 4 UI)
+        // ==========================================
+        function selectArticle(id) {
+            currentArticleId = id;
+            const article = ARTICLES[id];
+            if (!article) return;
+
+            clearActiveScenes();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-50');
+                const badge = btn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-indigo-600', 'text-white');
+                    badge.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            const activeBtn = document.getElementById(`nav-${id}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
+                activeBtn.classList.add('bg-indigo-50', 'text-indigo-950', 'border-indigo-200', 'shadow-xs');
+                const badge = activeBtn.querySelector('.nav-badge');
+                if (badge) {
+                    badge.classList.remove('bg-slate-100', 'text-slate-600');
+                    badge.classList.add('bg-indigo-600', 'text-white');
+                }
+            }
+
+            const container = document.getElementById('content-container');
+            const ids = ['overview', '5.1', '5.2', '5.3', '5.4', 'worked'];
+            const labels = {
+                'overview': 'အခန်း (၅) မိတ်ဆက်',
+                '5.1': '5.1 Heat Transfer',
+                '5.2': '5.2 Ideal Gas',
+                '5.3': '5.3 Kinetic Theory',
+                '5.4': '5.4 Thermodynamics',
+                'worked': 'Calculator & Q&A'
+            };
+            const idx = ids.indexOf(id);
+            const prevId = idx > 0 ? ids[idx - 1] : null;
+            const nextId = idx < ids.length - 1 ? ids[idx + 1] : null;
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-5">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 mb-2">
+                        ${article.badge}
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">${article.title}</h1>
+                    <p class="mt-1 text-sm sm:text-base text-slate-600 font-medium">${article.subtitle}</p>
+                </div>
+
+                ${article.html}
+
+                <div class="pt-4 pb-8 flex items-center justify-between gap-4 border-t border-slate-200">
+                    ${prevId ? `
+                        <button onclick="selectArticle('${prevId}')" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> ယခင်အပိုင်း (${labels[prevId]})
+                        </button>
+                    ` : `
+                        <a href="chapter4.html" class="px-4 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-xs">
+                            <span>←</span> Chapter 4 သို့ ပြန်သွားရန်
+                        </a>
+                    `}
+
+                    ${nextId ? `
+                        <button onclick="selectArticle('${nextId}')" class="px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            နောက်တစ်ပိုင်း (${labels[nextId]}) <span>→</span>
+                        </button>
+                    ` : `
+                        <a href="chapter6.html" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                            Chapter 6 သို့ ဆက်သွားရန် <span>→</span>
+                        </a>
+                    `}
+                </div>
+            `;
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeMobileSidebar();
+
+            if (typeof article.onMount === 'function') {
+                setTimeout(() => article.onMount(), 50);
+            }
+        }
+
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            backdrop.classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        window.onload = function() {
+            try {
+                selectArticle('overview');
+            } catch (err) {
+                console.error('Initialization error:', err);
+            }
+        };
+    </script>
+</body>
+</html>
