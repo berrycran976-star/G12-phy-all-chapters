@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Effects and Characteristics of Sound Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" selected>Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 6 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 6: Effects and Characteristics of Sound
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                အသံ၏ အကျိုးသက်ရောက်မှုများ၊ ဂုဏ်သတ္တိများနှင့် Doppler Effect
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch5.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 5</a>
+            <a href="quizzes_ch7.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 7 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch6";
+        const RAW_QUESTIONS = [{"uid": "c6_q1", "ch": 6, "showCh": false, "id": "R088", "section": "Review & Q&P", "q": "Why is the speed of sound higher in solids than in liquids and gases?", "a": "<p>The speed of sound is higher in solids than in liquids and gases because the molecules are closer together and more tightly bonded in solids than in liquids and gases. The smaller the molecular distance, the quicker the energy and the momentum of sound waves are transferred.</p><p>Solids have higher elastic properties than liquids and gases. Particles having higher elastic properties can return to their original position quickly and are ready to move again more quickly, and thus they can vibrate at higher speeds.</p>"}, {"uid": "c6_q2", "ch": 6, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "Sound travels faster in moist or humid air. Why is this?", "a": "<p>The mass density of moist air is less than that of dry air. As the velocity of sound in a gas is inversely proportional to the square root of its (mass) density, the velocity of sound in moist air is greater than that in dry air:</p><p>$$v = \\sqrt{\\frac{\\gamma p}{\\rho}}$$</p><p>where $\\gamma =$ adiabatic constant, $p =$ pressure in the gas, $\\rho =$ density of the gas.</p>"}, {"uid": "c6_q3", "ch": 6, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "Name the factors on which the speed of sound in a gas depends.", "a": "<p>In gases, the velocity of sound is given by: $$v = \\sqrt{\\frac{\\gamma p}{\\rho}}$$</p><p>where $\\gamma =$ the adiabatic constant of the gas, $p =$ pressure in the gas, $\\rho =$ mass density of the gas.</p><p>Thus, the velocity of sound in a gas depends on the adiabatic constant of the gas, the pressure of the gas, the mass density of the gas, and the temperature of the gas.</p>"}, {"uid": "c6_q4", "ch": 6, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "An astronaut on the Moon's surface is unable to hear the sound of the rocket thrusters of his lunar lander craft. Explain why?", "a": "<p>Because there is no atmosphere on the Moon's surface, and sound cannot pass through a vacuum.</p>"}, {"uid": "c6_q5", "ch": 6, "showCh": false, "id": "R090", "section": "Review & Q&P", "q": "Why are the walls and the roof of an auditorium covered with sound-absorbent materials?", "a": "<p>To reduce the effect of echo.</p>"}, {"uid": "c6_q6", "ch": 6, "showCh": false, "id": "Q08", "section": "Review & Q&P", "q": "Define echo. Give its two applications.", "a": "<p>An <strong>echo</strong> is the repetition of sound due to the reflection of sound.</p><p>Echo can be used to determine the distance $d$ between a source of sound and the reflecting surface by using the formula: $$v = \\frac{2d}{t}$$ where $v$ is the speed of sound and $t$ is the echo time.</p><p><strong>Applications:</strong></p><ul class='list-disc pl-5 space-y-1'><li>Some animals like bats use echolocation to navigate and locate their prey.</li><li>Echo is also used in prenatal ultrasound tests and sonar.</li></ul>"}, {"uid": "c6_q7", "ch": 6, "showCh": false, "id": "Q09", "section": "Review & Q&P", "q": "Why is the intensity of an echo less than that of the original sound?", "a": "<p>Because the intensity of sound decreases with distance ($\\text{intensity} \\propto \\frac{1}{\\text{distance}^2}$). The sound has travelled from the source to a reflecting surface and back. The reflection can also reduce the intensity.</p>"}, {"uid": "c6_q8", "ch": 6, "showCh": false, "id": "R092 (1)", "section": "Review & Q&P", "q": "Why can infrasound not be heard by humans?", "a": "<p>Humans can only hear sound of frequency between $20\\text{ Hz}$ and $20\\,000\\text{ Hz}$. The frequency of infrasound is lower than $20\\text{ Hz}$. Thus, humans cannot hear infrasound.</p>"}, {"uid": "c6_q9", "ch": 6, "showCh": false, "id": "Q10", "section": "Review & Q&P", "q": "Elephants and blue whales are known to use infrasound to communicate over very large distances. What are the advantages of infrasound for long-distance communication?", "a": "<ul class='list-disc pl-5 space-y-1'><li>Infrasound waves ($f < 20\\text{ Hz}$) have long wavelengths and are thus able to travel over long distances.</li><li>Infrasound waves are hard to change directions and have low energy loss.</li><li>They can penetrate solid objects and are less affected by noise and other interference.</li></ul>"}, {"uid": "c6_q10", "ch": 6, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "Why is ultrasound used in medical imaging rather than sound waves of audible frequencies or lower?", "a": "<p>When imaging with waves, the resolution is better if the wavelength is shorter. The wavelengths of ultrasound are much shorter than sound waves of audible frequencies or lower. Ultrasound has a short wavelength so it can be focused into a beam. Higher-frequency ultrasound will display more detail with a higher resolution. The shorter the wavelength of the wave, the better the resolving power.</p>"}, {"uid": "c6_q11", "ch": 6, "showCh": false, "id": "E6.6", "section": "Review & Q&P", "q": "Elephants communicate over a long distance (up to 4 km) using sound with fundamental frequencies as low as 15 Hz. A rhinoceros uses frequencies down to 10 Hz. (i) Why are elephants able to talk to one another over such a long distance? (ii) Can rhinoceros be able to communicate over long distances further than 4 km? Why?", "a": "<p><strong>(i)</strong> Infrasound waves ($f < 20\\text{ Hz}$) have long wavelengths and are thus able to travel over long distances. So, elephants are able to talk using frequencies as low as $15\\text{ Hz}$ over long distances (up to $4\\text{ km}$).</p><p><strong>(ii)</strong> Rhinoceros can be able to communicate over long distances further than $4\\text{ km}$ because the lowest frequency they produce is $10\\text{ Hz}$ which is less than $15\\text{ Hz}$ and has a longer wavelength. Infrasound waves which have lower frequency and longer wavelengths are able to travel longer distances with less attenuation.</p>"}, {"uid": "c6_q12", "ch": 6, "showCh": false, "id": "Q14", "section": "Review & Q&P", "q": "Is there a Doppler shift if the source and the observer move in the same direction, with the same velocity? Explain.", "a": "<p>No. As the source and the observer move in the same direction, with the same velocity, there is no relative motion between them. There is no Doppler shift.</p>"}, {"uid": "c6_q13", "ch": 6, "showCh": false, "id": "R097", "section": "Review & Q&P", "q": "In terms of loudness and pitch, how would you compare the sounds made by a mosquito flying near your ear and the cracking of a toad? [p. 97]", "a": "<p>The sound of a mosquito has a higher pitch than that of a toad.<br>The sound of the cracking of a toad has a higher loudness than that of a mosquito.</p>"}, {"uid": "c6_q14", "ch": 6, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "Discuss the properties of the media which affect the sound propagation.", "a": "<ul class='list-disc pl-5 space-y-1'><li>A relationship between the density and the pressure. This relationship, affected by the temperature, determines the speed of sound within the medium.</li><li>The viscosity of the medium. This determines the rate at which sound is attenuated. For many media, such as air or water, attenuation due to viscosity is negligible.</li></ul>"}, {"uid": "c6_q15", "ch": 6, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "Write down the equation to calculate the velocity of sound in a solid medium.", "a": "<p>In a solid medium, the speed of sound is: $$v = \\sqrt{\\frac{Y}{\\rho}}$$ where $Y =$ Young's modulus, $\\rho =$ mass density of the solid material.</p>"}, {"uid": "c6_q16", "ch": 6, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "Write down the equation to calculate the velocity of sound in a liquid medium.", "a": "<p>In liquids, the velocity of sound is: $$v = \\sqrt{\\frac{B}{\\rho}}$$ where $B =$ the bulk modulus, $\\rho =$ the mass density of the liquid.</p>"}, {"uid": "c6_q17", "ch": 6, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "Write down the equation to calculate the sound velocity in a gas medium.", "a": "<p>In gases, the velocity of sound is: $$v = \\sqrt{\\frac{\\gamma p}{\\rho}}$$ where $\\gamma =$ adiabatic constant, $p =$ pressure in the gas, $\\rho =$ mass density.</p>"}, {"uid": "c6_q18", "ch": 6, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "Write down the formula for the intensity level of sound.", "a": "<p>The intensity level of sound $\\beta$ in $\\text{dB}$ is defined by: $$\\beta(\\text{dB}) = 10\\log_{10}\\frac{I}{I_0}$$ where $I$ is the intensity of sound, and $I_0$ is the reference intensity.</p>"}, {"uid": "c6_q19", "ch": 6, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "What are the conditions required to hear echo?", "a": "<p>Echoes are produced where a sound wave is reflected from a large and hard surface. The echo or the reflected sound can be heard separately from the original sound if the source of the sound is much closer to the observer than to the reflecting surface.</p>"}, {"uid": "c6_q20", "ch": 6, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "What can we do to reduce the effect of echo in buildings?", "a": "<p>To reduce the effect of echo in buildings, walls are covered up with padding and the floors are covered with rugs and carpets.</p>"}, {"uid": "c6_q21", "ch": 6, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "How do padding, rugs and carpets reduce the effects of echo?", "a": "<p>Padding, rugs and carpets absorb the incident sound and reduce the amount of sound reflecting off the wall and the floor surfaces.</p>"}, {"uid": "c6_q22", "ch": 6, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "What is echolocation?", "a": "<p>Echolocation is the special ability of emitting sounds and interpreting the echoes.</p>"}, {"uid": "c6_q23", "ch": 6, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "What is a reverberation?", "a": "<p>A reverberation is a reflection of light or sound waves, or a wide-reaching impact of an action.</p>"}, {"uid": "c6_q24", "ch": 6, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "What is infrasound?", "a": "<p>Low-frequency sounds under the lower limit of audibility ($20\\text{ Hz}$) are called infrasound and cannot be heard by humans.</p>"}, {"uid": "c6_q25", "ch": 6, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "What is ultrasound?", "a": "<p>High-frequency sounds which are above the upper limit of audibility ($20\\,000\\text{ Hz}$) are called ultrasound which cannot be heard by the human ear.</p>"}, {"uid": "c6_q26", "ch": 6, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "Explain how the audible frequency range is determined.", "a": "<p>Some portable sound frequency generators can create sound with frequencies $0\\text{ Hz}$ to about $22\\text{ kHz}$. Tune the sound frequencies gradually from $0\\text{ Hz}$ and record the frequency when starting to hear the sound, i.e., the lower limit of audibility. Then increase the sound frequency up to about $20\\text{ kHz}$, and record the highest frequency above which the sound cannot be heard, i.e., the upper limit of audibility.</p>"}, {"uid": "c6_q27", "ch": 6, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "A vibrating ruler can be seen but its vibrating sound cannot be heard. Why?", "a": "<p>This is because the sound produced is below the lower limit of audibility of the human ear.</p>"}, {"uid": "c6_q28", "ch": 6, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What does sonar mean?", "a": "<p>It means <strong>sound navigation and ranging</strong>.</p>"}, {"uid": "c6_q29", "ch": 6, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "Give an example of the use of sonar.", "a": "<p>The depth of the sea or the position of shoals of fish can be found by sending out a signal (a pulse of sound) from a transducer (transmitter) and noting the time interval for the reflected signal (the echo) to be received.</p>"}, {"uid": "c6_q30", "ch": 6, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What is the Doppler effect?", "a": "<p>The Doppler effect or the Doppler shift is the change in frequency of a wave related to an observer due to the relative motion between the source and the observer.</p>"}, {"uid": "c6_q31", "ch": 6, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "Give an example of a Doppler shift.", "a": "<p>A common example of Doppler shift is the change of frequency (pitch) heard when a vehicle sounding a horn approaches and recedes from an observer.</p>"}, {"uid": "c6_q32", "ch": 6, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What are the three cases we encounter in the Doppler effect?", "a": "<p>There are three cases we encounter in the Doppler effect:</p><ol class='list-roman pl-5 space-y-1'><li>The observer is stationary and the source is moving towards or away from the observer.</li><li>The source is stationary and the observer is moving towards or away from the source.</li><li>Both the source and the observer are moving relative to each other.</li></ol>"}, {"uid": "c6_q33", "ch": 6, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "Express the Doppler equation.", "a": "<p>The Doppler equation can be expressed in general form as: $$f_o = f_s\\left(\\frac{v \\pm v_o}{v \\mp v_s}\\right)$$ where $f_o =$ frequency heard by the observer, $v_o =$ speed of the observer, $f_s =$ frequency produced by the source, $v_s =$ speed of the source, $v =$ speed of sound in the medium.</p>"}, {"uid": "c6_q34", "ch": 6, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Why does the observed wavelength of light from a star observed from the earth shift when there is relative motion between the earth and the star?", "a": "<p>It is due to the Doppler effect.</p>"}, {"uid": "c6_q35", "ch": 6, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "What does radar mean?", "a": "<p>Radar means <strong>radio detection and ranging</strong>.</p>"}, {"uid": "c6_q36", "ch": 6, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "What is radar?", "a": "<p>Radar (radio detection and ranging) is a form of echolocation that uses electromagnetic waves.</p>"}, {"uid": "c6_q37", "ch": 6, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "Give some examples of using Doppler effect in radar.", "a": "<p>Some examples are police radar, air traffic control radar and weather radar.</p>"}, {"uid": "c6_q38", "ch": 6, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "What is pitch?", "a": "<p>The pitch of the note (how high it is) is determined by its frequency.</p>"}, {"uid": "c6_q39", "ch": 6, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "Explain the statement \"The greater the amplitude, the louder the note.\"", "a": "<p>The greater the amplitude, the louder the note, because more energy is used to produce a larger amplitude.</p>"}, {"uid": "c6_q40", "ch": 6, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What is the quality of a sound?", "a": "<p>The quality of a sound is the characteristic which distinguishes two sounds of the same loudness and the same pitch emitted by two different instruments.</p>"}, {"uid": "c6_q41", "ch": 6, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "What is the intensity of a sound?", "a": "<p>The intensity of the sound at a place is the energy transmitted per second per unit area held normally to the direction of the sound and can be expressed as: $$I = \\frac{1}{2}\\rho v \\omega^2 A^2$$ where $\\rho =$ density of the medium, $v =$ velocity of the sound wave, $\\omega =$ angular frequency of the sound wave, $A =$ amplitude of the sound wave.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
