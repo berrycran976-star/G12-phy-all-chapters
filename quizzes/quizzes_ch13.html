@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 13: Modern Physics Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" selected>Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 13 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 13: Modern Physics
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                ခေတ်သစ်ရူပဗေဒ၊ ရေဒီယိုသတ္တိကြွမှု၊ Nuclear Reactors နှင့် Relativity
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch12.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 12</a>
+            <a href="quizzes_all.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-sm transition-colors">All Chapters Master Bank <i class="fas fa-layer-group"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch13";
+        const RAW_QUESTIONS = [{"uid": "c13_q1", "ch": 13, "showCh": false, "id": "R228 (1)", "section": "Review & Q&P", "q": "Compare the ionizing and penetrating powers of alpha, beta and gamma rays.", "a": "<p><strong>Ionizing power:</strong> Alpha rays are the most ionizing of the three rays. Beta rays are less ionizing than alpha rays, but more ionizing than gamma rays. Gamma rays are the least ionizing of the three rays.</p><p><strong>Penetrating power:</strong> Alpha rays are the least penetrating of the three rays. Beta rays are more penetrating than alpha rays, but less penetrating than gamma rays. Gamma rays are the most penetrating of the three rays.</p>"}, {"uid": "c13_q2", "ch": 13, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "(i) What is radioactivity? (ii) Who discovered radioactivity? (iii) Name some radioactive elements.", "a": "<p><strong>(i)</strong> The emission of some or all of alpha, beta and gamma rays from the nucleus of an unstable atom is called radioactivity.<br><strong>(ii)</strong> Henri Becquerel discovered radioactivity.<br><strong>(iii)</strong> Some radioactive elements are uranium, thorium, radium, polonium and radon.</p>"}, {"uid": "c13_q3", "ch": 13, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "(i) Are all elements in nature radioactive? (ii) Can radioactive elements be produced artificially?", "a": "<p><strong>(i)</strong> No. &nbsp;&nbsp; <strong>(ii)</strong> Yes.</p>"}, {"uid": "c13_q4", "ch": 13, "showCh": false, "id": "Q03", "section": "Review & Q&P", "q": "Briefly describe alpha decay, beta decay and gamma decay.", "a": "<p><strong>Alpha decay:</strong> Alpha decay ($\\alpha$ decay) is a process in which an atomic nucleus emits an alpha particle (helium nucleus) and transforms into a different atomic nucleus, with mass number reduced by four and atomic number reduced by two: $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z-2}^{A-4}\\text{Y} + {}_{2}^{4}\\text{He}$$</p><p><strong>Beta-minus decay:</strong> Beta-minus decay ($\\beta^-$ decay) is a process in which a neutron in an atomic nucleus changes into a proton with the emission of an electron ($\\beta^-$) and an antineutrino ($\\bar{\\nu}_e$): $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z+1}^{A}\\text{Y} + {}_{-1}^{0}e + \\bar{\\nu}_e$$</p><p><strong>Beta-plus decay:</strong> Beta-plus decay ($\\beta^+$ decay) is a process in which a proton in an atomic nucleus changes into a neutron with the emission of a positron ($\\beta^+$) and a neutrino ($\\nu_e$): $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z-1}^{A}\\text{Y} + {}_{+1}^{0}e + \\nu_e$$</p><p><strong>Gamma decay:</strong> In gamma decay ($\\gamma$ decay), the daughter nucleus resulting from alpha or beta decay is left in an excited state, and decays to a lower energy state by emitting a gamma ray photon: $${}_{Z}^{A}\\text{X}^* \\rightarrow {}_{Z}^{A}\\text{X} + {}_{0}^{0}\\gamma$$</p>"}, {"uid": "c13_q5", "ch": 13, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "What are alpha, beta and gamma rays? Briefly describe their properties.", "a": "<p><strong>Properties of alpha rays:</strong></p><ol class='list-decimal pl-5 space-y-1 mb-2'><li>Alpha rays consist of helium nuclei, positively charged particles ($2$ protons and $2$ neutrons, charge $= +2e = +3.2 \\times 10^{-19}\\text{ C}$).</li><li>Alpha rays can be deflected by electric and magnetic fields.</li><li>Alpha rays are the most ionizing of the three rays.</li><li>Alpha rays are the least penetrating of the three rays.</li><li>Alpha rays can be stopped by a thick sheet of paper.</li></ol><p><strong>Properties of beta rays:</strong></p><ol class='list-decimal pl-5 space-y-1 mb-2'><li>Beta rays consist of either electrons (charge $= -e$) or positrons (charge $= +e$) moving with varying speeds.</li><li>Beta rays can be deflected by electric and magnetic fields.</li><li>Beta rays are less ionizing than alpha rays.</li><li>Beta rays are more penetrating than alpha rays.</li><li>Beta rays can be stopped by a few millimetres of aluminium.</li></ol><p><strong>Properties of gamma rays:</strong></p><ol class='list-decimal pl-5 space-y-1'><li>Gamma rays are electromagnetic waves like light and X-rays with much shorter wavelengths (high-energy photons, no charge).</li><li>Gamma rays cannot be deflected by electric and magnetic fields.</li><li>Gamma rays are the least ionizing of the three rays.</li><li>Gamma rays are the most penetrating of the three rays.</li><li>The intensity of gamma rays can be greatly reduced by several centimetres of lead, but they are never completely stopped.</li></ol>"}, {"uid": "c13_q6", "ch": 13, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "Explain the terms the activity and the half-life of a radioactive substance. [p. 247]", "a": "<p><strong>Activity:</strong> The rate of decay of a radioactive sample is called the activity. It is the rate at which alpha particles, beta particles or gamma rays are emitted.</p><p><strong>Half-life:</strong> The half-life is defined as the time for half the atoms in a radioactive sample to decay.</p>"}, {"uid": "c13_q7", "ch": 13, "showCh": false, "id": "Q06", "section": "Review & Q&P", "q": "What is meant by radon has a half-life of 3.8 days? Draw a graph to illustrate the half-life of radon.", "a": "<p>Radon has a half-life of $3.8\\text{ days}$ means that if we start with $N_0$ atoms of radon, then only $\\frac{N_0}{2}$ atoms will remain after a time of $3.8\\text{ days}$ has elapsed. (After another $3.8\\text{ days}$ only $\\frac{N_0}{4}$ atoms will remain, and so on.)</p><div class='my-3 flex justify-center'><svg viewBox='0 0 280 175' class='w-64 h-auto bg-white rounded-xl border border-slate-200 p-2'><line x1='45' y1='140' x2='255' y2='140' stroke='#0f172a' stroke-width='1.5'/><line x1='45' y1='20' x2='45' y2='140' stroke='#0f172a' stroke-width='1.5'/><path d='M 45 30 Q 85 85 110 85 T 175 112.5 T 240 126.25' fill='none' stroke='#dc2626' stroke-width='2.5'/><circle cx='45' cy='30' r='3.5' fill='#dc2626'/><circle cx='110' cy='85' r='3.5' fill='#dc2626'/><circle cx='175' cy='112.5' r='3.5' fill='#dc2626'/><circle cx='240' cy='126.25' r='3.5' fill='#dc2626'/><text x='32' y='34' font-size='10'>1</text><text x='24' y='88' font-size='10'>1/2</text><text x='24' y='115' font-size='10'>1/4</text><text x='24' y='129' font-size='10'>1/8</text><text x='42' y='154' font-size='10'>0</text><text x='102' y='154' font-size='10'>3.8</text><text x='167' y='154' font-size='10'>7.6</text><text x='230' y='154' font-size='10'>11.4</text><text x='145' y='168' font-size='10' text-anchor='middle' font-weight='bold'>Time (days)</text></svg></div>"}, {"uid": "c13_q8", "ch": 13, "showCh": false, "id": "R233 (1)", "section": "Review & Q&P", "q": "(i) What is carbon dating? (ii) How does the proportion of carbon-14 in the remains of dead plants and animals give clues about their age? (iii) Can the age of living plants and animals be determined by the carbon dating method?", "a": "<p><strong>(i) Carbon dating:</strong> Carbon dating is a technique for estimating the age of the remains of plants and animals by measuring the activity of carbon-14 present in the remains.</p><p><strong>(ii)</strong> When plants and animals are alive, they absorb and give out carbon. There is an equilibrium of carbon between the atmosphere and the bodies of plants and animals. Thus, the amount of carbon-14 present in the living body is essentially constant. However, when an animal or a plant dies, the carbon cycle stops and the carbon-14 in the remains gradually decreases by radioactive decay. By measuring the activity of carbon-14, the age of the remains can be estimated.</p><p><strong>(iii)</strong> No. The amount of carbon-14 present in the living body is essentially constant.</p>"}, {"uid": "c13_q9", "ch": 13, "showCh": false, "id": "R233 (2)", "section": "Review & Q&P", "q": "Aluminium is rolled into sheets of 1 mm thick. Of three types of radiations; alpha, beta and gamma, which radiation is suitable for checking the uniformity of thickness? Give the reason for your answer. [p. 233]", "a": "<p>Alpha rays cannot pass through aluminium. All gamma rays will pass through aluminium. Beta rays having sufficient energy can pass through $1\\text{ mm}$ aluminium. So we can use <strong>beta</strong> radiation for checking the uniformity of thickness.</p>"}, {"uid": "c13_q10", "ch": 13, "showCh": false, "id": "Q09", "section": "Review & Q&P", "q": "What are radioisotopes? Give some examples. [p. 247]", "a": "<p><strong>Radioisotope:</strong> A radioisotope (radioactive isotope or radionuclide) is an atom with an unstable nucleus which undergoes radioactive decay, resulting in the emission of alpha, beta and gamma rays.</p><p>Some examples of radioisotopes are cobalt-60, iodine-131, carbon-14, cesium-137, polonium-210, strontium-90, phosphorus-32, and potassium-40.</p>"}, {"uid": "c13_q11", "ch": 13, "showCh": false, "id": "Q10", "section": "Review & Q&P", "q": "(i) What is a tracer? (ii) State some uses of radioactive tracers. (iii) Why is it important to use radioactive tracers with short half-lives in medical diagnosis?", "a": "<p><strong>(i) Tracer:</strong> A tracer is a small amount of radioactive isotope introduced into a system in order to follow the behaviour of some components of that system.</p><p><strong>(ii) Uses:</strong> In medicine, radioactive tracers are used in diagnostic procedures. In industry, small amounts are added to monitor fluid flow, detect leaks, and study wear, erosion and corrosion. In agriculture, radioisotope tracers (such as phosphorus-32 and nitrogen-15) estimate fertilizer uptake, retention and utilization.</p><p><strong>(iii)</strong> Artificial radioisotopes with short half-lives are used so that there is no detectable radiation left in the patient after a few days.</p>"}, {"uid": "c13_q12", "ch": 13, "showCh": false, "id": "Q11", "section": "Review & Q&P", "q": "Give two medical applications of radioisotopes. [p. 247]", "a": "<ol class='list-decimal pl-5 space-y-1'><li>To check thyroid function, the patient drinks an iodine solution containing a small amount of radioactive iodine-131 (gamma emitter), and a gamma ray detector measures how quickly it concentrates in the thyroid gland over $24\\text{ hours}$.</li><li>Gamma rays from cobalt-60 can penetrate deep into the body and kill living cells; a highly concentrated beam is used to kill cancer cells in a tumour.</li></ol>"}, {"uid": "c13_q13", "ch": 13, "showCh": false, "id": "R237", "section": "Review & Q&P", "q": "What device is a nuclear reactor? Give a brief description of the essential components of a nuclear reactor. [p. 237]", "a": "<p><strong>Nuclear reactor:</strong> A nuclear reactor is a device in which a fission chain reaction can be initiated, maintained, and controlled.</p><p>The essential elements of a nuclear reactor are fissionable nuclear fuel, moderator, coolant, control rods, reactor vessel and shielding.</p>"}, {"uid": "c13_q14", "ch": 13, "showCh": false, "id": "Q12", "section": "Review & Q&P", "q": "What is meant by radioactive waste? What is their impact on the environment? [p. 247]", "a": "<p><strong>Radioactive waste:</strong> Materials which are radioactive, and for which there is no further use are called radioactive waste. Radioactive waste can remain radioactive and dangerous to human health for thousands of years.</p>"}, {"uid": "c13_q15", "ch": 13, "showCh": false, "id": "R239", "section": "Review & Q&P", "q": "How is the de Broglie wavelength of the electrons related to the quantization of their orbits in atoms? [p. 239]", "a": "<p>An integral number of the de Broglie wavelengths associated with a revolving electron must fit in the circumference of an orbit: $$2\\pi r = n\\lambda \\quad (n = 1, 2, 3, 4, \\dots)$$ where $r =$ radius of the orbit, $n =$ orbit number, $\\lambda =$ de Broglie wavelength of the orbiting electron.</p>"}, {"uid": "c13_q16", "ch": 13, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "How many types of nuclear radiation are there? Express them.", "a": "<p>Nuclear radiation is of three types: alpha, beta, and gamma rays.</p>"}, {"uid": "c13_q17", "ch": 13, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What is radioactivity?", "a": "<p>The emission of some or all of alpha, beta, and gamma rays from the nucleus of an unstable atom is called radioactivity.</p>"}, {"uid": "c13_q18", "ch": 13, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "Give some examples of radioactive elements.", "a": "<p>Some examples of radioactive elements (or radioactive substances) are uranium, thorium, radium, polonium, and radon.</p>"}, {"uid": "c13_q19", "ch": 13, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "Where can radioactive elements be artificially produced?", "a": "<p>Radioactive elements can be artificially produced using nuclear reactors and particle accelerators.</p>"}, {"uid": "c13_q20", "ch": 13, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "Give a general reaction equation and example for alpha decay.", "a": "<p>In symbols: $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z-2}^{A-4}\\text{Y} + {}_{2}^{4}\\text{He}$$ Example: $${}_{92}^{238}\\text{U} \\rightarrow {}_{90}^{234}\\text{Th} + {}_{2}^{4}\\text{He}$$</p>"}, {"uid": "c13_q21", "ch": 13, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "How many types of beta decay are there? Express them.", "a": "<p>There are two types of beta decay: $\\beta^-$ decay and $\\beta^+$ decay.</p>"}, {"uid": "c13_q22", "ch": 13, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Give a general reaction equation and example for beta minus decay.", "a": "<p>In symbols: $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z+1}^{A}\\text{Y} + {}_{-1}^{0}e + \\bar{\\nu}_e$$ Example: $${}_{6}^{14}\\text{C} \\rightarrow {}_{7}^{14}\\text{N} + {}_{-1}^{0}e + \\bar{\\nu}_e$$</p>"}, {"uid": "c13_q23", "ch": 13, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "Give a general reaction equation and example for beta plus decay.", "a": "<p>In symbols: $${}_{Z}^{A}\\text{X} \\rightarrow {}_{Z-1}^{A}\\text{Y} + {}_{+1}^{0}e + \\nu_e$$ Example: $${}_{6}^{11}\\text{C} \\rightarrow {}_{5}^{11}\\text{B} + {}_{+1}^{0}e + \\nu_e$$</p>"}, {"uid": "c13_q24", "ch": 13, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "How many types of neutrino are there? Express them.", "a": "<p>There are three types of neutrino: the electron neutrino ($\\nu_e$), the muon neutrino ($\\nu_\\mu$) and the tau neutrino ($\\nu_\\tau$).</p>"}, {"uid": "c13_q25", "ch": 13, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "How many types of antineutrino are there? Express them.", "a": "<p>There are three types of antineutrino: the antielectron neutrino ($\\bar{\\nu}_e$), the antimuon neutrino ($\\bar{\\nu}_\\mu$) and the antitau neutrino ($\\bar{\\nu}_\\tau$).</p>"}, {"uid": "c13_q26", "ch": 13, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "Give a general reaction equation and example for gamma decay.", "a": "<p>In symbols: $${}_{Z}^{A}\\text{X}^* \\rightarrow {}_{Z}^{A}\\text{X} + {}_{0}^{0}\\gamma$$ Example: Cobalt-60 undergoes beta-minus emission to an excited state of nickel-60, which in turn decays to the ground state by $\\gamma$ emission: $${}_{27}^{60}\\text{Co} \\rightarrow {}_{28}^{60}\\text{Ni}^* + {}_{-1}^{0}e + \\bar{\\nu}_e, \\quad {}_{28}^{60}\\text{Ni}^* \\rightarrow {}_{28}^{60}\\text{Ni} + {}_{0}^{0}\\gamma$$</p>"}, {"uid": "c13_q27", "ch": 13, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Define activity.", "a": "<p>The rate of decay of a radioactive sample is called activity. It is the rate at which alpha particles, beta particles or gamma rays are emitted.</p>"}, {"uid": "c13_q28", "ch": 13, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "What are the units of activity larger than the becquerel?", "a": "<p>The units larger than the $\\text{Bq}$ are $\\text{MBq}$ ($10^6\\text{ Bq}$) and $\\text{GBq}$ ($10^9\\text{ Bq}$).</p>"}, {"uid": "c13_q29", "ch": 13, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "What is an old unit of the activity still being used today? How much is it in Bq?", "a": "<p>An old unit of activity still being used today is curie ($\\text{Ci}$): $$1\\text{ Ci} = 3.7 \\times 10^{10}\\text{ events s}^{-1} = 37\\text{ GBq}$$</p>"}, {"uid": "c13_q30", "ch": 13, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What is the half-life of a radioactive sample?", "a": "<p>The half-life is defined as the time for half the atoms in a radioactive sample to decay.</p>"}, {"uid": "c13_q31", "ch": 13, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "Express the exponential law of radioactive decay.", "a": "<p>$$N_t = N_0 e^{-\\lambda t} = N_0 e^{-\\frac{\\ln 2}{T_{1/2}} t} = N_0 e^{-\\frac{0.693}{T_{1/2}} t}$$ where $N_t =$ number of radioactive atoms at time $t$, $N_0 =$ initial number of radioactive atoms, $\\lambda = \\frac{\\ln 2}{T_{1/2}} =$ decay constant, and $T_{1/2} =$ half-life.</p>"}, {"uid": "c13_q32", "ch": 13, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What is a radioisotope?", "a": "<p>A radioisotope (radioactive isotope or radionuclide) is an atom with an unstable nucleus, which undergoes radioactive decay, resulting in the emission of alpha, beta, and gamma rays.</p>"}, {"uid": "c13_q33", "ch": 13, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "What are the various uses of radioisotopes?", "a": "<p>Various uses of radioisotopes are: (i) tracer, (ii) radiotherapy, (iii) industrial gamma radiography, (iv) thickness monitor, (v) radioactive dating, and (vi) gamma irradiation of seeds and foods.</p>"}, {"uid": "c13_q34", "ch": 13, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What is a tracer?", "a": "<p>A tracer is a small amount of radioactive isotope introduced into a system in order to follow the behaviour of some components of that system.</p>"}, {"uid": "c13_q35", "ch": 13, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "Explain how a radioactive tracer is used to check thyroid function.", "a": "<p>To check thyroid function, the patient drinks an iodine solution containing a small amount of radioactive iodine-131 (gamma emitter). Over the next $24\\text{ hours}$, a gamma ray detector measures the activity of the iodine tracer to find out how quickly it becomes concentrated in the thyroid gland.</p>"}, {"uid": "c13_q36", "ch": 13, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Explain how radioactive tracers are used in industry.", "a": "<p>In industry, small amounts of radioactive substances are added as tracers to materials in various processes to monitor fluid flow, to detect leaks, and to study the rate of wear, erosion and corrosion of equipment.</p>"}, {"uid": "c13_q37", "ch": 13, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "How are radioisotope tracers used in agriculture?", "a": "<p>In agriculture, radioisotope tracers are used in estimating the amount of fertilizers that should be supplied to soil.</p>"}, {"uid": "c13_q38", "ch": 13, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "Which isotopes are used to study the uptake of fertilizers?", "a": "<p>Fertilizers labelled with radioactive isotope phosphorus-32 (and stable isotope nitrogen-15) have been used to study the uptake, retention and utilization of phosphate and nitrogen fertilizers.</p>"}, {"uid": "c13_q39", "ch": 13, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "What is radiotherapy?", "a": "<p>Treatment with radiation is known as radiotherapy.</p>"}, {"uid": "c13_q40", "ch": 13, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "Which elements are used in radiotherapy?", "a": "<p>Radioisotopes, such as cobalt-60 and cesium-137, are widely used to treat cancer in radiotherapy.</p>"}, {"uid": "c13_q41", "ch": 13, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "Explain how radioactive materials are used to inspect metal castings or welded joints.", "a": "<p>A radioactive gamma emitter in a sealed capsule is placed on one side of the object being screened, and photographic film is placed on the other side. The gamma rays pass through the object and create an image on the film which shows flaws in the object.</p>"}, {"uid": "c13_q42", "ch": 13, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What is the advantage of using radioisotopes in industries?", "a": "<p>Radioisotopes have the advantage that they can be taken to the site when an examination is required and no power is needed.</p>"}, {"uid": "c13_q43", "ch": 13, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "What is radioactive dating?", "a": "<p>Radioactive dating is a technique for estimating the age of an object by measuring the amounts of various radioisotopes present in it.</p>"}, {"uid": "c13_q44", "ch": 13, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "What is carbon dating?", "a": "<p>Carbon dating is a technique for estimating the age of the remains of plants and animals by measuring the activity of carbon-14 present in the remains.</p>"}, {"uid": "c13_q45", "ch": 13, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "How is carbon-14 produced?", "a": "<p>High energy neutrons of cosmic rays bombard nitrogen-14 atoms, and produce carbon-14 atoms.</p>"}, {"uid": "c13_q46", "ch": 13, "showCh": false, "id": "Q31", "section": "Extra Questions", "q": "From the energy point of view, how many types of nuclear reactions are there?", "a": "<p>From the energy point of view, there are two types of nuclear reactions: exothermic reaction and endothermic reaction.</p>"}, {"uid": "c13_q47", "ch": 13, "showCh": false, "id": "Q32", "section": "Extra Questions", "q": "What is nuclear reaction?", "a": "<p>A nuclear reaction is a process in which a particle or gamma radiation penetrates into a nucleus, and changes its configuration.</p>"}, {"uid": "c13_q48", "ch": 13, "showCh": false, "id": "Q33", "section": "Extra Questions", "q": "What is exothermic reaction?", "a": "<p>If the total mass before a nuclear reaction takes place is greater than the total mass after reaction, this mass defect is released as energy in a nuclear reaction according to Einstein's relation $E = m c^2$. This type of reaction is known as exothermic reaction.</p>"}, {"uid": "c13_q49", "ch": 13, "showCh": false, "id": "Q34", "section": "Extra Questions", "q": "What is endothermic reaction?", "a": "<p>If the total mass before a nuclear reaction takes place is less than the total mass after the reaction, external energy must be provided for the reaction to take place. This type of reaction is known as endothermic reaction.</p>"}, {"uid": "c13_q50", "ch": 13, "showCh": false, "id": "Q35", "section": "Extra Questions", "q": "What is nuclear fission?", "a": "<p>When a neutron strikes and penetrates a nucleus of uranium-235, the nucleus becomes highly unstable, and splits into two lighter nuclei, shooting out two or three neutrons as it does so. This splitting process is called fission, and the fragments are thrown apart as the energy is released.</p>"}, {"uid": "c13_q51", "ch": 13, "showCh": false, "id": "Q36", "section": "Extra Questions", "q": "Give an example of fission reaction.", "a": "<p>$${}_{92}^{235}\\text{U} + {}_{0}^{1}\\text{n} \\rightarrow {}_{36}^{92}\\text{Kr} + {}_{56}^{141}\\text{Ba} + 3{}_{0}^{1}\\text{n}$$</p>"}, {"uid": "c13_q52", "ch": 13, "showCh": false, "id": "Q37", "section": "Extra Questions", "q": "What do you understand by chain reaction?", "a": "<p>If the neutrons emitted from a fission reaction go on to split other uranium-235 nuclei and so on, the result is a chain reaction with a huge and rapid release of energy.</p>"}, {"uid": "c13_q53", "ch": 13, "showCh": false, "id": "Q38", "section": "Extra Questions", "q": "What is a nuclear reactor?", "a": "<p>A nuclear reactor is a device in which a fission chain reaction can be initiated, maintained, and controlled.</p>"}, {"uid": "c13_q54", "ch": 13, "showCh": false, "id": "Q39", "section": "Extra Questions", "q": "What are the essential elements of a nuclear reactor?", "a": "<p>The essential elements of a nuclear reactor are fissionable nuclear fuel, moderator, coolant, control rods, reactor vessel and shielding.</p>"}, {"uid": "c13_q55", "ch": 13, "showCh": false, "id": "Q40", "section": "Extra Questions", "q": "What is the fissionable nuclear fuel?", "a": "<p>Fissionable nuclear fuel is the material for fission reaction to take place.</p>"}, {"uid": "c13_q56", "ch": 13, "showCh": false, "id": "Q41", "section": "Extra Questions", "q": "What are used as nuclear fuel?", "a": "<p>Uranium-235 or plutonium-239 can be used as nuclear fuel.</p>"}, {"uid": "c13_q57", "ch": 13, "showCh": false, "id": "Q42", "section": "Extra Questions", "q": "What is a moderator?", "a": "<p>A moderator is a material used to slow down fast neutrons released from a fission process.</p>"}, {"uid": "c13_q58", "ch": 13, "showCh": false, "id": "Q43", "section": "Extra Questions", "q": "What are used as moderators in a nuclear reactor?", "a": "<p>Graphite and ordinary water ($\\text{H}_2\\text{O}$) as well as heavy water ($\\text{D}_2\\text{O}$) are used as moderators.</p>"}, {"uid": "c13_q59", "ch": 13, "showCh": false, "id": "Q44", "section": "Extra Questions", "q": "What is coolant in a nuclear reactor?", "a": "<p>Coolant is a material used to extract the heat produced by fission fragments when they slow down and stop in the reactor material.</p>"}, {"uid": "c13_q60", "ch": 13, "showCh": false, "id": "Q45", "section": "Extra Questions", "q": "What are used as coolants in a nuclear reactor?", "a": "<p>Water and carbon dioxide ($\\text{CO}_2$) gas are used as coolants.</p>"}, {"uid": "c13_q61", "ch": 13, "showCh": false, "id": "Q46", "section": "Extra Questions", "q": "What are control rods in a nuclear reactor?", "a": "<p>Control rods are used to control the rate of reaction by raising or lowering them in the core.</p>"}, {"uid": "c13_q62", "ch": 13, "showCh": false, "id": "Q47", "section": "Extra Questions", "q": "What are used as control rods in a nuclear reactor?", "a": "<p>Boron and cadmium (neutron-absorbing materials) are used as control rods.</p>"}, {"uid": "c13_q63", "ch": 13, "showCh": false, "id": "Q48", "section": "Extra Questions", "q": "What is the reactor vessel?", "a": "<p>The reactor vessel contains the reactor core, moderator, coolant, and control rods. It is a pressurized steel vessel.</p>"}, {"uid": "c13_q64", "ch": 13, "showCh": false, "id": "Q49", "section": "Extra Questions", "q": "What is the shielding of a nuclear reactor?", "a": "<p>Shielding (or containment structure) is a protective barrier, usually a dense material. It reduces the passage of radiations from radioactive materials by absorbing them.</p>"}, {"uid": "c13_q65", "ch": 13, "showCh": false, "id": "Q50", "section": "Extra Questions", "q": "What is radioactive waste?", "a": "<p>Materials which are radioactive, and for which there is no further use are radioactive waste.</p>"}, {"uid": "c13_q66", "ch": 13, "showCh": false, "id": "Q51", "section": "Extra Questions", "q": "Why will safe storage for radioactive waste be needed for thousands of years?", "a": "<p>Since some of the isotopes have long half-lives, safe storage will be needed for thousands of years.</p>"}, {"uid": "c13_q67", "ch": 13, "showCh": false, "id": "Q52", "section": "Extra Questions", "q": "What are the radioactive wastes of spent (used) reactor fuel and other radioactive wastes?", "a": "<p>Strontium-90, iodine-131 and cesium-137.</p>"}, {"uid": "c13_q68", "ch": 13, "showCh": false, "id": "Q53", "section": "Extra Questions", "q": "What are the radioactive elements found in radioactive waste?", "a": "<p>Strontium-90, iodine-131, and plutonium-239.</p>"}, {"uid": "c13_q69", "ch": 13, "showCh": false, "id": "Q54", "section": "Extra Questions", "q": "What do you understand by de Broglie wavelength?", "a": "<p>The wavelength associated with a moving particle (matter wave) is called the de Broglie wavelength.</p>"}, {"uid": "c13_q70", "ch": 13, "showCh": false, "id": "Q55", "section": "Extra Questions", "q": "Write down the de Broglie wavelength of a particle of mass $m$ (i) in terms of its momentum $p$ (ii) in terms of its velocity $v$ (iii) in terms of its kinetic energy $KE$.", "a": "<p><strong>(i)</strong> $\\lambda = \\frac{h}{p}$ &nbsp;&nbsp; <strong>(ii)</strong> $\\lambda = \\frac{h}{mv}$ &nbsp;&nbsp; <strong>(iii)</strong> $\\lambda = \\frac{h}{\\sqrt{2m\\,KE}}$</p>"}, {"uid": "c13_q71", "ch": 13, "showCh": false, "id": "Q56", "section": "Extra Questions", "q": "State Einstein's Postulates.", "a": "<p>Einstein's special theory of relativity is based on two simple postulates:</p><ol class='list-decimal pl-5 space-y-1'><li>The laws of physics are the same in all inertial frames of reference.</li><li>The speed of light in a vacuum is the same in all inertial frames of reference and is not affected by the speed of its source.</li></ol>"}, {"uid": "c13_q72", "ch": 13, "showCh": false, "id": "Q57", "section": "Extra Questions", "q": "What is an inertial frame?", "a": "<p>An inertial frame is a frame of reference that has no acceleration (where all objects follow Newton's first law of motion).</p>"}, {"uid": "c13_q73", "ch": 13, "showCh": false, "id": "Q58", "section": "Extra Questions", "q": "Express the consequences of Einstein's special theory of relativity.", "a": "<ol class='list-decimal pl-5 space-y-1'><li>Relativity of simultaneity.</li><li>Relativistic effects on time interval (time dilation).</li><li>Relativistic effects on length (length contraction).</li><li>Relativistic effects on mass, momentum and energy.</li></ol>"}, {"uid": "c13_q74", "ch": 13, "showCh": false, "id": "Q59", "section": "Extra Questions", "q": "What do you understand by the relativity of simultaneity?", "a": "<p>Relativity of simultaneity states that two events that are simultaneous in one frame of reference may not be simultaneous in another frame moving relative to the first frame.</p>"}, {"uid": "c13_q75", "ch": 13, "showCh": false, "id": "Q60", "section": "Extra Questions", "q": "What is time dilation?", "a": "<p>Time dilation is the phenomenon of time passing more slowly for an observer who is moving relative to another observer.</p>"}, {"uid": "c13_q76", "ch": 13, "showCh": false, "id": "Q61", "section": "Extra Questions", "q": "Write down the relativistic factor.", "a": "<p>$$\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}}$$ where $\\gamma =$ relativistic factor, $v =$ relativistic velocity, $c =$ velocity of light in vacuum.</p>"}, {"uid": "c13_q77", "ch": 13, "showCh": false, "id": "Q62", "section": "Extra Questions", "q": "Express the relativistic time in terms of proper time.", "a": "<p>$$\\Delta t = \\gamma \\Delta t_0$$ where $\\gamma =$ relativistic factor, $\\Delta t =$ observed time, $\\Delta t_0 =$ proper time.</p>"}, {"uid": "c13_q78", "ch": 13, "showCh": false, "id": "Q63", "section": "Extra Questions", "q": "Express the relativistic length in terms of proper length.", "a": "<p>$$L = \\frac{L_0}{\\gamma}$$ where $\\gamma =$ relativistic factor, $L =$ observed length, $L_0 =$ proper length.</p>"}, {"uid": "c13_q79", "ch": 13, "showCh": false, "id": "Q64", "section": "Extra Questions", "q": "Express the expression for the relativistic momentum.", "a": "<p>$$\\vec{p} = \\gamma m_0 \\vec{v}$$ where $\\vec{p} =$ relativistic momentum, $\\gamma =$ relativistic factor, $m_0 =$ rest mass, $\\vec{v} =$ relativistic velocity.</p>"}, {"uid": "c13_q80", "ch": 13, "showCh": false, "id": "Q65", "section": "Extra Questions", "q": "Express the expression for the relativistic energy.", "a": "<p>$$E = \\gamma m_0 c^2$$ where $E =$ relativistic energy, $\\gamma =$ relativistic factor, $m_0 =$ rest mass, $c =$ velocity of light in vacuum.</p>"}, {"uid": "c13_q81", "ch": 13, "showCh": false, "id": "Q66", "section": "Extra Questions", "q": "Express two important conclusions from the Michelson-Morley experiment.", "a": "<p><strong>(1)</strong> There is no ether.<br><strong>(2)</strong> The speed of light is the same regardless of the relative motion of the source and observer.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
