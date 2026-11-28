@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 10: Electrical Energy, Power and Heating Effect Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" selected>Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 10 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 10: Electrical Energy, Power and Heating Effect
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                လျှပ်စစ်စွမ်းအင်၊ စွမ်းအားနှင့် အပူထွက်ခြင်း အကျိုးသက်ရောက်မှု
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch9.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 9</a>
+            <a href="quizzes_ch11.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 11 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch10";
+        const RAW_QUESTIONS = [{"uid": "c10_q1", "ch": 10, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "How is electricity produced by an electric cell?", "a": "<p>Electricity is produced by an electric cell by means of chemical reaction from the chemicals stored inside it.</p>"}, {"uid": "c10_q2", "ch": 10, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "In an electric circuit, which component is used (i) to supply electricity, (ii) to close or open the electric circuit, (iii) to provide a path for the flow of electric current?", "a": "<p><strong>(i)</strong> battery, or cell (a voltage source or a source of emf)<br><strong>(ii)</strong> switch<br><strong>(iii)</strong> connecting wire</p>"}, {"uid": "c10_q3", "ch": 10, "showCh": false, "id": "Q03", "section": "Review & Q&P", "q": "Can the terminal voltage of a battery ever exceed its emf? If so, explain the necessary condition.", "a": "<p>The terminal voltage of a battery does not always exceed its emf. The terminal voltage of a battery exceeds its emf only while charging: $$V_{\\text{charging}} = E + Ir > E$$ where $V =$ terminal voltage of the battery, $E =$ emf of the battery, $r =$ internal resistance of the battery, $I =$ current delivered to the battery.</p>"}, {"uid": "c10_q4", "ch": 10, "showCh": false, "id": "R157 (1)", "section": "Review & Q&P", "q": "What is meant by the terminal voltage (available voltage) of a battery and how is it related to emf?", "a": "<p><strong>Terminal voltage (or available voltage) of the battery:</strong> The potential difference across the terminals of a battery connected to an external circuit is called the terminal voltage (or available voltage) of the battery.</p><ul class='list-disc pl-5 space-y-1'><li>When discharging (in use): $V = E - Ir \\quad (V < E)$</li><li>In an open circuit (not in use): $V = E$</li><li>When charging: $V = E + Ir \\quad (V > E)$</li></ul><p>where $V =$ terminal voltage of the battery, $E =$ emf of the battery, $r =$ internal resistance of the battery, $I =$ current.</p>"}, {"uid": "c10_q5", "ch": 10, "showCh": false, "id": "R157 (2)", "section": "Review & Q&P", "q": "What are (i) open circuit and (ii) closed circuit? Illustrate with diagrams. [p. 157]", "a": "<p><strong>(i) Open circuit:</strong> An open circuit is a circuit which is not a complete circuit, or there is a gap in the circuit, and no current is flowing in the circuit ($V = E$).</p><p><strong>(ii) Closed circuit:</strong> A closed circuit is a circuit which is a complete circuit, or there is no gap in the circuit, and a current is flowing in the circuit ($V < E$).</p>"}, {"uid": "c10_q6", "ch": 10, "showCh": false, "id": "E10.3", "section": "Review & Q&P", "q": "What is the difference between the electromotive force and the potential difference (voltage)?", "a": "<p>The <strong>electromotive force (emf)</strong> is the amount of energy, provided by the battery, per unit charge to move round the complete circuit.</p><p>The <strong>potential difference or voltage</strong> is the amount of energy required to move a unit charge from one end to another end of a circuit element.</p>"}, {"uid": "c10_q7", "ch": 10, "showCh": false, "id": "R160 (1)", "section": "Review & Q&P", "q": "What are the advantages and disadvantages of (i) the series-aiding connection of the batteries (ii) the parallel connection of the batteries? [p. 160]", "a": "<p><strong>(i) Series-aiding connection of the batteries:</strong></p><div class='overflow-x-auto mb-3'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>Advantages</th><th class='p-2 border border-slate-300 text-left'>Disadvantages</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>The total voltage becomes larger.</td><td class='p-2 border border-slate-300'>The total internal resistance becomes larger.<br>If one battery fails, the circuit will fail.</td></tr></tbody></table></div><p><strong>(ii) Parallel connection of the batteries:</strong></p><div class='overflow-x-auto'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>Advantages</th><th class='p-2 border border-slate-300 text-left'>Disadvantages</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>The total internal resistance becomes smaller.<br>If one battery fails, the circuit will not fail.</td><td class='p-2 border border-slate-300'>The voltage is the same as only one battery.</td></tr></tbody></table></div>"}, {"uid": "c10_q8", "ch": 10, "showCh": false, "id": "R163 (1)", "section": "Review & Q&P", "q": "Which quantity determines the rate at which the electrical energy is delivered by a current?", "a": "<p>Electrical power determines the rate at which the electrical energy is delivered by a current.</p>"}, {"uid": "c10_q9", "ch": 10, "showCh": false, "id": "Q08", "section": "Review & Q&P", "q": "What is electrical energy? Express its unit. [p. 169]", "a": "<p>The electrical energy is the energy associated with the flow of charge through any part of the circuit.</p><p>The unit of electrical energy in the SI units is the <strong>joule ($\\text{J}$)</strong>. The unit of electrical energy in practice is the <strong>kilowatt-hour ($\\text{kWh}$)</strong>.</p>"}, {"uid": "c10_q10", "ch": 10, "showCh": false, "id": "Q09", "section": "Review & Q&P", "q": "(i) Define electrical power. (ii) Write down the unit of electrical power. (iii) How many joules are there in $1\\text{ kWh}$? [p. 169]", "a": "<p><strong>(i)</strong> Electrical power is the rate of transfer of electrical energy.<br><strong>(ii)</strong> The unit of electrical power in the SI units is the <strong>watt ($\\text{W}$)</strong>.<br><strong>(iii)</strong> $1\\text{ kWh} = 3.60 \\times 10^6\\text{ J}$</p>"}, {"uid": "c10_q11", "ch": 10, "showCh": false, "id": "R165 (1)", "section": "Review & Q&P", "q": "On which factors does the heat produced in a current-carrying conductor depend?", "a": "<p>By Joule's law of electricity and heat: $$H = \\frac{I^2 R t}{J}$$</p><p>The amount of heat ($H$) produced in a resistor due to a current flowing through it is directly proportional to the square of the current ($I$), directly proportional to the value of the resistance ($R$), and directly proportional to the time taken ($t$) by the current to pass through the resistor.</p>"}, {"uid": "c10_q12", "ch": 10, "showCh": false, "id": "Q13", "section": "Review & Q&P", "q": "State Joule's law of electricity and heat. [p. 170]", "a": "<p><strong>Joule's law of electricity and heat:</strong> The amount of heat produced in a resistor due to a current flowing through it is directly proportional to the square of the current, the value of resistance and the time taken by the current to pass through the resistor: $$H = \\frac{I^2 R t}{J}$$ where $H =$ amount of heat produced in the resistor, $I =$ current flowing through the resistor, $R =$ resistance of the resistor, $t =$ time taken by the current to pass through the resistor.</p>"}, {"uid": "c10_q13", "ch": 10, "showCh": false, "id": "Q14", "section": "Review & Q&P", "q": "Why is electrical energy transformed into heat energy when a current flows through a resistor?", "a": "<p>When an electric current passes through a conductor, the electrons in the conductor are accelerated due to the electric field. Therefore, the electrons collide with the other atoms and lose their kinetic energy which appears as heat energy. (OR) When an electric current passes through a conductor, the electrons collide with the atoms in the resistor when they pass through it. Hence the atoms acquire additional energy and therefore heat energy is produced.</p>"}, {"uid": "c10_q14", "ch": 10, "showCh": false, "id": "Q10", "section": "Review & Q&P", "q": "Why do we use fuses in an electric circuit? [p. 169]", "a": "<p>Fuses are used in electric circuits to prevent electrical appliances from being damaged if excessive current flows through them.</p>"}, {"uid": "c10_q15", "ch": 10, "showCh": false, "id": "Q20", "section": "Review & Q&P", "q": "Which of the following metals cannot be used as fuse wire? [p. 170]<br>A. iron &nbsp;&nbsp; B. silver &nbsp;&nbsp; C. tin-lead alloy", "a": "<p><strong>A. iron</strong> [melting points: iron $= 1538^{\\circ}\\text{C}$, silver $= 961^{\\circ}\\text{C}$, tin-lead alloy $= 190^{\\circ}\\text{C}$]</p>"}, {"uid": "c10_q16", "ch": 10, "showCh": false, "id": "Q21", "section": "Review & Q&P", "q": "Why should the material used for the fuse have a low melting point? [p. 170]", "a": "<p>When a current greater than the fuse rating flows in the circuit, the fuse becomes so hot that it will melt and break the circuit. The lower the melting point, the easier it can melt and break.</p>"}, {"uid": "c10_q17", "ch": 10, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "When will a steady current flow through a conductor?", "a": "<p>A steady current will flow through a conductor if a steady potential difference is maintained between its ends.</p>"}, {"uid": "c10_q18", "ch": 10, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "How is a steady potential difference maintained between the ends of a conductor?", "a": "<p>A steady potential difference is maintained between the ends of a conductor by using batteries and generators.</p>"}, {"uid": "c10_q19", "ch": 10, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "What is the main function of the source of the electromotive force?", "a": "<p>The main function of the source of the electromotive force is to send negative charges from the positive terminal to the negative terminal within the source.</p>"}, {"uid": "c10_q20", "ch": 10, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "Define electromotive force (in terms of energy).", "a": "<p>The electromotive force is the amount of energy provided by the battery per unit charge to move round the complete circuit.</p>"}, {"uid": "c10_q21", "ch": 10, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "On which factors does the internal resistance of a battery depend?", "a": "<p>The internal resistance of a battery depends on its size, chemical properties, lifetime, and temperature.</p>"}, {"uid": "c10_q22", "ch": 10, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "What really is the potential difference across the resistor?", "a": "<p>The potential difference across the resistor is the work done in moving a unit positive charge from one end to another of the resistor.</p>"}, {"uid": "c10_q23", "ch": 10, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Write down the general circuit equation for a battery.", "a": "<p>$$I = \\frac{E}{R + r}$$ where $I =$ current delivered by the battery, $E =$ emf of the battery, $R =$ external resistance connected to the battery, $r =$ internal resistance of the battery.</p>"}, {"uid": "c10_q24", "ch": 10, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "Define the terminal voltage (or the available voltage) of the battery.", "a": "<p>The potential difference across the terminals of a battery connected to an external circuit is called the terminal voltage (or the available voltage) of the battery.</p>"}, {"uid": "c10_q25", "ch": 10, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "Define electromotive force (in an open circuit).", "a": "<p>The electromotive force (emf) is the potential difference between the two terminals of a battery or a cell in an open circuit (when no current flows).</p>"}, {"uid": "c10_q26", "ch": 10, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "What do you understand by charging a battery?", "a": "<p>Charging a battery means the chemical energy of the battery, which has been used up, is now supplied back by electrical energy from some external source (battery charger).</p>"}, {"uid": "c10_q27", "ch": 10, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "What is the external electrical energy required for a unit positive charge in charging a battery?", "a": "<p>The external electrical energy required for a unit positive charge is equal to the emf $E$ of the battery plus the energy per unit positive charge dissipated in the battery as heat, which is $Ir$.</p>"}, {"uid": "c10_q28", "ch": 10, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "What do you understand by series aiding of the batteries?", "a": "<p>If the batteries are in series, and the currents leaving the batteries are in the same direction, such a connection of the batteries is series aiding. The resultant emf is the sum of the individual emfs.</p>"}, {"uid": "c10_q29", "ch": 10, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "Write down the circuit equation for the series aiding of two batteries.", "a": "<p>$$I = \\frac{E_1 + E_2}{R + r_1 + r_2}$$ where $E_1, E_2 =$ emfs of the batteries, $r_1, r_2 =$ internal resistances of the batteries, $R =$ external resistance connected to the batteries.</p>"}, {"uid": "c10_q30", "ch": 10, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "What do you understand by series opposing of the two batteries?", "a": "<p>If the batteries are in series, and the currents leaving the batteries are in opposite directions, such a connection of the batteries is called series opposing. The resultant emf is the difference of the individual emfs.</p>"}, {"uid": "c10_q31", "ch": 10, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "Write down the circuit equation for the series opposing of two batteries.", "a": "<p>$$I = \\frac{E_1 - E_2}{R + r_1 + r_2}$$ where $E_1, E_2 =$ emfs of the batteries ($E_1 > E_2$), $r_1, r_2 =$ internal resistances of the batteries, $R =$ external resistance connected to the batteries.</p>"}, {"uid": "c10_q32", "ch": 10, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "Write down the circuit equation for a parallel combination of two batteries each having emf $E$, and internal resistance $r$.", "a": "<p>$$I = \\frac{E}{R + \\frac{r}{2}}$$ where $E =$ emf of each battery, $r =$ internal resistance of each battery, $R =$ external resistance connected to the batteries.</p>"}, {"uid": "c10_q33", "ch": 10, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "Write down the circuit equation for a parallel combination of $n$ batteries each having emf $E$, and internal resistance $r$.", "a": "<p>$$I = \\frac{E}{R + \\frac{r}{n}}$$ where $E =$ emf of each battery, $r =$ internal resistance of each battery, $R =$ external resistance connected to the batteries, $n =$ number of batteries.</p>"}, {"uid": "c10_q34", "ch": 10, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "What is electrical energy?", "a": "<p>Electrical energy is the energy associated with the flow of charge through any part of the circuit.</p>"}, {"uid": "c10_q35", "ch": 10, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "Express the relation between the electrical energy supplied to a resistor and the heat energy produced by the resistor.", "a": "<p>$$W = J H$$ where $J$ is a constant called Joule's mechanical equivalent of heat.</p>"}, {"uid": "c10_q36", "ch": 10, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "Name some devices using the heating effect of electric current.", "a": "<p>Electric stoves, electric cookers, electric irons, electric kettles, electric heaters, and electric heating bags.</p>"}, {"uid": "c10_q37", "ch": 10, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "What are the advantages of adding inert gas in the electric light bulb?", "a": "<p>Because of the inert gas, the light bulb can be used safely up to the temperature of $2500^{\\circ}\\text{C}$. The inert gas reduces the evaporation of the filament in the light bulb.</p>"}, {"uid": "c10_q38", "ch": 10, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "What is a thermostat?", "a": "<p>A thermostat switches the current on and off to maintain the selected temperature.</p>"}, {"uid": "c10_q39", "ch": 10, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "What is a fuse?", "a": "<p>A fuse is a thin short wire of tin-lead alloy, which is used in electric circuits to prevent electrical appliances from being damaged if excessive current flows through them.</p>"}, {"uid": "c10_q40", "ch": 10, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "Explain the working function of the fuse giving examples.", "a": "<p>For example, a $3\\text{ A}$ fuse is used in the electric circuit. When a current greater than $3\\text{ A}$ flows in the circuit, the fuse becomes so hot that it will melt and break the circuit. Thus, the current stops flowing and the electrical appliance in the circuit is not damaged.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
