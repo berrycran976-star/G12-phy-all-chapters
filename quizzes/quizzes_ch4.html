@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Sources of Energy and Environmental Impacts Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" selected>Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 4 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 4: Sources of Energy and Environmental Impacts
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                စွမ်းအင်အရင်းအမြစ်များနှင့် ပတ်ဝန်းကျင်ဆိုင်ရာ သက်ရောက်မှုများ
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch3.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 3</a>
+            <a href="quizzes_ch5.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 5 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch4";
+        const RAW_QUESTIONS = [{"uid": "c4_q1", "ch": 4, "showCh": false, "id": "R043", "section": "Review & Q&P", "q": "Why does the energy demand increase year by year?", "a": "<p>The energy demand increases year by year because the population and the new technology are always expanding.</p>"}, {"uid": "c4_q2", "ch": 4, "showCh": false, "id": "R044", "section": "Review & Q&P", "q": "What is the main source of energy?", "a": "<p>The sun is the main source of energy.</p>"}, {"uid": "c4_q3", "ch": 4, "showCh": false, "id": "R045", "section": "Review & Q&P", "q": "What are the main characteristics of fossil fuels?", "a": "<ul class='list-disc pl-5 space-y-1'><li>Fossil fuels are coal, oil, natural gas, etc.</li><li>Carbon is the main constituent of fossil fuels.</li><li>A large amount of chemical energy is stored in the fossil fuels.</li><li>Fossil fuels were formed within the earth from dead plants and animals over millions of years.</li><li>Fossil fuels are excellent sources of energy for our transportation needs.</li></ul>"}, {"uid": "c4_q4", "ch": 4, "showCh": false, "id": "R051", "section": "Review & Q&P", "q": "How does wind power generate electricity? [p. 51]", "a": "<p>In a wind turbine, wind first hits the blades of the turbine, causing them to rotate and turn the turbine connected to them.</p><p>That changes the kinetic energy to rotational energy, by rotating a shaft which is connected to a generator and thereby producing electrical energy through electromagnetism.</p>"}, {"uid": "c4_q5", "ch": 4, "showCh": false, "id": "Q03", "section": "Review & Q&P", "q": "Write the differences between thermal power plants and hydropower plants.", "a": "<div class='overflow-x-auto'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>#</th><th class='p-2 border border-slate-300 text-left'>Thermal Power Plant</th><th class='p-2 border border-slate-300 text-left'>Hydropower Plant</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>1.</td><td class='p-2 border border-slate-300'>Produces electricity by burning fuels.</td><td class='p-2 border border-slate-300'>Produces electricity by the flowing water.</td></tr><tr><td class='p-2 border border-slate-300'>2.</td><td class='p-2 border border-slate-300'>Chemical energy stored in the fuels is transformed into electricity.</td><td class='p-2 border border-slate-300'>Potential energy stored in the water is transformed into electricity.</td></tr><tr><td class='p-2 border border-slate-300'>3.</td><td class='p-2 border border-slate-300'>Burning of fuels pollutes the air.</td><td class='p-2 border border-slate-300'>Blocking of water flow affects animals in the water.</td></tr><tr><td class='p-2 border border-slate-300'>4.</td><td class='p-2 border border-slate-300'>Easier to build.</td><td class='p-2 border border-slate-300'>Harder to build.</td></tr><tr><td class='p-2 border border-slate-300'>5.</td><td class='p-2 border border-slate-300'>Running cost is high.</td><td class='p-2 border border-slate-300'>Running cost is low.</td></tr></tbody></table></div>"}, {"uid": "c4_q6", "ch": 4, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "Can we generate electricity from the waterfall by using a turbine generator? If it is possible, what are the necessary conditions? [p. 61]", "a": "<p>Yes.</p><p>The power available from falling water is: $$P = \\eta \\rho \\dot{V} g h$$</p><p>where $P =$ useful power output ($\\text{W}$), $\\rho =$ density of water, $g =$ local acceleration due to gravity, $h =$ difference in height between the outlet and inlet, $\\eta =$ efficiency of the turbine, $\\dot{V} = \\frac{V}{t} =$ volumetric flow rate in $\\text{m}^3\\text{s}^{-1}$.</p><p>To generate electricity from a waterfall by using a turbine generator:</p><ul class='list-disc pl-5 space-y-1'><li>the height of the waterfall must be large enough.</li><li>the volumetric flow rate of the waterfall must be large enough.</li><li>the local acceleration due to gravity must be sufficient enough.</li></ul>"}, {"uid": "c4_q7", "ch": 4, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "What are the major components of hydropower plants? [p. 61]", "a": "<ol class='list-roman pl-5 space-y-1'><li><strong>Dam</strong> (raises the water level of the river and controls flow of water)</li><li><strong>Turbine</strong> (a water turbine converts the kinetic energy of falling water into mechanical energy)</li><li><strong>Generator</strong> (connected to the turbine by shafts and converts the mechanical energy from the turbine to electrical energy)</li><li><strong>Transformer</strong></li><li><strong>Transmission system</strong> (transports electricity from the hydropower station to consumers).</li></ol>"}, {"uid": "c4_q8", "ch": 4, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "State the changes in the form of energy while producing hydroelectricity.", "a": "<p><strong>Gravitational potential energy $\\rightarrow$ kinetic energy $\\rightarrow$ mechanical energy $\\rightarrow$ electrical energy</strong></p><ol class='list-decimal pl-5 space-y-1 mt-2'><li>Water is collected or stored at a higher elevation and gravity pulls the water downward through large pipes or tunnels (penstocks) to a lower elevation. This changes gravitational potential energy into kinetic energy.</li><li>At the end of its passage down the pipes, the falling water causes turbines to rotate. This changes the kinetic energy into mechanical energy.</li><li>The turbines in turn drive generators, which convert mechanical energy into electricity.</li></ol>"}, {"uid": "c4_q9", "ch": 4, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "What is the main source of power of a hydroelectric power plant?", "a": "<p>The main source of power in a hydroelectric plant is the motion of water.</p>"}, {"uid": "c4_q10", "ch": 4, "showCh": false, "id": "R055 (1)", "section": "Review & Q&P", "q": "Why are wind and solar energies more popular than ocean energy?", "a": "<p>Wind and solar energies can be obtained in any location, but ocean energy can be obtained only in the ocean.</p><p>Wind energy is one of the oldest and cleanest forms of energy and the most developed of renewable energy sources. Solar energy has been harnessed by humans since ancient times using a range of ever-evolving technologies.</p><p>The energy potential from the sea (tidal energy, wave energy and ocean thermal energy) is quite large, but efficient commercial exploitation is difficult.</p>"}, {"uid": "c4_q11", "ch": 4, "showCh": false, "id": "R055 (2)", "section": "Review & Q&P", "q": "What type of working fluids do closed-cycle ocean thermal energy conversion systems use?", "a": "<p>A volatile liquid (Ammonia).</p>"}, {"uid": "c4_q12", "ch": 4, "showCh": false, "id": "R056 (1)", "section": "Review & Q&P", "q": "What is geothermal energy?", "a": "<p>Geothermal energy is a type of renewable energy taken from the Earth's core (the internal heat of the earth).</p>"}, {"uid": "c4_q13", "ch": 4, "showCh": false, "id": "R056 (2)", "section": "Review & Q&P", "q": "How does geothermal heat get from the interior of the earth to the surface?", "a": "<p>Through drilled wells, cooled water is pumped into heated rocks where it is turned into steam, which then rises up to drive the turbines and generate electricity.</p>"}, {"uid": "c4_q14", "ch": 4, "showCh": false, "id": "Q07", "section": "Review & Q&P", "q": "Why is geothermal energy considered as a renewable resource?", "a": "<p>Geothermal energy is considered a renewable energy source because it comes from the Earth's internal heat, which is renewable and never runs out.</p>"}, {"uid": "c4_q15", "ch": 4, "showCh": false, "id": "Q08", "section": "Review & Q&P", "q": "How is geothermal electricity produced?", "a": "<p>Through drilled wells, cooled water is pumped into heated rocks where it is turned into steam, which then rises up to drive the turbines and generate electricity. Condensed water is cooled and the process is repeated.</p>"}, {"uid": "c4_q16", "ch": 4, "showCh": false, "id": "Q09", "section": "Review & Q&P", "q": "What are the advantages of geothermal energy compared to other energies?", "a": "<ul class='list-disc pl-5 space-y-1'><li>Geothermal energy is a type of renewable energy taken from the Earth's core.</li><li>It is one of the oldest types of natural sources of heat.</li><li>It is thermal energy from magma, and can be used to generate electricity.</li><li>It can be obtained from naturally occurring heat, rock and water permeability.</li><li>It is more environmentally friendly than conventional fuel sources.</li><li>It is naturally replenished, making it both renewable and sustainable.</li><li>It has low running costs once established and a low carbon footprint.</li></ul>"}, {"uid": "c4_q17", "ch": 4, "showCh": false, "id": "R057 (1)", "section": "Review & Q&P", "q": "What is biomass?", "a": "<p>Biomass is a renewable organic material that comes from plants and animals.</p>"}, {"uid": "c4_q18", "ch": 4, "showCh": false, "id": "R057 (2)", "section": "Review & Q&P", "q": "Give the types of biomass energy sources.", "a": "<ul class='list-disc pl-5 space-y-1'><li><strong>Wood and wood processing wastes</strong> (e.g. firewood, furniture mill sawdust and waste from pulp and paper mills).</li><li><strong>Agricultural crops and waste materials</strong> (e.g. corn, soybeans, sugar cane, woody plants, algae, rice husk and food processing residues).</li><li><strong>Biogenic materials in municipal solid waste</strong> (e.g. paper, cotton, wool products, food and wood wastes).</li><li><strong>Animal manure and human sewage.</strong></li></ul>"}, {"uid": "c4_q19", "ch": 4, "showCh": false, "id": "R060", "section": "Review & Q&P", "q": "What are the consequences of energy development on the environment?", "a": "<ul class='list-disc pl-5 space-y-1'><li>Global warming / acid rains / dangers posed by leaded fuels</li><li>Oil spills, gas leaks and explosions</li><li>Air pollution and water pollution</li><li>Chemicals used in PV cells in the manufacturing facility may cause pollutions</li><li>Low frequency sound and infrasound produced from wind farms</li><li>Shadow flicker caused by wind turbines</li><li>Effect on river transportation, agriculture, fertile lands by hydropower dams</li><li>Impacts on the landscape, and noise by geothermal development</li><li>Global warming emissions associated with development of biomass</li></ul>"}, {"uid": "c4_q20", "ch": 4, "showCh": false, "id": "Q13", "section": "Review & Q&P", "q": "Why is it better to use more renewable energy resources rather than non-renewable resources? [p. 61]", "a": "<ul class='list-disc pl-5 space-y-1'><li>Renewable energy sources do not pollute the environment and natural surroundings and require less expenditure.</li><li>Renewable energy has huge potential to provide the solution to the increase in energy crisis and it is the key factor to the future of energy, food and economic security.</li><li>Renewable energy sources are continuously replenished by natural processes.</li><li>Renewable energy cannot be exhausted easily and can be generated at a constant rate for their use over and over again.</li><li>Renewable energy can be produced or generated through natural processes, at a rate greater than or equal to the rate of their consumption.</li><li>Renewable resources are replenished naturally and over short periods of time, so are in a virtually unlimited supply.</li></ul>"}, {"uid": "c4_q21", "ch": 4, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "What are energy resources?", "a": "<p>Energy resources are all forms of fuel used in the modern world, either for heating, generating electrical energy or for other energy conversion processes.</p>"}, {"uid": "c4_q22", "ch": 4, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What do you understand by energy demand?", "a": "<p>Energy demand is the term used to describe the consumption of energy by human activities.</p>"}, {"uid": "c4_q23", "ch": 4, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "What does the energy demand drive?", "a": "<p>Energy demand drives the whole energy system, influencing the total amount of energy used, the locations and the types of fuel used in the energy supply system and the characteristics of the technologies that consume energy.</p>"}, {"uid": "c4_q24", "ch": 4, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "What does the energy demand influence?", "a": "<p>Energy demand influences the total amount of energy used, the locations and the types of fuel used in the energy supply system and the characteristics of the technologies that consume energy.</p>"}, {"uid": "c4_q25", "ch": 4, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "On which factors does the energy demand depend?", "a": "<p>Energy demand depends on different socioeconomic factors such as population, urbanization, industrialization, net capital income and development of technologies, etc.</p>"}, {"uid": "c4_q26", "ch": 4, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "How is energy demand forecasting crucial?", "a": "<p>Energy demand forecasting is crucial for ensuring future economic growth and environmental security.</p>"}, {"uid": "c4_q27", "ch": 4, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Why has there been an enormous increase in the global demand for energy in recent years?", "a": "<p>There has been an enormous increase in the global demand for energy in recent years as a result of industrial development and population growth.</p>"}, {"uid": "c4_q28", "ch": 4, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "Why is the demand for energy expected to increase year by year?", "a": "<p>The demand for energy is expected to increase year by year because the population and the new technology are always expanding.</p>"}, {"uid": "c4_q29", "ch": 4, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "What is the energy crisis?", "a": "<p>The energy crisis is the concern that the world's demands on the limited natural resources that are used to power industrial society are diminishing as the demand rises.</p>"}, {"uid": "c4_q30", "ch": 4, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "What are the consequences of a disruption of energy supplies?", "a": "<p>It is the increase in energy prices that threatens economic and national security.</p>"}, {"uid": "c4_q31", "ch": 4, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "Why do people need to find new ways to make energy?", "a": "<p>People need to find new ways to make energy because ninety per cent of the world's oil reserves have already been discovered.</p>"}, {"uid": "c4_q32", "ch": 4, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Why is the world going to face the problem of an energy crisis soon?", "a": "<p>Because the non-renewable resources of energy will not last long and cannot be regained.</p>"}, {"uid": "c4_q33", "ch": 4, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "What are the different forms of energy we use in our daily lives?", "a": "<p>They are heat energy, light energy, mechanical energy, electrical energy, chemical energy, and sound energy.</p>"}, {"uid": "c4_q34", "ch": 4, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "What are the most common forms of energy we use in our daily lives?", "a": "<p>The most common forms of energy we use in our daily lives are heat, light, and electricity.</p>"}, {"uid": "c4_q35", "ch": 4, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What are the categories of energy resources?", "a": "<p>Renewable sources of energy and non-renewable sources of energy.</p>"}, {"uid": "c4_q36", "ch": 4, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "What is a non-renewable resource of energy?", "a": "<p>A non-renewable resource of energy is a natural substance that is not replenished with the speed at which it is consumed.</p>"}, {"uid": "c4_q37", "ch": 4, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What do non-renewable energy resources include?", "a": "<p>Non-renewable energy resources include coal, natural gas, crude oil, and nuclear energy.</p>"}, {"uid": "c4_q38", "ch": 4, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "Express the characteristics of non-renewable energy resources.", "a": "<p>Non-renewable energy resources occur in limited and exhaustible quantities, and cannot be regenerated in a short period of time or used again and again.</p>"}, {"uid": "c4_q39", "ch": 4, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What is renewable energy?", "a": "<p>Renewable energy is the energy generated by using wind, solar, hydro, tides, etc.</p>"}, {"uid": "c4_q40", "ch": 4, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "What are the characteristics of renewable energy?", "a": "<p>Renewable energy cannot be exhausted easily and can be generated at a constant rate for their use over and over again.</p>"}, {"uid": "c4_q41", "ch": 4, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Give some examples of non-renewable energy sources.", "a": "<p>Examples of non-renewable energy sources include fossil fuels (like coal, oil, natural gases, etc.) and nuclear energy.</p>"}, {"uid": "c4_q42", "ch": 4, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "Give some examples of renewable energy sources.", "a": "<p>Examples of renewable energy sources include solar energy, hydro-energy, wind energy, and geothermal energy.</p>"}, {"uid": "c4_q43", "ch": 4, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "What are the important non-renewable sources of energy?", "a": "<p>Fossil fuels, such as coal, oil, and natural gas, are important non-renewable sources of energy.</p>"}, {"uid": "c4_q44", "ch": 4, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "Why is nuclear energy non-renewable?", "a": "<p>Nuclear energy is non-renewable as the uranium fuels consumed in the nuclear fission reaction are non-replenishable.</p>"}, {"uid": "c4_q45", "ch": 4, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "Express some uses of nuclear energy.", "a": "<ul class='list-disc pl-5 space-y-1'><li>Energy produced in a nuclear reactor can be harnessed to produce electricity.</li><li>Nuclear energy is also being used to power submarines and ships.</li><li>Vessels driven by nuclear energy can sail for long periods without having to refuel.</li><li>Radioisotopes obtained as by-products in nuclear reactions are used in medicine, agriculture, and research.</li></ul>"}, {"uid": "c4_q46", "ch": 4, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "What are the major types of renewable energy sources?", "a": "<p>The major types of renewable energy sources are (i) solar, (ii) wind, (iii) hydropower, (iv) ocean, (v) geothermal, and (vi) biomass.</p>"}, {"uid": "c4_q47", "ch": 4, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What is irradiance?", "a": "<p>The total amount of radiation energy passing through per unit area and per unit time is called irradiance.</p>"}, {"uid": "c4_q48", "ch": 4, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "What is the unit of irradiance?", "a": "<p>The unit of irradiance is watt per square metre ($\\text{W m}^{-2}$).</p>"}, {"uid": "c4_q49", "ch": 4, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "What is insolation?", "a": "<p>Insolation is the solar irradiance received on a horizontal surface such as ground.</p>"}, {"uid": "c4_q50", "ch": 4, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "What are the main ways to harness solar energy?", "a": "<p>There are three main ways to harness solar energy: photovoltaic solar cell, solar heating, and concentrated solar power (CSP).</p>"}, {"uid": "c4_q51", "ch": 4, "showCh": false, "id": "Q31", "section": "Extra Questions", "q": "What is the photovoltaic effect?", "a": "<p>The conversion of light energy into electrical energy is called the photovoltaic effect.</p>"}, {"uid": "c4_q52", "ch": 4, "showCh": false, "id": "Q32", "section": "Extra Questions", "q": "What is a solar cell?", "a": "<p>A solar cell (also known as a photovoltaic cell) is an electrical device that converts light energy into electrical energy through the photovoltaic effect.</p>"}, {"uid": "c4_q53", "ch": 4, "showCh": false, "id": "Q33", "section": "Extra Questions", "q": "What is the power conversion efficiency of the solar panel?", "a": "<p>The power conversion efficiency of the solar panel is the ratio of the electrical power delivered by the panel to the solar power received by it.</p>"}, {"uid": "c4_q54", "ch": 4, "showCh": false, "id": "Q34", "section": "Extra Questions", "q": "What are the solar water heating systems comprised of?", "a": "<p>Solar water heating systems installed in homes are comprised of three main elements: the solar collector, insulated piping, and a hot water storage tank.</p>"}, {"uid": "c4_q55", "ch": 4, "showCh": false, "id": "Q35", "section": "Extra Questions", "q": "What is the function of a solar collector?", "a": "<p>The solar collector gathers the heat from solar radiation and transfers the heat to water.</p>"}, {"uid": "c4_q56", "ch": 4, "showCh": false, "id": "Q36", "section": "Extra Questions", "q": "What are the parts of Concentrated Solar Power plants?", "a": "<p>CSP plants consist of two parts: one that collects solar energy and converts it to heat, and another that converts the heat energy to electricity.</p>"}, {"uid": "c4_q57", "ch": 4, "showCh": false, "id": "Q37", "section": "Extra Questions", "q": "What is wind energy?", "a": "<p>Wind energy is the energy generated or produced by harnessing the power of the wind.</p>"}, {"uid": "c4_q58", "ch": 4, "showCh": false, "id": "Q38", "section": "Extra Questions", "q": "What are the types of CSP technologies?", "a": "<p>There are four types of CSP technologies: (a) Parabolic trough systems, (b) Linear fresnel systems, (c) Power tower systems and (d) Parabolic dish systems.</p>"}, {"uid": "c4_q59", "ch": 4, "showCh": false, "id": "Q39", "section": "Extra Questions", "q": "Differentiate between windmills and wind turbines.", "a": "<p><strong>Windmills</strong> convert wind energy directly into mechanical energy for such tasks as milling grain and pumping water.</p><p>A <strong>wind turbine</strong> converts wind energy into electricity, which can then be used to power electrical equipment, stored in batteries or transmitted over power lines.</p>"}, {"uid": "c4_q60", "ch": 4, "showCh": false, "id": "Q40", "section": "Extra Questions", "q": "Explain the working function of a wind turbine.", "a": "<p>In a wind turbine, wind first hits the blades of the turbine, causing them to rotate and turn the turbine connected to them. That changes the kinetic energy to rotational energy, by rotating a shaft, which is connected to a generator, and thereby producing electrical energy through electromagnetism.</p>"}, {"uid": "c4_q61", "ch": 4, "showCh": false, "id": "Q41", "section": "Extra Questions", "q": "On which factors does the amount of power that can be harvested from wind depend?", "a": "<p>The amount of power that can be harvested from wind depends on the size of the turbine, the length of its blades, the wind speed and the air density.</p>"}, {"uid": "c4_q62", "ch": 4, "showCh": false, "id": "Q42", "section": "Extra Questions", "q": "Calculate the amount of power that can be harvested from the wind.", "a": "<p>Total wind energy flowing through an imaginary surface with area $A$ during time $t$ is: $$E = \\frac{1}{2}mv^2 = \\frac{1}{2}\\rho V v^2 = \\frac{1}{2}\\rho A v t \\cdot v^2 = \\frac{1}{2}\\rho A t v^3$$</p><p>where $\\rho$ is the density of air, $v$ is the wind speed, $V = Avt$ is the volume of air passing through area $A$ in time $t$.</p><p>Power is energy per unit time, so the wind power incident on $A$ is: $$P = \\frac{1}{2}\\rho A v^3$$ where $A =$ the rotor area of a wind turbine.</p>"}, {"uid": "c4_q63", "ch": 4, "showCh": false, "id": "Q43", "section": "Extra Questions", "q": "How many types of hydropower facilities are there? Express them.", "a": "<p>There are three types of hydropower facilities: impoundment, diversion, and pumped storage.</p>"}, {"uid": "c4_q64", "ch": 4, "showCh": false, "id": "Q44", "section": "Extra Questions", "q": "What is hydroelectric energy?", "a": "<p>Hydroelectric energy, also called hydroelectric power or hydroelectricity, is a form of energy that harnesses the power of water in motion such as water flowing over a waterfall to generate electricity.</p>"}, {"uid": "c4_q65", "ch": 4, "showCh": false, "id": "Q45", "section": "Extra Questions", "q": "What is a penstock?", "a": "<p>A penstock is a closed conduit that channels the flow of water to turbines with water flow regulated by gates and valves.</p>"}, {"uid": "c4_q66", "ch": 4, "showCh": false, "id": "Q46", "section": "Extra Questions", "q": "Explain how a pumped storage hydropower functions.", "a": "<p>When the demand for electricity is low, a PSH facility stores energy by pumping water from the lower reservoir to an upper reservoir at a higher elevation. During the periods of high electrical demand, the water is released back to the lower reservoir and turns a turbine, generating electricity.</p>"}, {"uid": "c4_q67", "ch": 4, "showCh": false, "id": "Q47", "section": "Extra Questions", "q": "Express the formula to evaluate the available power of hydropower.", "a": "<p>The power available from falling water is: $$P = \\eta \\rho \\dot{V} g h$$</p><p>where $P =$ useful power output, $\\eta =$ efficiency of the turbine (dimensionless), $\\rho =$ density of water, $g =$ local acceleration due to gravity, $h =$ pressure head, $\\dot{V} = \\frac{V}{t} =$ volumetric flow rate (measured in $\\text{m}^3\\text{s}^{-1}$).</p>"}, {"uid": "c4_q68", "ch": 4, "showCh": false, "id": "Q48", "section": "Extra Questions", "q": "What are the forms of energy from the sea?", "a": "<p>Tidal energy, wave energy and ocean thermal energy.</p>"}, {"uid": "c4_q69", "ch": 4, "showCh": false, "id": "Q49", "section": "Extra Questions", "q": "Express the common parts of conventional hydroelectric plants.", "a": "<ol class='list-roman pl-5 space-y-1'><li>dam (raises the water level of the river and controls the flow of water)</li><li>turbine (a water turbine converts the kinetic energy of falling water into mechanical energy)</li><li>generator (connected to the turbine by shafts and converts the mechanical energy from the turbine to electrical energy)</li><li>transformer</li><li>transmission system (transports electricity from the hydropower station to consumers).</li></ol>"}, {"uid": "c4_q70", "ch": 4, "showCh": false, "id": "Q50", "section": "Extra Questions", "q": "What is biomass?", "a": "<p>Biomass is a renewable organic material that comes from plants and animals.</p>"}, {"uid": "c4_q71", "ch": 4, "showCh": false, "id": "Q51", "section": "Extra Questions", "q": "Give some examples of wood and wood processing wastes.", "a": "<p>Firewood, furniture mill sawdust and waste from pulp and paper mills.</p>"}, {"uid": "c4_q72", "ch": 4, "showCh": false, "id": "Q52", "section": "Extra Questions", "q": "Give some examples of agricultural crops and waste materials.", "a": "<p>Corn, soybeans, sugar cane, woody plants, algae, rice husk and food processing residues.</p>"}, {"uid": "c4_q73", "ch": 4, "showCh": false, "id": "Q53", "section": "Extra Questions", "q": "Give some examples of biogenic materials in municipal solid waste.", "a": "<p>Paper, cotton, wool products, food and wood wastes.</p>"}, {"uid": "c4_q74", "ch": 4, "showCh": false, "id": "Q54", "section": "Extra Questions", "q": "Express the processes used to convert biomass to energy.", "a": "<p>Biomass is converted to energy through various processes, including: direct combustion (burning) to produce heat, thermochemical conversion to produce solid, gaseous, and liquid fuels, chemical conversion to produce liquid fuels, and biological conversion to produce liquid and gaseous fuels.</p>"}, {"uid": "c4_q75", "ch": 4, "showCh": false, "id": "Q55", "section": "Extra Questions", "q": "Why is biomass burned directly?", "a": "<p>All forms of biomass are burned directly for heating buildings and water, for industrial heat processes, and for generating electricity in steam turbines.</p>"}, {"uid": "c4_q76", "ch": 4, "showCh": false, "id": "Q56", "section": "Extra Questions", "q": "How can syngas be used?", "a": "<p>Syngas can be used as a fuel for diesel engines, for heating, and for generating electricity in gas turbines.</p>"}, {"uid": "c4_q77", "ch": 4, "showCh": false, "id": "Q57", "section": "Extra Questions", "q": "What are the environmental problems directly related to energy production and consumption?", "a": "<p>The environmental problems directly related to energy production and consumption include air pollution, climate change, water pollution, thermal pollution, and solid waste disposal.</p>"}, {"uid": "c4_q78", "ch": 4, "showCh": false, "id": "Q58", "section": "Extra Questions", "q": "What are the problems that relate to the use of fossil fuels?", "a": "<p>The problems related to the use of fossil fuels are global warming, acid rains, dangers posed by leaded fuels, oil spills, gas leaks and explosions, air pollution and water pollution caused by poorly managed coal mines.</p>"}, {"uid": "c4_q79", "ch": 4, "showCh": false, "id": "Q59", "section": "Extra Questions", "q": "What do you understand by global warming?", "a": "<p>Global warming refers to the gradual increase in the average temperature of the earth's surface and its atmosphere which has been attributed to the accumulation of greenhouse gases.</p>"}, {"uid": "c4_q80", "ch": 4, "showCh": false, "id": "Q60", "section": "Extra Questions", "q": "What are the main greenhouse gases?", "a": "<p>The main greenhouse gases are carbon dioxide ($\\text{CO}_2$), methane ($\\text{CH}_4$), water vapour, oxides of nitrogen ($\\text{NO}_x$) and chlorofluorocarbons (CFCs).</p>"}, {"uid": "c4_q81", "ch": 4, "showCh": false, "id": "Q61", "section": "Extra Questions", "q": "Which causes acid rains?", "a": "<p>Acid rains are caused mainly by the release of sulphur dioxide ($\\text{SO}_2$) and oxides of nitrogen ($\\text{NO}_x$) when fossil fuels burn.</p>"}, {"uid": "c4_q82", "ch": 4, "showCh": false, "id": "Q62", "section": "Extra Questions", "q": "What are the problems posed by acid rains?", "a": "<p>The problems posed by acid rains include corrosion of the built environment, soil degradation, water pollution and depletion of forests.</p>"}, {"uid": "c4_q83", "ch": 4, "showCh": false, "id": "Q63", "section": "Extra Questions", "q": "From where can the fuel oil leak?", "a": "<p>The fuel oil can leak from storage vessels, oil tankers, pipelines and tanker trucks.</p>"}, {"uid": "c4_q84", "ch": 4, "showCh": false, "id": "Q64", "section": "Extra Questions", "q": "How do excavated areas strip-mined for coal but not filled and revegetated cause water pollution?", "a": "<p>Excavated areas strip-mined for coal but not filled and revegetated cause water pollution as surface water runoff from the mined area can flush sediments and sulphur-bearing compounds into nearby streams and rivers.</p>"}, {"uid": "c4_q85", "ch": 4, "showCh": false, "id": "Q65", "section": "Extra Questions", "q": "What do emissions from vehicles, thermal power plants and factories contain?", "a": "<p>Emissions from vehicles, thermal power plants and factories contain unburned hydrocarbons, particulates, carbon dioxide, carbon monoxide and oxides of nitrogen and sulphur that contribute to the lowering of the quality of air.</p>"}, {"uid": "c4_q86", "ch": 4, "showCh": false, "id": "Q66", "section": "Extra Questions", "q": "How can shadow flicker be avoided?", "a": "<p>Shadow flicker can easily be avoided by locating the wind farm to avoid unacceptable shadow flicker, or turning the turbine off for a few minutes of the day when the sun is at the angle that causes flicker.</p>"}, {"uid": "c4_q87", "ch": 4, "showCh": false, "id": "Q67", "section": "Extra Questions", "q": "Express the negative impacts of dams.", "a": "<ul class='list-disc pl-5 space-y-1'><li>In flat basins, large dams cause flooding of large tracts of land, destroying local animals and habitats.</li><li>Villages and people have to be displaced causing change in lifestyle.</li><li>Large amounts of plant life are submerged and decay anaerobically.</li><li>The migratory pattern of river animals is affected.</li><li>Dams restrict sediments that are responsible for the fertile lands downstream.</li><li>Large dams are breeding grounds for mosquitoes and cause the spread of disease.</li><li>Dams serve as a heat sink; water in dams is hotter than the normal river water and when this warm water is released into the river downstream it can affect animal life.</li></ul>"}, {"uid": "c4_q88", "ch": 4, "showCh": false, "id": "Q68", "section": "Extra Questions", "q": "Why does worldwide geothermal energy utilization increase yearly?", "a": "<p>Worldwide geothermal energy utilization increases yearly because it is an attractive alternative to burning fossil fuels.</p>"}, {"uid": "c4_q89", "ch": 4, "showCh": false, "id": "Q69", "section": "Extra Questions", "q": "Express the energy transfers which occur in fossil fuels.", "a": "<p>Chemical energy $\\rightarrow$ thermal energy $\\rightarrow$ kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q90", "ch": 4, "showCh": false, "id": "Q70", "section": "Extra Questions", "q": "Express the energy transfers which occur in nuclear energy.", "a": "<p>Nuclear energy $\\rightarrow$ thermal energy $\\rightarrow$ kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q91", "ch": 4, "showCh": false, "id": "Q71", "section": "Extra Questions", "q": "Express the energy transfers which occur in bio-fuel.", "a": "<p>Chemical energy $\\rightarrow$ thermal energy $\\rightarrow$ mechanical energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q92", "ch": 4, "showCh": false, "id": "Q72", "section": "Extra Questions", "q": "Express the energy transfers which occur in geothermal.", "a": "<p>Thermal energy $\\rightarrow$ kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q93", "ch": 4, "showCh": false, "id": "Q73", "section": "Extra Questions", "q": "Express the energy transfers which occur in hydroelectricity.", "a": "<p>Gravitational potential energy $\\rightarrow$ kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q94", "ch": 4, "showCh": false, "id": "Q74", "section": "Extra Questions", "q": "Express the energy transfers which occur in tidal energy.", "a": "<p>Kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q95", "ch": 4, "showCh": false, "id": "Q75", "section": "Extra Questions", "q": "Express the energy transfers which occur in wind energy.", "a": "<p>Kinetic energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q96", "ch": 4, "showCh": false, "id": "Q76", "section": "Extra Questions", "q": "Express the energy transfers which occur in solar energy.", "a": "<p>Light &amp; thermal energy $\\rightarrow$ electrical energy</p>"}, {"uid": "c4_q97", "ch": 4, "showCh": false, "id": "Q77", "section": "Extra Questions", "q": "What are the important non-renewable sources of energy?", "a": "<p>Fossil fuels, such as coal, oil, and natural gas, are important non-renewable sources of energy.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
