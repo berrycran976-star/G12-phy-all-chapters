@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Heat Transfer and Thermodynamics Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" selected>Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 5 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 5: Heat Transfer and Thermodynamics
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                အပူကူးပြောင်းခြင်း၊ သာမိုဒိုင်းနမစ် နိယာမများနှင့် Heat Engines
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch4.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 4</a>
+            <a href="quizzes_ch6.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 6 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch5";
+        const RAW_QUESTIONS = [{"uid": "c5_q1", "ch": 5, "showCh": false, "id": "R071 (1)", "section": "Review & Q&P", "q": "Some electric stoves have a flat ceramic surface with heating elements hidden beneath. A metallic pot placed directly over a heating element will be heated more effectively. Why is ceramic, with a conductivity less than that of a metal, but greater than that of a good insulator, an ideal choice for the stovetop?", "a": "<p>Since its conductivity is less than that of a metal and greater than that of a good insulator, it spreads the heat over the area above the heating elements, evening the temperature there, but does not spread the heat much beyond the heating elements.</p>"}, {"uid": "c5_q2", "ch": 5, "showCh": false, "id": "R071 (2)", "section": "Review & Q&P", "q": "Why does heat transfer take place between an object and its surrounding?", "a": "<p>Heat transfer takes place as a result of temperature difference.</p>"}, {"uid": "c5_q3", "ch": 5, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "What is thermal conductivity? Express its unit in SI system.", "a": "<p><strong>Thermal conductivity of a material:</strong> Thermal conductivity of a material can be defined as the rate of heat transfer per unit area per unit temperature gradient.</p><p>The unit of thermal conductivity in SI system is watt per metre per kelvin ($\\text{W m}^{-1}\\text{K}^{-1}$).</p>"}, {"uid": "c5_q4", "ch": 5, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "One end of a poker is placed in fire. After some time, the other end becomes hot. Explain how heat is transferred along the poker. Name the method of heat transfer in this case.", "a": "<p>At first, the end of the poker placed in the fire gains heat energy. Then the handle end of the poker becomes hot by successive distribution of heat energy among the adjacent parts.</p><p>The method of heat transfer in this case is <strong>heat conduction</strong>.</p>"}, {"uid": "c5_q5", "ch": 5, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "In cold regions, it is seen that birds on the branches of trees often ruffle their feathers. Explain the reason why the birds feel warm by ruffling their feathers.", "a": "<p>By ruffling, air can enter and be trapped among feathers. This trapped air serves as an insulator to prevent heat conduction and convection or heat transfer to the surrounding. Thus, the birds feel warm.</p>"}, {"uid": "c5_q6", "ch": 5, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "How does a blanket wrapped round your body keep you warm on a cold day?", "a": "<p>When we wrap a blanket round our body, it is the air that makes us warm by reducing heat losses. When wrapping the blanket, the blanket traps air in the blanket's fibres, and this trapped air acts as an insulator which prevents conduction and convection or heat transfer. Thus, a blanket wrapped round our body keeps us warm on a cold day.</p>"}, {"uid": "c5_q7", "ch": 5, "showCh": false, "id": "Q06", "section": "Review & Q&P", "q": "Explain with a diagram why an air conditioner should be best positioned high, near the ceiling of a room.", "a": "<div class='my-3 flex justify-center'><svg viewBox='0 0 260 150' class='w-60 h-auto bg-white rounded-xl border border-slate-200 p-2'><rect x='20' y='15' width='220' height='120' fill='#f8fafc' stroke='#334155' stroke-width='2'/><rect x='26' y='24' width='45' height='22' rx='4' fill='#cbd5e1' stroke='#1e293b' stroke-width='1.5'/><text x='36' y='39' font-size='10' font-weight='bold' fill='#0f172a'>A/C</text><path d='M 50 48 Q 50 95 120 115' fill='none' stroke='#2563eb' stroke-width='2.5'/><polygon points='120,115 110,117 113,108' fill='#2563eb'/><text x='55' y='105' font-size='11' font-weight='bold' fill='#2563eb'>cold air sinks</text><path d='M 190 110 Q 190 42 75 35' fill='none' stroke='#dc2626' stroke-width='2.5'/><polygon points='75,35 84,31 83,41' fill='#dc2626'/><text x='115' y='60' font-size='11' font-weight='bold' fill='#dc2626'>warm air rises</text></svg></div><p>The cold air that it blows will sink because it is denser than the warm air in the room. The warm air so displaced will rise up and be drawn into the air conditioner where it is cooled. It is then blown out as cold air to repeat the cycle.</p>"}, {"uid": "c5_q8", "ch": 5, "showCh": false, "id": "R071 (3)", "section": "Review & Q&P", "q": "What is the relation between the total emissive power of an object and the total emissive power of a black body when both are at the same temperature?", "a": "<p>$$e = \\frac{\\epsilon}{\\epsilon_0}$$</p><p>where $e =$ emissivity, $\\epsilon =$ the total emissive power of the object, $\\epsilon_0 =$ the total emissive power of the blackbody.</p>"}, {"uid": "c5_q9", "ch": 5, "showCh": false, "id": "Q03", "section": "Review & Q&P", "q": "If a person wearing ordinary clothes travels out into space, the liquid in the body will boil. Why? Explain how a space suit can prevent this effect.", "a": "<ul class='list-disc pl-5 space-y-1'><li>The boiling point of water at normal pressure is $100^{\\circ}\\text{C}$.</li><li>But the boiling point decreases as the pressure decreases.</li><li>At space, the pressure is very low and so is the boiling point.</li><li>Thus, if a person wearing ordinary clothes travels out into space, the liquid in the body will boil when heat enters his body.</li><li>To prevent this, a space suit is constructed to make sure there is no heat transfer between the man and his environment (and maintains pressure).</li></ul>"}, {"uid": "c5_q10", "ch": 5, "showCh": false, "id": "Q07", "section": "Review & Q&P", "q": "Why do we generally wear dark clothes in the winter, and light-coloured clothes in the summer?", "a": "<p>Dark clothes absorb more heat than light-coloured clothes. In winter, wearing dark clothes helps us to absorb the required heat for our bodies.</p><p>In the summer, wearing light-coloured clothes reflects most of the heat falling on them, and our bodies do not get too much heat, therefore we don't feel too hot.</p>"}, {"uid": "c5_q11", "ch": 5, "showCh": false, "id": "R076 (1)", "section": "Review & Q&P", "q": "How do heat transfer and internal energy differ?", "a": "<p>Heat transfer is energy in transit. Heat transfer is not stored as such in a system.</p><p>The internal energy of a system is the sum of the energies of all the constituent particles. The internal energy can be stored in a system.</p>"}, {"uid": "c5_q12", "ch": 5, "showCh": false, "id": "R076 (2)", "section": "Review & Q&P", "q": "When heat transfers into a system, is the energy stored as heat? Explain.", "a": "<p>No. When heat transfers into a system, some of the heat does work and the rest is used to increase the internal energy of the system.</p>"}, {"uid": "c5_q13", "ch": 5, "showCh": false, "id": "R076 (3)", "section": "Review & Q&P", "q": "Why does the temperature of a gas increase when it is adiabatically compressed?", "a": "<p>In an adiabatic process, $Q = 0$, so from the first law, $\\Delta U = -W$.</p><p>When the gas is compressed, it does negative work ($W < 0$). Its internal energy increases, and its temperature increases. The change in temperature is directly proportional to the change in internal energy.</p>"}, {"uid": "c5_q14", "ch": 5, "showCh": false, "id": "R082", "section": "Review & Q&P", "q": "Is a temperature difference necessary to operate a heat engine? Explain.", "a": "<p>Yes. A temperature difference is necessary to operate a heat engine. The heat engine absorbs heat from the high-temperature reservoir and releases some part of the absorbed heat into the low-temperature reservoir. Heat only transfers between reservoirs which have a temperature difference. Thus, a temperature difference is necessary.</p>"}, {"uid": "c5_q15", "ch": 5, "showCh": false, "id": "Q16", "section": "Review & Q&P", "q": "Mention the most important condition for a process to be reversible in thermodynamics.", "a": "<p>The most important condition for a process to be reversible in thermodynamics is that the process should be carried out infinitesimally slowly and the driving force should be small enough to maintain a state of equilibrium.</p>"}, {"uid": "c5_q16", "ch": 5, "showCh": false, "id": "Q08 (i)", "section": "Review & Q&P", "q": "Can you warm a kitchen in winter by leaving the oven door open?", "a": "<p>We can warm a kitchen in winter by leaving the oven door open. The oven heating elements radiate heat energy into the oven cavity. If the oven door is open, the heat will go out of the oven cavity and heat the kitchen.</p>"}, {"uid": "c5_q17", "ch": 5, "showCh": false, "id": "Q08 (ii)", "section": "Review & Q&P", "q": "Can you cool the kitchen on a hot summer day by leaving the refrigerator door open? Explain.", "a": "<p>We cannot cool the kitchen by leaving the refrigerator door open. The refrigerator removes heat from its interior to the outside. If the door is open, the temperature in the refrigerator will get higher. The refrigerator has to exhaust more heat and the room will get warmer.</p>"}, {"uid": "c5_q18", "ch": 5, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "How many basic ways of heat transfer are there? Express them.", "a": "<p>There are three basic ways of heat transfer: heat conduction, heat convection and heat radiation.</p>"}, {"uid": "c5_q19", "ch": 5, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What is heat conduction?", "a": "<p>Heat conduction is one mode of energy transfer. The individual parts of a medium do not move as a whole in heat conduction. Heat energy is transferred by successive distribution among the adjacent parts in heat conduction.</p>"}, {"uid": "c5_q20", "ch": 5, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "Why are metals generally very good conductors of heat?", "a": "<p>Metals have many free electrons. Free electrons can carry thermal energy (as well as electricity) rapidly. Thus, metals are generally very good conductors of heat.</p>"}, {"uid": "c5_q21", "ch": 5, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "How does heat transfer occur if a teaspoon is put into a hot cup of tea?", "a": "<p>At first, the end of the spoon placed in the hot tea gains heat energy. Then the handle end of the spoon becomes hot by successive distribution of heat energy among the adjacent parts. The method of heat transfer in this case is heat conduction.</p>"}, {"uid": "c5_q22", "ch": 5, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "Define thermal conductivity.", "a": "<p>The thermal conductivity of a material can be defined as the rate of heat transfer per unit area per unit temperature gradient.</p>"}, {"uid": "c5_q23", "ch": 5, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "State Fourier's law of heat conduction.", "a": "<p>This law states that the rate of heat flow per unit area (heat flux density) is proportional to the magnitude of the temperature gradient. The negative sign indicates that the temperature $T$ must decrease as the distance $x$ increases.</p><p>In mathematical form: $$\\frac{H}{A} = -k\\frac{dT}{dx}$$ where $\\frac{H}{A} =$ the rate of heat flow per unit area (heat flux density), $k =$ the thermal conductivity of the material, $dT =$ change in temperature, $dx =$ change in length.</p>"}, {"uid": "c5_q24", "ch": 5, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "What is heat convection?", "a": "<p>Heat convection is the flow of heat through a fluid from places of higher temperature to places of lower temperature by the movement of the fluid itself.</p>"}, {"uid": "c5_q25", "ch": 5, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "How are convection currents set up in heat convection?", "a": "<p>Convection currents are set up in the fluid because the hotter part of the fluid is not as dense as the cooler part, so there is an upward buoyant force on the hotter fluid, making it rise while the cooler and denser fluid sinks.</p>"}, {"uid": "c5_q26", "ch": 5, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "Express the basic equation for the rate of convection heat transfer.", "a": "<p>The basic equation for the rate of convection heat transfer is known as Newton's law of cooling: $$H_{\\text{conv}} = q A (T_2 - T_1)$$ where $H_{\\text{conv}}$ is the rate of heat convection, $A$ is the surface area of the object being cooled or heated, $q$ is the convective heat transfer coefficient (heat convection constant), $T_2$ is the temperature of the surrounding fluid, $T_1$ is the surface temperature of the object.</p>"}, {"uid": "c5_q27", "ch": 5, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "What is the SI unit of the convective heat transfer coefficient?", "a": "<p>Watt per metre squared per kelvin ($\\text{W m}^{-2}\\text{K}^{-1}$).</p>"}, {"uid": "c5_q28", "ch": 5, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "Explain the sign convention for the rate of heat convection.", "a": "<p>If the temperature of the object is less than the temperature of the surroundings, heat is gained by the object and the rate of heat convection is positive.</p><p>If the temperature of the object is greater than the temperature of the surroundings, heat is lost by the object, and the rate of heat convection is negative.</p>"}, {"uid": "c5_q29", "ch": 5, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Why is the weather fair at the base of mountain ranges?", "a": "<p>It is because the hot air in those regions rises and is replaced by cooler air which blows across the water surface. This process occurs due to heat convection.</p>"}, {"uid": "c5_q30", "ch": 5, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "Why is the weather fair near lakes and ponds?", "a": "<p>It is because the hot air in those regions rises and is replaced by cooler air which blows across the water surface. This process occurs due to heat convection.</p>"}, {"uid": "c5_q31", "ch": 5, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "Why is the weather fair at the sea coasts?", "a": "<p>It is because the hot air in those regions rises and is replaced by cooler air which blows across the water surface. This process occurs due to heat convection.</p>"}, {"uid": "c5_q32", "ch": 5, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What do you understand by heat radiation?", "a": "<p>Heat radiation is a transfer of heat that does not require a material medium. Heat is transferred by thermal radiation which are electromagnetic waves that pass through a medium or even vacuum.</p>"}, {"uid": "c5_q33", "ch": 5, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "What is a blackbody?", "a": "<p>An object which can absorb all the electromagnetic radiation falling upon it is called a blackbody.</p>"}, {"uid": "c5_q34", "ch": 5, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What is blackbody radiation?", "a": "<p>The radiation emitted by a blackbody is called blackbody radiation.</p>"}, {"uid": "c5_q35", "ch": 5, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "Explain the total emissive power.", "a": "<p>The total emissive power is the total radiant energy of different wavelengths emitted from a unit area of the surface of a body in one second.</p>"}, {"uid": "c5_q36", "ch": 5, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "State Stefan-Boltzmann's law.", "a": "<p>The total emissive power of a blackbody is directly proportional to the fourth power of absolute temperature: $$\\epsilon_0 = \\sigma T^4$$ where $\\epsilon_0 =$ total emissive power of a blackbody, $T =$ absolute temperature of the blackbody, $\\sigma =$ Stefan's constant.</p>"}, {"uid": "c5_q37", "ch": 5, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "What is emissivity?", "a": "<p>The emissivity is defined as the ratio of the total emissive power of an object to that of the blackbody, at the same temperature and wavelength.</p>"}, {"uid": "c5_q38", "ch": 5, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Give an example of a thermodynamic system.", "a": "<p>A good example of a thermodynamic system is a gas confined by a piston in a cylinder. If the gas is heated, it will expand, doing work on the piston; this is one example of how a thermodynamic system can do work.</p>"}, {"uid": "c5_q39", "ch": 5, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "State the Zeroth law of thermodynamics.", "a": "<p>The Zeroth law of thermodynamics states that when two objects are separately in thermodynamic equilibrium with a third object, they all are in thermodynamic equilibrium with each other.</p>"}, {"uid": "c5_q40", "ch": 5, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "State the First law of thermodynamics.", "a": "<p>The change in internal energy $\\Delta U$ of a system is equal to the net heat flow $Q$ into the system minus the total work done $W$ by the system. In symbols: $$\\Delta U = Q - W$$</p>"}, {"uid": "c5_q41", "ch": 5, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "What is the internal energy of a system?", "a": "<p>The internal energy of a system is defined as the sum of the energies of all the constituent particles.</p>"}, {"uid": "c5_q42", "ch": 5, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "Write down the formula for the internal energy of an ideal monoatomic gas.", "a": "<p>$$U = \\frac{3}{2} N k_B T = \\frac{3}{2} N \\frac{R}{N_A} T = \\frac{3}{2} n R T$$ where $N =$ number of particles of an ideal gas, $N_A =$ Avogadro's number, $T =$ absolute temperature, $R =$ universal (ideal) gas constant, $n = \\frac{N}{N_A} =$ number of moles, $k_B = \\frac{R}{N_A} =$ Boltzmann constant.</p>"}, {"uid": "c5_q43", "ch": 5, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "Explain the thermodynamic process.", "a": "<p>A thermodynamic process may be defined as a change from one equilibrium state of a system to another. During such a process, a system starts from an initial state $i$ (pressure $p_i$, volume $V_i$, and temperature $T_i$) and passes through various quasi-static states to a final state $f$ (pressure $p_f$, volume $V_f$, and temperature $T_f$).</p>"}, {"uid": "c5_q44", "ch": 5, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What is a quasi-static process?", "a": "<p>In thermodynamics, a quasi-static process (also known as a quasi-equilibrium process) is a thermodynamic process that happens slowly enough for the system to remain in internal physical thermodynamic equilibrium.</p>"}, {"uid": "c5_q45", "ch": 5, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "What is another name for a quasi-static process?", "a": "<p>Quasi-equilibrium process.</p>"}, {"uid": "c5_q46", "ch": 5, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "Give an example of an isobaric process.", "a": "<p>An example of an isobaric process is a gas being slowly heated or cooled, confined by a piston in a cylinder.</p>"}, {"uid": "c5_q47", "ch": 5, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "Derive the formula for the work done by the system for the isobaric process.", "a": "<p>In an isobaric process, pressure $p$ is constant, so the work is: $$W = \\int_{V_i}^{V_f} p\\,dV = p \\int_{V_i}^{V_f} dV = p[V]_{V_i}^{V_f} = p(V_f - V_i) = p\\Delta V$$</p>"}, {"uid": "c5_q48", "ch": 5, "showCh": false, "id": "Q31", "section": "Extra Questions", "q": "Give an example of an isochoric (isovolumetric) process.", "a": "<p>An example of an isochoric (isovolumetric) process is the heating of a gas in a rigid, closed container.</p>"}, {"uid": "c5_q49", "ch": 5, "showCh": false, "id": "Q32", "section": "Extra Questions", "q": "Express the change in internal energy in terms of molar heat capacity.", "a": "<p>$$\\Delta U = Q = n C_v \\Delta T$$ where $\\Delta U =$ change in internal energy, $Q =$ heat flow, $n =$ number of moles, $C_v =$ molar heat capacity at constant volume, $\\Delta T =$ change in temperature.</p>"}, {"uid": "c5_q50", "ch": 5, "showCh": false, "id": "Q33", "section": "Extra Questions", "q": "How can an adiabatic process be done?", "a": "<p>This process can be done either by enclosing the system in a thermal insulator (adiabatic container), or by carrying out the process so quickly that there is not enough time for heat transfer.</p>"}, {"uid": "c5_q51", "ch": 5, "showCh": false, "id": "Q34", "section": "Extra Questions", "q": "What is a heat engine?", "a": "<p>A heat engine is a system that converts heat to mechanical energy, which can then be used to do mechanical work.</p>"}, {"uid": "c5_q52", "ch": 5, "showCh": false, "id": "Q35", "section": "Extra Questions", "q": "What is a cycle?", "a": "<p>A series of processes in which a system is brought back to its initial state is called a cycle.</p>"}, {"uid": "c5_q53", "ch": 5, "showCh": false, "id": "Q36", "section": "Extra Questions", "q": "Derive the formula for the work done by the system of an isothermal process.", "a": "<p>$$W = \\int_{V_i}^{V_f} p\\,dV = \\int_{V_i}^{V_f} \\frac{nRT}{V}\\,dV = nRT \\int_{V_i}^{V_f} \\frac{1}{V}\\,dV = nRT[\\ln V]_{V_i}^{V_f} = nRT(\\ln V_f - \\ln V_i) = nRT\\ln\\left(\\frac{V_f}{V_i}\\right)$$</p>"}, {"uid": "c5_q54", "ch": 5, "showCh": false, "id": "Q37", "section": "Extra Questions", "q": "What is the purpose of a heat engine?", "a": "<p>The purpose of a heat engine is to deliver work continuously to the outside by performing the same cycle over and over again.</p>"}, {"uid": "c5_q55", "ch": 5, "showCh": false, "id": "Q38", "section": "Extra Questions", "q": "What are the two types of heat engines?", "a": "<p>The internal combustion engine and the steam engine.</p>"}, {"uid": "c5_q56", "ch": 5, "showCh": false, "id": "Q39", "section": "Extra Questions", "q": "Define thermal efficiency.", "a": "<p>Thermal efficiency for a heat engine is the ratio of work output to heat input: $$\\text{Thermal efficiency} = \\frac{\\text{work output}}{\\text{heat input}}$$ $$\\eta = \\frac{W}{Q_H}$$ where $\\eta =$ thermal efficiency, $W =$ work output, $Q_H =$ heat input.</p>"}, {"uid": "c5_q57", "ch": 5, "showCh": false, "id": "Q40", "section": "Extra Questions", "q": "How many types of internal combustion engines are there? Express them.", "a": "<p>There are two types of internal combustion engines (gasoline engines and diesel engines) that generate the input heat by the combustion of fuel within the engine itself.</p>"}, {"uid": "c5_q58", "ch": 5, "showCh": false, "id": "Q41", "section": "Extra Questions", "q": "What are the two types of internal combustion engines?", "a": "<p>Gasoline engines and diesel engines.</p>"}, {"uid": "c5_q59", "ch": 5, "showCh": false, "id": "Q42", "section": "Extra Questions", "q": "Why is the gasoline engine called a four-stroke engine?", "a": "<p>Because the cycle of the gasoline engine involves the performance of six processes, of which four processes require the motion of the piston and are called strokes.</p>"}, {"uid": "c5_q60", "ch": 5, "showCh": false, "id": "Q43", "section": "Extra Questions", "q": "Explain the working function of the intake stroke of a gasoline engine.", "a": "<p>A mixture of gasoline vapour and air is drawn into the cylinder by the suction stroke of the piston.</p>"}, {"uid": "c5_q61", "ch": 5, "showCh": false, "id": "Q44", "section": "Extra Questions", "q": "Explain the working function of the compression stroke of a gasoline engine.", "a": "<p>The mixture of gasoline vapour and air is compressed until its pressure and temperature rise considerably. This is accomplished by the compression of the piston.</p>"}, {"uid": "c5_q62", "ch": 5, "showCh": false, "id": "Q45", "section": "Extra Questions", "q": "Explain the working function of the explosion process of a gasoline engine.", "a": "<p>Combustion of the hot mixture is caused to take place very rapidly by an electric spark. The combustion products attain a very high pressure and temperature, but the volume remains unchanged. The piston does not move during this process.</p>"}, {"uid": "c5_q63", "ch": 5, "showCh": false, "id": "Q46", "section": "Extra Questions", "q": "Explain the working function of the power stroke of a gasoline engine.", "a": "<p>The hot combustion products expand and push the piston out, thus suffering a drop in pressure and temperature.</p>"}, {"uid": "c5_q64", "ch": 5, "showCh": false, "id": "Q47", "section": "Extra Questions", "q": "Explain the working function of the valve exhaust process of a gasoline engine.", "a": "<p>The combustion products at the end of the power stroke are still at a higher pressure and temperature than the outside. An exhaust valve allows some gas to escape until the pressure drops to that of the atmosphere. The piston does not move during this process.</p>"}, {"uid": "c5_q65", "ch": 5, "showCh": false, "id": "Q48", "section": "Extra Questions", "q": "Explain the working function of the exhaust stroke of a gasoline engine.", "a": "<p>The piston pushes almost all the remaining combustion products out of the cylinder by exerting a pressure sufficiently larger than that of the outside pressure.</p>"}, {"uid": "c5_q66", "ch": 5, "showCh": false, "id": "Q49", "section": "Extra Questions", "q": "Express the equation for the theoretical efficiency of a gasoline engine.", "a": "<p>$$\\eta = 1 - \\frac{1}{\\left(\\frac{V_1}{V_2}\\right)^{\\gamma - 1}}$$ where $\\frac{V_1}{V_2} =$ compression ratio, $\\gamma = \\frac{C_p}{C_v} =$ the ratio of molar heat capacities.</p>"}, {"uid": "c5_q67", "ch": 5, "showCh": false, "id": "Q50", "section": "Extra Questions", "q": "Why are all real engines less efficient than Carnot engine?", "a": "<p>All real engines are less efficient than Carnot engine because they do not operate through a reversible cycle, and the efficiency is further reduced due to friction and energy losses by conduction.</p>"}, {"uid": "c5_q68", "ch": 5, "showCh": false, "id": "Q51", "section": "Extra Questions", "q": "What is a reversible process?", "a": "<p>In a reversible process, the system undergoing the process can be returned to its initial condition along the same path on the $p$-$V$ diagram, and every point along this path is in an equilibrium state.</p>"}, {"uid": "c5_q69", "ch": 5, "showCh": false, "id": "Q52", "section": "Extra Questions", "q": "What is the most important condition for a process to be reversible in thermodynamics?", "a": "<p>The most important condition for a process to be reversible in thermodynamics is that the process should be carried out infinitesimally slowly and the driving force should be small enough to maintain a state of equilibrium.</p>"}, {"uid": "c5_q70", "ch": 5, "showCh": false, "id": "Q53", "section": "Extra Questions", "q": "What is the working substance of a Carnot engine?", "a": "<p>The working substance of a Carnot engine is an ideal gas contained in a cylinder fitted with a movable piston at one end.</p>"}, {"uid": "c5_q71", "ch": 5, "showCh": false, "id": "Q54", "section": "Extra Questions", "q": "Explain step 1 of the Carnot cycle.", "a": "<p>Reversible isothermal expansion of the gas at the hot temperature $T_H$ (isothermal heat addition). The gas is placed in thermal contact with a heat reservoir at temperature $T_H$. During this step the expanding gas causes the piston to do work on the surroundings. The gas expansion is propelled by the absorption of heat from the high-temperature reservoir.</p>"}, {"uid": "c5_q72", "ch": 5, "showCh": false, "id": "Q55", "section": "Extra Questions", "q": "Explain step 2 of the Carnot cycle.", "a": "<p>Reversible adiabatic expansion of the gas. For this step, the piston and the cylinder are assumed to be thermally insulated so that no heat is gained or lost. The gas continues to expand, doing work on the surroundings. The gas expansion causes it to cool to the cold temperature $T_C$.</p>"}, {"uid": "c5_q73", "ch": 5, "showCh": false, "id": "Q56", "section": "Extra Questions", "q": "Explain step 3 of the Carnot cycle.", "a": "<p>Reversible isothermal compression of the gas at the cold temperature $T_C$ (isothermal heat rejection). The gas is in thermal contact with a low-temperature reservoir at temperature $T_C$. Now, the surroundings do work on the gas, compressing it and causing heat to flow out of the gas to the low-temperature reservoir.</p>"}, {"uid": "c5_q74", "ch": 5, "showCh": false, "id": "Q57", "section": "Extra Questions", "q": "Explain step 4 of the Carnot cycle.", "a": "<p>Reversible adiabatic compression of the gas; once again the piston and the cylinder are assumed to be thermally insulated. During this step, the surroundings do work on the gas, compressing it and causing the temperature to rise to $T_H$. At this point the gas is in the same state as at the start of step 1.</p>"}, {"uid": "c5_q75", "ch": 5, "showCh": false, "id": "Q58", "section": "Extra Questions", "q": "What is the thermal efficiency of a heat engine?", "a": "<p>The thermal efficiency of a heat engine is the ratio of the work output to the heat input: $$\\eta = \\frac{W}{Q_H} = \\frac{Q_H - Q_C}{Q_H} = 1 - \\frac{Q_C}{Q_H}$$ where $\\eta =$ thermal efficiency, $W =$ work output, $Q_H =$ heat input, $Q_C =$ heat rejected.</p>"}, {"uid": "c5_q76", "ch": 5, "showCh": false, "id": "Q59", "section": "Extra Questions", "q": "State Carnot's theorem.", "a": "<p>Carnot's theorem states that no engine operating between two heat reservoirs can be more efficient than a Carnot engine operating between the same reservoirs: $$\\eta_C = 1 - \\frac{T_C}{T_H}$$ where $\\eta_C =$ maximum theoretical efficiency, $T_C =$ cold temperature, $T_H =$ high temperature.</p>"}, {"uid": "c5_q77", "ch": 5, "showCh": false, "id": "Q60", "section": "Extra Questions", "q": "Write down the equation that gives the maximum efficiency possible for any engine using two temperatures.", "a": "<p>$$\\eta_C = 1 - \\frac{T_C}{T_H}$$ where $\\eta_C =$ maximum theoretical efficiency, $T_C =$ cold temperature, $T_H =$ high temperature.</p>"}, {"uid": "c5_q78", "ch": 5, "showCh": false, "id": "Q61", "section": "Extra Questions", "q": "State a corollary to Carnot's theorem.", "a": "<p>A corollary to Carnot's theorem states that all reversible engines operating between the same heat reservoirs are equally efficient.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
