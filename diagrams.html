@@ -854,45 +854,23 @@
       .toolbar, .card-actions, .toast { display: none !important; }
       .diag-card { break-inside: avoid; box-shadow: none; }
     }
-  .home-button {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 9999;
+.home-link {
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 11px 18px;
-  background: #2563eb;
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: 0.2s;
+  justify-content: center;
+  background: var(--accent);
+  color: white !important;
+  border-color: var(--accent);
 }
 
-.home-button:hover {
-  background: #1d4ed8;
-  transform: translateY(-2px);
-}
-
-@media print {
-  .home-button {
-    display: none;
-  }
+.home-link:hover {
+  opacity: 0.85;
+  color: white !important;
 }
 </style>
 </head>
 <body>
-   <a
-  href="https://berrycran976-star.github.io/G12-phy-all-chapters/index.html"
-  class="home-button"
-  title="Return to Main Menu"
->
-  🏠 Main Menu
-</a> 
 <svg aria-hidden="true" height="0" id="shared-svg-defs" style="position:absolute;pointer-events:none;" width="0">
 <defs>
 <marker id="arr-ink" markerheight="6.5" markerwidth="6.5" orient="auto-start-reverse" refx="8.5" refy="5" viewbox="0 0 10 10">
@@ -978,6 +956,12 @@
 <nav aria-label="Diagram Controls" class="toolbar">
 <div class="toolbar-inner">
 <div class="filter-pills" id="chapterFilters">
+    <a
+  href="https://berrycran976-star.github.io/G12-phy-all-chapters/index.html"
+  class="pill home-link"
+>
+  🏠 Home
+</a>
 <button class="pill active" data-filter="all" type="button">All (87)</button>
 <button class="pill" data-filter="1" type="button">Ch 1</button>
 <button class="pill" data-filter="2" type="button">Ch 2</button>
