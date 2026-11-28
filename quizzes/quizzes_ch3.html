@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3: Fluid Dynamics Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" selected>Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 3 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 3: Fluid Dynamics
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                အရည်နှင့်ဓာတ်ငွေ့များ ရွေ့လျားမှု၊ Continuity နှင့် Bernoulli's Equation
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch2.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 2</a>
+            <a href="quizzes_ch4.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 4 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch3";
+        const RAW_QUESTIONS = [{"uid": "c3_q1", "ch": 3, "showCh": false, "id": "R024 (1)", "section": "Review & Q&P", "q": "Is motor car brake oil compressible or non-compressible?", "a": "<p>Motor car brake oil is non-compressible.</p>"}, {"uid": "c3_q2", "ch": 3, "showCh": false, "id": "R024 (2)", "section": "Review & Q&P", "q": "Are gases compressible or non-compressible?", "a": "<p>Gases are compressible.</p>"}, {"uid": "c3_q3", "ch": 3, "showCh": false, "id": "R024 (3)", "section": "Review & Q&P", "q": "What is the difference between laminar flow and turbulent flow?", "a": "<div class='overflow-x-auto'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>Laminar Flow</th><th class='p-2 border border-slate-300 text-left'>Turbulent Flow</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>Fluid particles are moving steady in smooth paths in layers.</td><td class='p-2 border border-slate-300'>Paths of the fluid particles are irregular.</td></tr><tr><td class='p-2 border border-slate-300'>Each layer moves smoothly past the adjacent layers with no mixing.</td><td class='p-2 border border-slate-300'>Their directions are always changing or whirling.</td></tr><tr><td class='p-2 border border-slate-300'>Streamlines do not cross each other.</td><td class='p-2 border border-slate-300'>Streamlines cross each other.</td></tr><tr><td class='p-2 border border-slate-300'>Every fluid particle arriving at a given point has the same velocity.</td><td class='p-2 border border-slate-300'>The speed of the fluid at a point is continuously undergoing changes in both magnitude and direction.</td></tr></tbody></table></div>"}, {"uid": "c3_q4", "ch": 3, "showCh": false, "id": "R024 (4)", "section": "Review & Q&P", "q": "At a river junction, water streams are whirling; is it laminar or turbulent?", "a": "<p>It is turbulent.</p>"}, {"uid": "c3_q5", "ch": 3, "showCh": false, "id": "R027", "section": "Review & Q&P", "q": "Why does the river flow faster in passing the defile (narrow river passage)?", "a": "<p>By the equation of continuity, $A_1 v_1 = A_2 v_2$.</p><p>The smaller the area, the faster is the speed of water flow.</p>"}, {"uid": "c3_q6", "ch": 3, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "How are the flow rate and the fluid velocity related?", "a": "<p>The flow rate is $\\dfrac{V}{t} = A v$</p><p>where $V =$ the volume of the fluid, $t =$ time taken, $A =$ the area of the pipe, $v =$ the velocity of the fluid.</p>"}, {"uid": "c3_q7", "ch": 3, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "A perfume bottle or atomizer sprays the fluid that is in the bottle. How does the fluid rise up in the vertical tube? [p. 40]", "a": "<p>When the piston of the sprayer is pressed, the fast moving air causes a low pressure at the tip of the nozzle. The liquid inside the container is at a higher pressure, and therefore rushes up through the vertical tube and out the nozzle.</p>"}, {"uid": "c3_q8", "ch": 3, "showCh": false, "id": "R030 (1)", "section": "Review & Q&P", "q": "As the water in a level pipe passes from a narrower cross-sectional area of the pipe to a wider cross-sectional area, does the pressure change? Explain.", "a": "<p>Let $1 =$ the point at the narrower section, and $2 =$ the point at the wider section.</p><p>By continuity equation, $A_1 v_1 = A_2 v_2$. Since $A_1 < A_2$, we have $v_1 > v_2$.</p><p>By Bernoulli's theorem: $$p_1 + \\frac{1}{2}\\rho v_1^2 + \\rho g h_1 = p_2 + \\frac{1}{2}\\rho v_2^2 + \\rho g h_2$$</p><p>For a level pipe, $h_1 = h_2$, so: $$p_1 + \\frac{1}{2}\\rho v_1^2 = p_2 + \\frac{1}{2}\\rho v_2^2$$</p><p>Since $\\frac{1}{2}\\rho v_1^2 > \\frac{1}{2}\\rho v_2^2$, it follows that $p_1 < p_2$. The pressure at the narrower section is smaller than that at the wider section.</p>"}, {"uid": "c3_q9", "ch": 3, "showCh": false, "id": "R033 (1)", "section": "Review & Q&P", "q": "Can fluid flow from lower pressure to higher pressure (in a flow tube)?", "a": "<p>Fluid can flow from lower pressure to higher pressure only in a flow tube that obeys Bernoulli's theorem.</p><p>Assume the fluid is flowing from region 1 to region 2 in a flow tube. By Bernoulli's theorem:</p><p>$$p_1 + \\frac{1}{2}\\rho v_1^2 + \\rho g h_1 = p_2 + \\frac{1}{2}\\rho v_2^2 + \\rho g h_2$$</p><p>If $\\frac{1}{2}\\rho v_1^2 + \\rho g h_1 > \\frac{1}{2}\\rho v_2^2 + \\rho g h_2$, then $p_1 < p_2$. Thus, the fluid can flow from lower pressure to higher pressure in a flow tube.</p>"}, {"uid": "c3_q10", "ch": 3, "showCh": false, "id": "R035 (1)", "section": "Review & Q&P", "q": "On which factors does the viscosity of a liquid depend? [p. 35]", "a": "<p>For Newtonian liquids, viscosity depends on the cohesive forces between the molecules, and the temperature of the liquid.</p><p>For non-Newtonian liquids, viscosity depends on cohesive forces between the molecules, the temperature of the liquid, and the shear stress acting on the liquid.</p>"}, {"uid": "c3_q11", "ch": 3, "showCh": false, "id": "R035 (2)", "section": "Review & Q&P", "q": "How does the temperature affect the viscosity of a fluid? [p. 35]", "a": "<p>The viscosity of liquids decreases rapidly with an increase in temperature.<br>The viscosity of gases increases with an increase in temperature.</p>"}, {"uid": "c3_q12", "ch": 3, "showCh": false, "id": "Q06", "section": "Review & Q&P", "q": "Derive the expression for the terminal velocity when a ball of radius $r$ is dropped through a liquid of viscosity $\\eta$ and density $\\rho$. [p. 40]", "a": "<p>Consider the fall of a sphere ball. The forces acting on the object are:</p><ul class='list-disc pl-5 space-y-1'><li>Weight of the sphere ball: $w = \\frac{4}{3}\\pi r^3 \\rho_1 g$</li><li>Upward thrust: $F_1 = \\frac{4}{3}\\pi r^3 \\rho_2 g$</li><li>Drag force: $F = 6\\pi \\eta r v$</li></ul><p>where $\\rho_1 =$ density of the sphere, $\\rho_2 =$ density of the liquid, $g =$ acceleration due to gravity, $r =$ radius of the sphere, $\\eta =$ viscosity of the liquid, $v =$ terminal velocity.</p><p>At terminal velocity, the upward and downward forces are in balance: $$F_1 + F = w$$ $$\\frac{4}{3}\\pi r^3 \\rho_2 g + 6\\pi \\eta r v = \\frac{4}{3}\\pi r^3 \\rho_1 g$$ $$6\\pi \\eta r v = \\frac{4}{3}\\pi r^3 (\\rho_1 - \\rho_2)g$$ $$v = \\frac{2 g r^2 (\\rho_1 - \\rho_2)}{9\\eta}$$</p>"}, {"uid": "c3_q13", "ch": 3, "showCh": false, "id": "R039 (1)", "section": "Review & Q&P", "q": "Water rises in a capillary tube, whereas mercury falls in the same tube. Explain. [p. 39]", "a": "<p>In the case of water, the cohesive force between the water molecules is much less than the adhesive force between the water molecules and the molecules of the tube material. So, water easily rises up against gravity.</p><p>In the case of mercury, the cohesive force between the mercury molecules is much stronger than the adhesive force between the mercury molecules and the molecules of the tube material. So, mercury cannot rise up against gravity and falls.</p><p>Water is a liquid that wets glass capillary tubes; mercury is one that does not.</p>"}, {"uid": "c3_q14", "ch": 3, "showCh": false, "id": "Q10", "section": "Review & Q&P", "q": "Which force causes capillary action rise? [p. 40]", "a": "<p>Capillary action occurs when the adhesive force between the liquid molecules and the molecules of the tube wall is stronger than the cohesive forces between the liquid molecules.</p>"}, {"uid": "c3_q15", "ch": 3, "showCh": false, "id": "Q11", "section": "Review & Q&P", "q": "How does the temperature affect capillary action? [p. 40]", "a": "<p>Capillary rise: $$h = \\frac{2\\gamma \\cos\\theta}{\\rho g r}$$</p><ul class='list-disc pl-5 space-y-1'><li>If the temperature is increased, the viscosity of the liquid decreases and more capillary rise will occur.</li><li>If the temperature is increased, the surface tension ($\\gamma$) of the liquid generally decreases and less capillary rise will occur.</li><li>If the temperature is increased, the density of most liquids decreases. By the formula, this will favour more capillary rise. However, the effect of the density is much less than the effect of the viscosity and the surface tension.</li></ul><p>So the effect of temperature on the capillary rise is the combined effects of some temperature-dependent factors.</p>"}, {"uid": "c3_q16", "ch": 3, "showCh": false, "id": "Q14", "section": "Review & Q&P", "q": "What will happen to the rise of liquid in a capillary tube if the radius of the tube is (i) increased (ii) decreased? [p. 40]", "a": "<p><strong>(i)</strong> decrease &nbsp;&nbsp; <strong>(ii)</strong> increase</p>"}, {"uid": "c3_q17", "ch": 3, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "What are the parts of the study of fluids?", "a": "<p>The study of fluids has two parts: the statics and the dynamics.</p>"}, {"uid": "c3_q18", "ch": 3, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What are the topics included in fluid statics?", "a": "<p>Fluid statics includes atmospheric pressure, liquid pressure, Archimedes' principle, and Pascal's law.</p>"}, {"uid": "c3_q19", "ch": 3, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "Why is the motion of fluids an important application?", "a": "<p>Because it is applied in our daily life; such as river flow, water distribution systems, gas pipelines, aviation (travels in air), and motion underneath the surface of water.</p>"}, {"uid": "c3_q20", "ch": 3, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "What do you understand by streamline?", "a": "<p>In the flow of fluids, the path of the flow of the fluid particles is called streamline.</p>"}, {"uid": "c3_q21", "ch": 3, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "What are the types of motion of the fluids?", "a": "<p>The motion of the fluids can be classified into two types: laminar flow and turbulent flow.</p>"}, {"uid": "c3_q22", "ch": 3, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "Explain laminar flow using a diagram.", "a": "<p>If the fluid particles are moving steady in smooth paths in layers, with each layer moving smoothly past the adjacent layers with no mixing, such a flow is called laminar flow. In this steady laminar flow, the streamlines do not cross each other and every fluid particle arriving at a given point has the same velocity.</p>"}, {"uid": "c3_q23", "ch": 3, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Explain turbulent flow using a diagram.", "a": "<p>If the flow or the path of the fluid particles are irregular, their direction is always changing or whirling, this fluid movement is called turbulent flow. In turbulent flow, the speed of the fluid at a point is continuously undergoing changes in both magnitude and direction.</p>"}, {"uid": "c3_q24", "ch": 3, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "Express the characteristics of ideal laminar fluid flow.", "a": "<ul class='list-disc pl-5 space-y-1'><li>The fluid is incompressible.</li><li>The flow has no friction, or friction may be neglected. (The internal friction in fluids is called viscosity; and hence, zero viscosity.)</li><li>The fluid flow is laminar (steady), and turbulent flow is not taken into account. (The sea breeze is a laminar flow and the storm is a turbulent flow.)</li></ul>"}, {"uid": "c3_q25", "ch": 3, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "Which physical quantities are related by Bernoulli's equation?", "a": "<p>In fluid dynamics, Bernoulli's equation relates the pressure, the flow speed, and the height for the steady (laminar) flow of an ideal incompressible fluid.</p>"}, {"uid": "c3_q26", "ch": 3, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "State Bernoulli's theorem.", "a": "<p>Bernoulli's theorem states that the sum of the pressure energy, the kinetic energy and the potential energy per unit volume of an incompressible, non-viscous fluid in a streamlined laminar flow remains constant.</p>"}, {"uid": "c3_q27", "ch": 3, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "Why is the airflow velocity high along the top surface and low along the bottom surface of a flying plane?", "a": "<p>The airflow moving above the top curved surface of the wing has a longer distance to travel and needs to go faster to have the same transit time as the air travelling along the lower flat surface (horizontal position).</p>"}, {"uid": "c3_q28", "ch": 3, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Explain how the roofs are flown away during cyclone.", "a": "<p>During cyclones, moving air gains speed above the roof of a house causing reduced pressure on the roof. Therefore, the pressure inside the house is greater, which can raise the roof.</p>"}, {"uid": "c3_q29", "ch": 3, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "What do you understand by viscosity?", "a": "<p>The resistance to fluid motion, or internal resistance of the fluid is called viscosity.</p>"}, {"uid": "c3_q30", "ch": 3, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "How does viscosity arise in fluids?", "a": "<p>Viscosity arises when there is relative motion between layers of the fluid.</p>"}, {"uid": "c3_q31", "ch": 3, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "Why does a fluid with a large viscosity resist motion?", "a": "<p>A fluid with large viscosity resists motion because its strong intermolecular forces give it a lot of internal friction, resisting the movement of layers past one another.</p>"}, {"uid": "c3_q32", "ch": 3, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "Why does a fluid with low viscosity flow easily?", "a": "<p>A fluid with low viscosity flows easily because its molecular makeup results in very little friction when it is in motion.</p>"}, {"uid": "c3_q33", "ch": 3, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What is the equivalent unit of pascal second?", "a": "<p>The equivalent unit of pascal second is newton second per metre squared ($\\text{N s m}^{-2}$).</p>"}, {"uid": "c3_q34", "ch": 3, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "What is dynamic viscosity?", "a": "<p>The dynamic viscosity is the fluid's resistance to flow when an external force is applied.</p>"}, {"uid": "c3_q35", "ch": 3, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What is kinematic viscosity?", "a": "<p>The kinematic viscosity is the resistive flow of a fluid under the weight of gravity.</p>"}, {"uid": "c3_q36", "ch": 3, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "State Newton's law of viscosity.", "a": "<p>Newton's law of viscosity states that the shear stress between the two adjacent layers of the fluid is directly proportional to the negative value of the velocity gradient between the same two adjacent fluid layers.</p><p>In symbols, shear stress $\\tau \\propto -\\frac{dv}{dy}$ (or) $$\\tau = -\\eta \\frac{dv}{dy}$$ where $\\tau =$ shear stress, $\\eta =$ coefficient of viscosity, $\\frac{dv}{dy} =$ the velocity gradient.</p>"}, {"uid": "c3_q37", "ch": 3, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Define shear stress.", "a": "<p>The shear stress is the shearing force per unit area: $$\\tau = \\frac{F}{A}$$ where $F =$ the shearing force acting between the two adjacent layers of a fluid, $A =$ the area of the fluid layer.</p>"}, {"uid": "c3_q38", "ch": 3, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "Define viscosity.", "a": "<p>The viscosity is the ratio of the shearing stress to the velocity gradient: $$\\eta = -\\frac{F/A}{dv/dy}$$ where $F =$ the shearing force, $\\eta =$ coefficient of viscosity, $A =$ the area of the fluid layer, $\\frac{dv}{dy} =$ the velocity gradient.</p>"}, {"uid": "c3_q39", "ch": 3, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "State Stoke's law.", "a": "<p>The drag force $F$ acting upward in resistance to the fall of a spherical object in a viscous liquid is: $$F = 6\\pi \\eta r v$$ where $\\eta =$ coefficient of viscosity, $r =$ radius of the sphere, $v =$ the terminal velocity.</p>"}, {"uid": "c3_q40", "ch": 3, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "Explain the simple way of measuring viscosity.", "a": "<p>A simple way of measuring viscosity is that a small sphere ball is dropped through the fluid and the time of fall and the distance of fall are measured. From the distance and the time of fall, the velocity can be determined.</p>"}, {"uid": "c3_q41", "ch": 3, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "What do you understand by surface tension?", "a": "<p>Surface tension is the tendency of the surface of a liquid to behave like a stretched elastic skin (or membrane).</p>"}, {"uid": "c3_q42", "ch": 3, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "Define surface tension.", "a": "<p>The surface tension is defined as the force per unit length that acts across any line on a surface tending to pull the surface apart: $$\\gamma = \\frac{F}{l}$$ where $F =$ force, $l =$ effective length, $\\gamma =$ surface tension.</p>"}, {"uid": "c3_q43", "ch": 3, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "Why can the surface tension be referred to as a force?", "a": "<p>The surface tension can also be referred to as a force because it is the tension between liquid molecules.</p>"}, {"uid": "c3_q44", "ch": 3, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "What is capillary action?", "a": "<p>Capillary action is defined as the spontaneous flow of a liquid into a narrow tube or porous material.</p>"}, {"uid": "c3_q45", "ch": 3, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "How is capillary action caused?", "a": "<p>Capillary action is caused by the combination of the cohesive forces of the liquid and the adhesive forces between the liquid and the tube material.</p>"}, {"uid": "c3_q46", "ch": 3, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "On which factors does the capillary rise depend?", "a": "<p>The height $h$ to which the liquid can be lifted is given by: $$h = \\frac{2\\gamma \\cos\\theta}{\\rho g r}$$ where $h =$ capillary rise, $\\gamma =$ surface tension, $\\theta =$ contact angle, $\\rho =$ density of the liquid, $g =$ gravitational acceleration, $r =$ radius of the tube.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
