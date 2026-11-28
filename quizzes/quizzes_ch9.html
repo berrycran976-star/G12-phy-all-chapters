@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 9: Capacitor and Capacitance Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" selected>Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 9 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 9: Capacitor and Capacitance
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                လျှပ်သိုနှင့် လျှပ်သိုသတ္တိ၊ Parallel-Plate Capacitors နှင့် Dielectrics
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch8.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 8</a>
+            <a href="quizzes_ch10.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 10 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch9";
+        const RAW_QUESTIONS = [{"uid": "c9_q1", "ch": 9, "showCh": false, "id": "R139", "section": "Review & Q&P", "q": "Which capacitor is used as a tuning capacitor?", "a": "<p>Variable capacitors.</p>"}, {"uid": "c9_q2", "ch": 9, "showCh": false, "id": "R140 (1)", "section": "Review & Q&P", "q": "When the charge on a capacitor is increased, does its capacitance increase? Explain.", "a": "<p>No. $C = \\frac{Q}{V} = \\text{constant}$. When the charge on a capacitor is increased, the potential difference also increases proportionally. The capacitance of a particular capacitor is constant.</p>"}, {"uid": "c9_q3", "ch": 9, "showCh": false, "id": "R140 (2)", "section": "Review & Q&P", "q": "A capacitor stores charge $Q$ at a potential difference $V$. What happens if the voltage applied to the capacitor is doubled?", "a": "<p>$C = \\frac{Q}{V} = \\text{constant}$. If the voltage applied to the capacitor is doubled, the charge will also be doubled. But the capacitance does not change.</p>"}, {"uid": "c9_q4", "ch": 9, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "What must be done to increase the capacitance of a capacitor?", "a": "<p>We have: $$C = \\frac{\\kappa \\varepsilon_0 A}{d}$$ where $C =$ capacitance of the capacitor, $\\kappa =$ dielectric constant of the insulating material between the plates, $\\varepsilon_0 =$ permittivity of vacuum, $A =$ area of each plate, $d =$ distance between the plates.</p><ol class='list-decimal pl-5 space-y-1'><li>The area of the plates ($A$) must be increased.</li><li>The distance between the plates ($d$) must be reduced.</li><li>An insulating material having a larger value of dielectric constant ($\\kappa$) must be inserted between the plates of the capacitor.</li></ol>"}, {"uid": "c9_q5", "ch": 9, "showCh": false, "id": "R144 (1)", "section": "Review & Q&P", "q": "When the distance between the two parallel plates having charges of equal magnitude and opposite signs is reduced, what will happen to the capacitance and the potential difference between the plates?", "a": "<p>$C_1 = \\kappa\\varepsilon_0\\frac{A}{d_1}$ and $C_2 = \\kappa\\varepsilon_0\\frac{A}{d_2}$. If $d_2 < d_1$, then $C_2 > C_1$ (capacitance increases).</p><p>If the capacitor is disconnected from the battery, the charge cannot change ($Q_1 = Q_2$, so $C_1 V_1 = C_2 V_2$). Since $C_2 > C_1$, $V_2 < V_1$ (the potential difference will decrease).</p><p>If the capacitor remains connected to the battery, the potential difference of the capacitor cannot change.</p>"}, {"uid": "c9_q6", "ch": 9, "showCh": false, "id": "R144 (3)", "section": "Review & Q&P", "q": "When an insulating material is inserted between the conductors of a capacitor in a vacuum, does its capacitance increase or decrease? Explain. [p. 144]", "a": "<p>$\\kappa = \\frac{C}{C_0}$, where $\\kappa =$ dielectric constant, $C =$ capacitance with insulating material, $C_0 =$ capacitance without insulating material.</p><p>Since $\\kappa > 1$, we have $C > C_0$. The capacitance of a capacitor <strong>increases</strong> when an insulating material is inserted between the conductors in a vacuum.</p>"}, {"uid": "c9_q7", "ch": 9, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "How does a dielectric affect the maximum operating voltage of a capacitor even though the physical size of the capacitor does not change? [p. 151]", "a": "<p>When a charged capacitor is disconnected from a battery, and the air medium between its plates is replaced by an insulating material (dielectric), the potential difference of the capacitor decreases. Since the charge $Q$ does not change, capacitance increases ($\\frac{C}{C_0} = \\frac{V_0}{V} = \\kappa$).</p><p>A dielectric increases the maximum operating voltage of a capacitor even though the physical size doesn't change because the dielectric is able to withstand a larger electric field (higher potential difference) between the plates than air without breakdown.</p>"}, {"uid": "c9_q8", "ch": 9, "showCh": false, "id": "R147 (2)", "section": "Review & Q&P", "q": "In capacitor charging and discharging, why is a resistor required to connect with the capacitor?", "a": "<p>Placing a resistor in the charging and discharging circuits slows down the charging and discharging processes. The product of the resistance $R$ and the capacitance $C$ is called the time constant of a capacitor charging or discharging process.</p>"}, {"uid": "c9_q9", "ch": 9, "showCh": false, "id": "R151 (1)", "section": "Review & Q&P", "q": "In which connection of the capacitors has each capacitor the same charge?", "a": "<p>Series connection.</p>"}, {"uid": "c9_q10", "ch": 9, "showCh": false, "id": "R151 (2)", "section": "Review & Q&P", "q": "In which connection of the capacitors is the potential difference of each capacitor the same?", "a": "<p>Parallel connection.</p>"}, {"uid": "c9_q11", "ch": 9, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "What is a capacitor?", "a": "<p>A capacitor is an electrical device that stores electrical energy in the form of an electric field.</p>"}, {"uid": "c9_q12", "ch": 9, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What are the types of electrolytic capacitors?", "a": "<p>There are mainly two types of electrolytic capacitors: tantalum and aluminum.</p>"}, {"uid": "c9_q13", "ch": 9, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "Express some uses of electrolytic capacitors.", "a": "<p>Electrolytic capacitors are used for filtering and smoothing rectified alternating voltage, buffering, and interim storage for direct voltage supplies, uninterruptible power supplies, and energy storage in flash devices.</p>"}, {"uid": "c9_q14", "ch": 9, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "Express some uses of capacitors.", "a": "<p>Capacitors are used:</p><ul class='list-disc pl-5 space-y-1'><li>for storing energy, which can be used by the device for temporary power outages whenever they need additional power.</li><li>for blocking DC current after getting fully charged while allowing AC current to pass through it.</li><li>as filters in power supplies and energy-storing devices in electronic flash units.</li><li>to tune the frequency of radio receivers and to eliminate sparking in automobile ignition systems.</li><li>as sensors for measuring humidity, fuel levels, mechanical strain, etc.</li></ul>"}, {"uid": "c9_q15", "ch": 9, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "What is the charge of a capacitor?", "a": "<p>The magnitude of the charge on each conductor of the capacitor is called the charge of the capacitor.</p>"}, {"uid": "c9_q16", "ch": 9, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "What is the potential difference of the capacitor?", "a": "<p>The potential difference between the two conductors of the capacitor is called the potential difference of the capacitor.</p>"}, {"uid": "c9_q17", "ch": 9, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Define the capacitance of the capacitor.", "a": "<p>The capacitance of a capacitor is defined as the ratio of the charge to the potential difference of the capacitor: $$C = \\frac{Q}{V}$$ where $C$ is the capacitance of the capacitor, $Q$ is the charge of the capacitor, and $V$ is the potential difference between the two conductors of the capacitor.</p>"}, {"uid": "c9_q18", "ch": 9, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "What do you understand by 1 farad?", "a": "<p>If the potential difference of the capacitor is $1\\text{ volt}$ when it is given a charge of $1\\text{ coulomb}$, its capacitance is $1\\text{ coulomb per volt}$ or $1\\text{ farad}$ ($1\\text{ F}$).</p>"}, {"uid": "c9_q19", "ch": 9, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "Express the sub-multiple units of farad.", "a": "<p>The sub-multiple units of farad are:<br>$1\\text{ microfarad } (\\mu\\text{F}) = 10^{-6}\\text{ F}$, &nbsp; $1\\text{ nanofarad } (\\text{nF}) = 10^{-9}\\text{ F}$, &nbsp; $1\\text{ picofarad } (\\text{pF}) = 10^{-12}\\text{ F}$</p>"}, {"uid": "c9_q20", "ch": 9, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "On which factors does the capacitance of a capacitor depend?", "a": "<p>It depends on the size and shape of the capacitor and the nature of the insulator between the two conductors.</p>"}, {"uid": "c9_q21", "ch": 9, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "What is the electric capacity of the conductor?", "a": "<p>The amount of charge given to a conductor to change its potential by one unit is called the electric capacity of the conductor.</p>"}, {"uid": "c9_q22", "ch": 9, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Write down the equation to calculate the electric capacity of a conductor.", "a": "<p>$$C = \\frac{Q}{V}$$ where $C$ is the electric capacity of a conductor, $Q$ is the charge of the conductor, and $V$ is the potential difference of the conductor.</p>"}, {"uid": "c9_q23", "ch": 9, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "What do you understand by charging a capacitor?", "a": "<p>Charging a capacitor means connecting the capacitor to a battery.</p>"}, {"uid": "c9_q24", "ch": 9, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "What do you understand by dielectric constant of that insulating material?", "a": "<p>The ratio of the capacitance of a capacitor with an insulating material between its two conductors to the capacitance of that capacitor with a vacuum between its two conductors is called the dielectric constant of that insulating material.</p>"}, {"uid": "c9_q25", "ch": 9, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What happens to the potential difference of the capacitor, when a charged capacitor is disconnected from a battery, and the air medium between its plates is replaced by an insulating material (dielectrics)?", "a": "<p>When a charged capacitor is disconnected from a battery, and the air medium between its plates is replaced by an insulating material (dielectric), the potential difference of the capacitor is found to decrease.</p>"}, {"uid": "c9_q26", "ch": 9, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "Express the advantages of using dielectric in a capacitor.", "a": "<p>A dielectric provides the following advantages:</p><ul class='list-disc pl-5 space-y-1'><li>increase in capacitance,</li><li>increase in maximum operating voltage,</li><li>possible mechanical support between the plates, which allows the plates to be close together without electrical contact, thereby decreasing $d$ and increasing $C$.</li></ul>"}, {"uid": "c9_q27", "ch": 9, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "Write down the capacitor charging equation.", "a": "<p>$$V_C = V_0\\left(1 - e^{-t/RC}\\right)$$ where $V_C =$ potential difference of the capacitor, $V_0 =$ charging voltage, $R =$ resistance of the resistor, $C =$ capacitance of the capacitor, $t =$ time taken.</p>"}, {"uid": "c9_q28", "ch": 9, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "Write down the capacitor discharging equation.", "a": "<p>$$V_C = V_0\\left(e^{-t/R_L C}\\right)$$ where $V_C =$ potential difference of the capacitor, $V_0 =$ charging voltage, $R_L =$ resistance of the load resistor, $C =$ capacitance of the capacitor, $t =$ time taken.</p>"}, {"uid": "c9_q29", "ch": 9, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "How many types of capacitor combinations are there? Express them.", "a": "<p>There are two types of combination: (i) parallel and (ii) series.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
