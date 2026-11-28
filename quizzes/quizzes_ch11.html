@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 11: Electromagnetic Induction & AC Distribution Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" selected>Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" >Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 11 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 11: Electromagnetic Induction & AC Distribution
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                လျှပ်စစ်သံလိုက်လှုံ့ဆော်မှု၊ Transformers နှင့် AC လျှပ်စစ်ဖြန့်ဖြူးရေး
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch10.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 10</a>
+            <a href="quizzes_ch12.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 12 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch11";
+        const RAW_QUESTIONS = [{"uid": "c11_q1", "ch": 11, "showCh": false, "id": "R175 (1)", "section": "Review & Q&P", "q": "What is the major difference between AC and DC?", "a": "<p>In a direct current (DC) the electrons flow steadily in the same direction all the time. In the alternating current (AC), the direction of the flow of electrons changes periodically.</p>"}, {"uid": "c11_q2", "ch": 11, "showCh": false, "id": "R175 (2)", "section": "Review & Q&P", "q": "Why is the AC (alternating current) better than the DC in long-distance distribution of electrical power?", "a": "<p>The power loss in the long-distance distribution of electrical power is directly proportional to the square of the current ($P = I^2 R$). For the distribution of alternating current, the voltage is stepped up, and the current is stepped down by using transformers. So the power loss can be minimized. The voltage and the current of the direct current cannot be changed using transformers.</p>"}, {"uid": "c11_q3", "ch": 11, "showCh": false, "id": "R175 (3)", "section": "Review & Q&P", "q": "Is the current from the outlet of the telephone charger, AC or DC?", "a": "<p>DC.</p>"}, {"uid": "c11_q4", "ch": 11, "showCh": false, "id": "R178", "section": "Review & Q&P", "q": "Differentiate between the magnetic flux and the magnetic flux density.", "a": "<p>The <strong>magnetic flux</strong>, $\\Phi_B$, is a measurement of the total magnetic lines of force which pass through a surface area. It is a scalar.</p><p>The <strong>magnetic flux density</strong> or the magnetic induction $\\vec{B}$ is the number of magnetic lines of force passing perpendicularly through a unit area of material. It is a vector.</p>"}, {"uid": "c11_q5", "ch": 11, "showCh": false, "id": "Q02", "section": "Review & Q&P", "q": "(i) What is electromagnetic induction? (ii) State the methods by which an induced emf can be produced in a coil.", "a": "<p><strong>(i)</strong> A current flows through a loop of wire whenever there is a change in the magnetic lines of force through the loop. This phenomenon is called electromagnetic induction.</p><p><strong>(ii)</strong> An induced emf can be produced in a coil by switching the current of another coil near it ON and OFF, or by the motion of a current-carrying coil near it, or by the motion of a magnet near it.</p>"}, {"uid": "c11_q6", "ch": 11, "showCh": false, "id": "Q05", "section": "Review & Q&P", "q": "Explain how the magnetic flux passing through a surface can be zero when the magnetic field is not zero.", "a": "<p>The magnetic flux passing through a surface can be zero although the magnetic field is not zero when the field is parallel to the plane of the loop ($\\theta = 90^{\\circ}$): $$\\Phi_B = B A \\cos\\theta = B A \\cos 90^{\\circ} = 0$$</p>"}, {"uid": "c11_q7", "ch": 11, "showCh": false, "id": "R179 (1)", "section": "Review & Q&P", "q": "Why is Faraday's law important?", "a": "<p>Faraday's law is important because it expresses how the change in magnetic flux through a wire loop produces an induced emf, and an induced current in another wire loop near it. Faraday's law gives the working principle of generators.</p>"}, {"uid": "c11_q8", "ch": 11, "showCh": false, "id": "R179 (2)", "section": "Review & Q&P", "q": "What does the negative sign indicate in Faraday's law of electromagnetic induction formula?", "a": "<p>In Faraday's law of electromagnetic induction formula, the negative sign indicates the direction of the induced emf. The induced emf is always in a direction that opposes the change in the original magnetic flux that causes it.</p>"}, {"uid": "c11_q9", "ch": 11, "showCh": false, "id": "Q03", "section": "Review & Q&P", "q": "Suggest any two ways to increase the output voltage of an AC generator.", "a": "<p>The induced emf in a closed loop of wire is: $E = N B A \\omega \\sin\\omega t$.</p><p>The induced electromotive force of a generator ($E$) can be increased by:</p><ol class='list-roman pl-5 space-y-1'><li>increasing the speed of rotation of the coil ($\\omega$),</li><li>increasing the area of the coil ($A$),</li><li>increasing the number of turns in the coil ($N$), and</li><li>using stronger magnets ($B$).</li></ol>"}, {"uid": "c11_q10", "ch": 11, "showCh": false, "id": "Q04", "section": "Review & Q&P", "q": "In an AC generator, the speed at which the coil rotates is tripled. How would this affect (i) the frequency (ii) the maximum output voltage?", "a": "<p>If the speed of the rotating coil is tripled:</p><p><strong>(i)</strong> the frequency of the alternating current will be tripled ($\\omega = 2\\pi f$).<br><strong>(ii)</strong> the maximum output voltage will be tripled ($E_m = N B A \\omega$).</p>"}, {"uid": "c11_q11", "ch": 11, "showCh": false, "id": "Q06", "section": "Review & Q&P", "q": "Discuss the factors determining the induced emf in a closed loop of wire.", "a": "<p>The induced emf in a closed loop of wire is: $$E = N B A \\omega \\sin\\omega t$$</p><p>The factors determining the induced emf in a closed loop of wire are: (i) the number of turns in the wire loop ($N$), (ii) the strength of the magnetic field ($B$), (iii) the area of the wire loop ($A$), and (iv) the speed of rotation of the wire loop ($\\omega$).</p>"}, {"uid": "c11_q12", "ch": 11, "showCh": false, "id": "Q07", "section": "Review & Q&P", "q": "(i) Does the induced emf in a circuit depend on the resistance of the circuit? (ii) Does the induced current depend on the resistance of the circuit?", "a": "<p><strong>(i)</strong> No. &nbsp;&nbsp; <strong>(ii)</strong> Yes.</p>"}, {"uid": "c11_q13", "ch": 11, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "What is a transformer? How does a step-up transformer differ from a step-down transformer?", "a": "<p>A <strong>transformer</strong> is an electromagnetic device that can raise or lower the alternating voltage or current.</p><div class='overflow-x-auto mt-2'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>Step-up Transformer</th><th class='p-2 border border-slate-300 text-left'>Step-down Transformer</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>The secondary has more turns than the primary ($N_s > N_p$).</td><td class='p-2 border border-slate-300'>The secondary has fewer turns than the primary ($N_s < N_p$).</td></tr><tr><td class='p-2 border border-slate-300'>It steps up the voltage ($V_s > V_p$).</td><td class='p-2 border border-slate-300'>It steps down the voltage ($V_s < V_p$).</td></tr><tr><td class='p-2 border border-slate-300'>It steps down the current ($I_s < I_p$).</td><td class='p-2 border border-slate-300'>It steps up the current ($I_s > I_p$).</td></tr></tbody></table></div>"}, {"uid": "c11_q14", "ch": 11, "showCh": false, "id": "R185 (1)", "section": "Review & Q&P", "q": "What devices must be used to deliver (i) thousands of volts at the terminals of a sparking plug of a motorcar engine using a $12\\text{ V}$ battery, (ii) $12\\text{ V}$ AC from $220\\text{ V}$ AC mains?", "a": "<p><strong>(i)</strong> The induction coil. &nbsp;&nbsp; <strong>(ii)</strong> The step-down transformer.</p>"}, {"uid": "c11_q15", "ch": 11, "showCh": false, "id": "R185 (2, i)", "section": "Review & Q&P", "q": "Explain why a transformer will not work on DC.", "a": "<p>A transformer will not work on DC. Unless there is a changing current in the input coil, no voltage is induced in the output coil. DC is constant, and not a changing current.</p>"}, {"uid": "c11_q16", "ch": 11, "showCh": false, "id": "R185 (2, ii)", "section": "Review & Q&P", "q": "Explain why the core of a transformer needs to be laminated. [p. 185]", "a": "<p>The core of a transformer needs to be laminated. The use of a laminated iron (mumetal) core is to minimize the power loss due to the induced eddy current flowing in the core.</p>"}, {"uid": "c11_q17", "ch": 11, "showCh": false, "id": "R185 (2, iii)", "section": "Review & Q&P", "q": "Explain why if a transformer increases the voltage, it reduces the current.", "a": "<p>If a transformer increases the voltage, it reduces the current because: $$\\text{power input} = \\text{power output}$$ $$V_p I_p = V_s I_s$$ A transformer that increases the voltage will reduce the current in the same proportion, and vice versa.</p>"}, {"uid": "c11_q18", "ch": 11, "showCh": false, "id": "R185 (3)", "section": "Review & Q&P", "q": "(i) Which type of transformer must be used to change a high current and a low alternating voltage into a lower current and a higher alternating voltage?<br>(ii) Which type of transformer must be used to change a low current and a high alternating voltage into a higher current and a lower alternating voltage?<br>(iii) Which type of transformer is used in a welding machine? Why?", "a": "<p><strong>(i)</strong> The step-up transformer [When $N_s > N_p$, $V_s > V_p$ and $I_s < I_p$].<br><strong>(ii)</strong> The step-down transformer [When $N_s < N_p$, $V_s < V_p$ and $I_s > I_p$].<br><strong>(iii)</strong> The step-down transformer. Because the current has to be stepped up, we need to step down the voltage. The welding machine needs a higher current.</p>"}, {"uid": "c11_q19", "ch": 11, "showCh": false, "id": "R187", "section": "Review & Q&P", "q": "Explain why AC rather than DC is used for transmitting electrical power.", "a": "<p>The advantage of alternating current is that it is relatively easy to change the voltage of the current. The inevitable loss of energy that occurs when the current is distributed over long distances is far smaller with alternating current (at high voltage and low current) than with direct current.</p>"}, {"uid": "c11_q20", "ch": 11, "showCh": false, "id": "R190 (1)", "section": "Review & Q&P", "q": "Why are the lamps in the lighting circuit connected in parallel? [p. 190]", "a": "<p>Since the bulbs are connected in parallel, the other bulbs are not affected when one bulb is switched ON or OFF. The lighted bulbs continue to be ON no matter what is done to the other bulbs. If the bulbs are in series, switching OFF one bulb would switch OFF all the others.</p>"}, {"uid": "c11_q21", "ch": 11, "showCh": false, "id": "R190 (2)", "section": "Review & Q&P", "q": "Why are the fuses and switches placed on the live wire of the circuit? [p. 190]", "a": "<p>The live wire (L) is a dangerous wire as it carries a high voltage while the neutral wire (N) is usually at zero volt. That is why the fuses and switches are placed on the live wire of the circuit.</p>"}, {"uid": "c11_q22", "ch": 11, "showCh": false, "id": "R190 (3)", "section": "Review & Q&P", "q": "Mention the appropriate wiring circuit for the following electrical appliances: (i) bulb and fluorescent lamp, (ii) electric iron, (iii) water pump motor, (iv) electric stove.", "a": "<div class='overflow-x-auto'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>Electrical Appliances</th><th class='p-2 border border-slate-300 text-left'>Appropriate Wiring Circuit</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>(i) Bulb and fluorescent lamp</td><td class='p-2 border border-slate-300'>Lighting circuit</td></tr><tr><td class='p-2 border border-slate-300'>(ii) Electric iron</td><td class='p-2 border border-slate-300'>Heating circuit</td></tr><tr><td class='p-2 border border-slate-300'>(iii) Water pump motor</td><td class='p-2 border border-slate-300'>Power circuit</td></tr><tr><td class='p-2 border border-slate-300'>(iv) Electric stove</td><td class='p-2 border border-slate-300'>Heating circuit</td></tr></tbody></table></div>"}, {"uid": "c11_q23", "ch": 11, "showCh": false, "id": "R193 (1)", "section": "Review & Q&P", "q": "Which quantity determines whether you receive an electrical shock?", "a": "<p>Electric current. (More than $5\\text{ mA}$ current is enough to feel an electrical shock.)</p>"}, {"uid": "c11_q24", "ch": 11, "showCh": false, "id": "R193 (2)", "section": "Review & Q&P", "q": "What causes / is caused by the overheating of cable?", "a": "<p>A short circuit will produce a large current, and overheating of cables. Overuse of extension cords and multiple plug adapters on the same circuit can also cause overheating of cables. Overheating of cable will produce a large current, and the large amount of heat generated can melt the insulation, and start a fire.</p>"}, {"uid": "c11_q25", "ch": 11, "showCh": false, "id": "Q08", "section": "Review & Q&P", "q": "Why are ordinary circuit breakers and fuses not effective in preventing shocks?", "a": "<p>A circuit breaker turns OFF when the current rises above the specified value. A fuse wire will melt and break the circuit when the current is greater than the specified value. The specified currents of the circuit breaker and fuse wire are much greater than the shock currents. Thus, ordinary circuit breakers and fuses are not effective in preventing shocks.</p>"}, {"uid": "c11_q26", "ch": 11, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "What are the types of electric current? Name them.", "a": "<p>Electric current can be classified into two types: direct current (DC) and alternating current (AC).</p>"}, {"uid": "c11_q27", "ch": 11, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What is direct current?", "a": "<p>The direct current is a steady unidirectional current. In a direct current, the electrons flow steadily in the same direction all the time.</p>"}, {"uid": "c11_q28", "ch": 11, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "What is an alternating current?", "a": "<p>An alternating current is a current that reverses its direction at regular time intervals. In the alternating current, the direction of the flow of the electrons changes periodically.</p>"}, {"uid": "c11_q29", "ch": 11, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "When is an emf induced in a coil?", "a": "<p>When a coil of wire having quite a few turns is rotated a few cycles per second continuously in a magnetic field, an emf is induced in the coil.</p>"}, {"uid": "c11_q30", "ch": 11, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "Write down the equation for induced emf.", "a": "<p>$$E = E_m \\sin\\omega t$$ where $E =$ the induced emf at a particular instant, $E_m =$ the maximum value of emf, $\\omega =$ the angular velocity of the rotating coil.</p>"}, {"uid": "c11_q31", "ch": 11, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "What is electromagnetic induction?", "a": "<p>A current flows through a loop of wire whenever there is a change in the magnetic lines of force through the loop. This phenomenon is called electromagnetic induction.</p>"}, {"uid": "c11_q32", "ch": 11, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "What is the magnetic flux density?", "a": "<p>The magnetic flux density or magnetic induction is the number of magnetic lines of force passing perpendicularly through a unit area of material.</p>"}, {"uid": "c11_q33", "ch": 11, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "Express the relation between the magnetic flux density $B$ and the magnetic field strength (magnetic field intensity) $H$.", "a": "<p>$$B = \\mu H$$ where $\\mu$ is the permeability of the medium in which the magnetic field exists.</p>"}, {"uid": "c11_q34", "ch": 11, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "What is the magnetic flux?", "a": "<p>The magnetic flux is a measurement of the total magnetic lines of force which passes through a surface area.</p>"}, {"uid": "c11_q35", "ch": 11, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "Express the equivalent unit of weber in terms of SI units, as well as in terms of MKSA units.", "a": "<p>$$1\\text{ Wb} = 1\\text{ V s} = 1\\text{ kg m}^2\\text{s}^{-2}\\text{A}^{-1}$$</p>"}, {"uid": "c11_q36", "ch": 11, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "Express Faraday's law of electromagnetic induction.", "a": "<p>The magnitude of the induced emf in a wire loop is directly proportional to the rate of change of magnetic flux through that loop. For one turn of a wire loop, the induced emf is: $$E = -\\frac{d\\Phi_B}{dt}$$</p>"}, {"uid": "c11_q37", "ch": 11, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "State the equation of Faraday's law for a wire loop with $N$ identical turns.", "a": "<p>For a wire loop with $N$ identical turns, the induced emf is: $$E = -N\\frac{d\\Phi_B}{dt}$$ where $E =$ induced emf, $N =$ number of turns of wire, $\\Phi_B =$ magnetic flux.</p>"}, {"uid": "c11_q38", "ch": 11, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "When will there be no induced current in a wire loop?", "a": "<p>If the wire loop is not moving or is moving parallel to the magnetic field lines, there is no induced emf or induced current.</p>"}, {"uid": "c11_q39", "ch": 11, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "State Lenz's law.", "a": "<p>An induced emf is always in a direction that opposes the change in the original magnetic flux that causes it.</p>"}, {"uid": "c11_q40", "ch": 11, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "Why can we say Lenz's law is a good example of the conservation of energy?", "a": "<p>It shows how the energy from the mechanical work done against the opposing force experienced by the moving magnet or rotating coil is transformed into electrical energy.</p>"}, {"uid": "c11_q41", "ch": 11, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "In the induction coil, why is a capacitor connected across the platinum contacts?", "a": "<p>A capacitor is connected across the platinum contacts to prevent sparking and wearing away of platinum contacts.</p>"}, {"uid": "c11_q42", "ch": 11, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "What is a generator?", "a": "<p>A generator is an electromagnetic device, which converts mechanical energy into electrical energy.</p>"}, {"uid": "c11_q43", "ch": 11, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "What does a simple AC generator consist of?", "a": "<p>A simple AC generator consists of a rectangular coil mounted on an axle which is fixed between the poles of a permanent magnet.</p>"}, {"uid": "c11_q44", "ch": 11, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What is the purpose of the use of a laminated iron (mumetal) core in the transformer?", "a": "<p>The use of a laminated iron (mumetal) core is to minimize the power loss due to the induced current flowing in the core.</p>"}, {"uid": "c11_q45", "ch": 11, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "In a transformer, where does the changing magnetic field in the primary coil induce current?", "a": "<p>In the secondary coil and in the iron core.</p>"}, {"uid": "c11_q46", "ch": 11, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "What must be done to improve the efficiency of a transformer?", "a": "<p>To improve the efficiency of a transformer, the following features should be taken into consideration:</p><ul class='list-disc pl-5 space-y-1'><li>Soft magnetic material should be used to make the core.</li><li>A laminated core should be used to reduce the flow of eddy current.</li><li>A special core design should be used to ensure that the magnetic field from the primary coil completely links with the secondary coil.</li><li>Low-resistance copper wires should be used as coils to reduce energy loss in the form of heat.</li></ul>"}, {"uid": "c11_q47", "ch": 11, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "Why can a transformer connected to a DC supply be damaged?", "a": "<p>A transformer connected to a DC supply can be damaged as the high current flowing through the input coil can make it overheat.</p>"}, {"uid": "c11_q48", "ch": 11, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "What is the practical way to reduce power losses in the long-distance transmission of electricity?", "a": "<p>The practical way to reduce power losses in the long-distance transmission of electricity is to reduce the magnitude of the transmission current by stepping up the voltage.</p>"}, {"uid": "c11_q49", "ch": 11, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "What is the advantage of the grid system in the distribution of electricity?", "a": "<p>An advantage of the grid system is that the power stations in the areas where the demand is low can be used to supply the areas where the demand is high.</p>"}, {"uid": "c11_q50", "ch": 11, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "What are the two wires which carry electricity into the house?", "a": "<p>The live wire (L) and the neutral wire (N).</p>"}, {"uid": "c11_q51", "ch": 11, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "How is the electricity fed into the house?", "a": "<p>The electricity is fed into the house through the main fuse, meter, main switch and then to the distribution box.</p>"}, {"uid": "c11_q52", "ch": 11, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What are the advantages of connecting bulbs in parallel?", "a": "<p>Since the bulbs are connected in parallel, the other bulbs are not affected when one bulb is switched ON or OFF. The lighted bulbs continue to be ON no matter what is done to the other bulbs. If the bulbs are connected in series, switching OFF one bulb would switch OFF all the others.</p>"}, {"uid": "c11_q53", "ch": 11, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "How is the lighting circuit arranged sequentially?", "a": "<p>A lighting circuit must be connected sequentially as the live wire, the fuse, the switch, the load and then to the neutral wire.</p>"}, {"uid": "c11_q54", "ch": 11, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "What is a power circuit in an electrical system?", "a": "<p>A power circuit is an electrical system in which distribution points are connected to the main supply in a continuous closed circuit.</p>"}, {"uid": "c11_q55", "ch": 11, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "How is the ring main arranged in the house wiring system?", "a": "<p>In a ring main circuit, the live, the neutral and the earth wires form a loop of cable going from the consumer unit to all of the sockets in turn and then back to the consumer unit.</p>"}, {"uid": "c11_q56", "ch": 11, "showCh": false, "id": "Q31", "section": "Extra Questions", "q": "Which devices can use the power circuit?", "a": "<p>Power circuit is for the use of radios, computers, televisions, table lamps and other appliances that consume less power than heating appliances.</p>"}, {"uid": "c11_q57", "ch": 11, "showCh": false, "id": "Q32", "section": "Extra Questions", "q": "Why do appliances connected to the heating circuits have their own circuits?", "a": "<p>Appliances connected to the heating circuits use relatively large amounts of power so they have their own circuits.</p>"}, {"uid": "c11_q58", "ch": 11, "showCh": false, "id": "Q33", "section": "Extra Questions", "q": "What must be taken care of in using electricity?", "a": "<p>The circuit must not be overloaded. The fuse of each circuit must be connected in the live (L) lead.</p>"}, {"uid": "c11_q59", "ch": 11, "showCh": false, "id": "Q34", "section": "Extra Questions", "q": "What are the parallel circuits branched from the consumer unit of house wiring system?", "a": "<p>They are lights, cookers, immersion heaters, and mains sockets.</p>"}, {"uid": "c11_q60", "ch": 11, "showCh": false, "id": "Q35", "section": "Extra Questions", "q": "What is a circuit breaker?", "a": "<p>A circuit breaker is an automatic switch which trips (turns OFF) when the current rises above the specified value.</p>"}, {"uid": "c11_q61", "ch": 11, "showCh": false, "id": "Q36", "section": "Extra Questions", "q": "Explain about the earthing system.", "a": "<p>An earthing system or grounding system connects specific parts of an electric power system with the ground, typically the earth's conductive surface, for safety and functional purposes.</p>"}, {"uid": "c11_q62", "ch": 11, "showCh": false, "id": "Q37", "section": "Extra Questions", "q": "What can electrical faults in appliances or circuits cause?", "a": "<p>Electrical faults in appliances or circuits can cause fires, electric shocks, as well as electrocution to users.</p>"}, {"uid": "c11_q63", "ch": 11, "showCh": false, "id": "Q38", "section": "Extra Questions", "q": "What are the causes of the danger of electricity?", "a": "<p>The dangers of electricity can be traced to three possible causes: damaged insulation, overheating of cables and damp conditions.</p>"}, {"uid": "c11_q64", "ch": 11, "showCh": false, "id": "Q39", "section": "Extra Questions", "q": "What are the wires required to form a complete circuit?", "a": "<p>The live wire and the neutral wire.</p>"}, {"uid": "c11_q65", "ch": 11, "showCh": false, "id": "Q40", "section": "Extra Questions", "q": "What do you understand by overheating of cable?", "a": "<p>The overheating of cables is due to the extremely large current flowing in the conducting wires under certain conditions such as a short circuit or overloading.</p>"}, {"uid": "c11_q66", "ch": 11, "showCh": false, "id": "Q41", "section": "Extra Questions", "q": "When can a short circuit result?", "a": "<p>A short circuit can result when the live wire makes electrical contact with the neutral wire due to damaged insulation between them.</p>"}, {"uid": "c11_q67", "ch": 11, "showCh": false, "id": "Q42", "section": "Extra Questions", "q": "What is the consequence of a short circuit?", "a": "<p>A short circuit will produce a large current and the large amount of heat generated can melt the insulation, and start a fire.</p>"}, {"uid": "c11_q68", "ch": 11, "showCh": false, "id": "Q43", "section": "Extra Questions", "q": "How can electrical overload occur?", "a": "<p>Overuse of extension cords and multiple plug adapters on the same circuit are typical causes of an electrical overload by placing too much current on the circuit.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
