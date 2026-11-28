@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 12: Electronics and Digital Systems Quizzes - Grade 12 Physics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Myanmar:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+            background-color: #f8fafc;
+        }
+        .myanmar-text {
+            line-height: 1.75;
+        }
+        .answer-box {
+            transition: all 0.25s ease;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .answer-box { display: block !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- Top Sticky Navigation -->
+    <nav class="no-print sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="../quizzes.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 bg-slate-100 hover:bg-amber-50 px-3 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Quizzes Menu</span>
+                </a>
+                <a href="../index.html" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 px-2.5 py-1.5 rounded-lg transition-colors">
+                    <i class="fas fa-home"></i>
+                    <span class="hidden sm:inline">Portal</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <select id="chapterJump" onchange="if(this.value) window.location.href=this.value" class="text-xs sm:text-sm font-semibold bg-slate-100 border border-slate-200 text-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <option value="quizzes_all.html" >All Chapters (1–13)</option>
+                    <option value="quizzes_ch1.html" >Chapter 1: Rotational Motion</option>
+                    <option value="quizzes_ch2.html" >Chapter 2: Forces in Circular Motion</option>
+                    <option value="quizzes_ch3.html" >Chapter 3: Fluid Dynamics</option>
+                    <option value="quizzes_ch4.html" >Chapter 4: Sources of Energy and Environmental Impacts</option>
+                    <option value="quizzes_ch5.html" >Chapter 5: Heat Transfer and Thermodynamics</option>
+                    <option value="quizzes_ch6.html" >Chapter 6: Effects and Characteristics of Sound</option>
+                    <option value="quizzes_ch7.html" >Chapter 7: Applications of Light and Optical Instruments</option>
+                    <option value="quizzes_ch8.html" >Chapter 8: Interference and Diffraction of Light</option>
+                    <option value="quizzes_ch9.html" >Chapter 9: Capacitor and Capacitance</option>
+                    <option value="quizzes_ch10.html" >Chapter 10: Electrical Energy, Power and Heating Effect</option>
+                    <option value="quizzes_ch11.html" >Chapter 11: Electromagnetic Induction & AC Distribution</option>
+                    <option value="quizzes_ch12.html" selected>Chapter 12: Electronics and Digital Systems</option>
+                    <option value="quizzes_ch13.html" >Chapter 13: Modern Physics</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white py-10 px-4 sm:px-6 shadow-md">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
+                    Chapter 12 Quizzes
+                </span>
+                <span class="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-xs font-semibold">
+                    Dr. Vince's Review + Q&amp;P + Extra Questions
+                </span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2">
+                Chapter 12: Electronics and Digital Systems
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base myanmar-text max-w-3xl">
+                အီလက်ထရွန်းနစ် ပစ္စည်းများ၊ Logic Gates နှင့် ဆက်သွယ်ရေးစနစ်များ
+            </p>
+
+            <!-- Progress Summary -->
+            <div class="mt-6 bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-4 text-xs sm:text-sm">
+                    <div>
+                        <span class="text-slate-300">Total Questions:</span>
+                        <strong id="statTotal" class="text-white font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-emerald-300">Mastered:</span>
+                        <strong id="statMastered" class="text-emerald-300 font-bold ml-1">0</strong>
+                    </div>
+                    <div class="h-4 w-px bg-white/20"></div>
+                    <div>
+                        <span class="text-amber-300">Needs Review:</span>
+                        <strong id="statReview" class="text-amber-300 font-bold ml-1">0</strong>
+                    </div>
+                </div>
+                <div class="w-full sm:w-48 bg-slate-700/70 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-emerald-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Workspace -->
+    <main class="max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow">
+
+        <!-- Search & Control Bar -->
+        <div class="no-print bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6 space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="မေးခွန်းကုဒ် (R003, Q01) သို့မဟုတ် စကားလုံး ရှာရန်..."
+                        class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="toggleAllBtn" onclick="toggleAllAnswers()"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-colors">
+                        <i class="fas fa-eye"></i>
+                        <span>Show All Answers</span>
+                    </button>
+                    <button onclick="shuffleQuestions()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Shuffle Order">
+                        <i class="fas fa-random"></i>
+                        <span class="hidden sm:inline">Shuffle</span>
+                    </button>
+                    <button onclick="window.print()"
+                        class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" title="Print Worksheet">
+                        <i class="fas fa-print"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+                <button data-filter="all" onclick="setFilter('all')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition-colors">All</button>
+                <button data-filter="Review & Q&P" onclick="setFilter('Review & Q&P')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Review &amp; Q&amp;P</button>
+                <button data-filter="Extra Questions" onclick="setFilter('Extra Questions')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Extra Questions</button>
+                <button data-filter="mastered" onclick="setFilter('mastered')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                    <i class="fas fa-check-circle mr-1"></i>Mastered
+                </button>
+                <button data-filter="review" onclick="setFilter('review')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 transition-colors">
+                    <i class="fas fa-star mr-1"></i>Needs Review
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Result Count -->
+        <div class="flex items-center justify-between mb-4 text-xs sm:text-sm text-slate-500">
+            <span id="visibleCount">Showing 0 questions</span>
+            <button onclick="resetProgress()" class="no-print text-xs text-slate-400 hover:text-rose-600 underline">Reset Progress</button>
+        </div>
+
+        <!-- Quiz Cards Container -->
+        <div id="quizContainer" class="space-y-4"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+            <i class="fas fa-search text-4xl text-slate-300 mb-3"></i>
+            <p class="text-slate-600 font-semibold">No matching quiz questions found.</p>
+            <p class="text-slate-400 text-sm mt-1">Try clearing your search or switching filter tabs.</p>
+        </div>
+
+        <!-- Bottom Chapter Navigation -->
+        <div class="no-print mt-10 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <a href="quizzes_ch11.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-200 hover:border-amber-400 text-slate-700 font-semibold text-sm shadow-sm transition-colors"><i class="fas fa-arrow-left text-amber-600"></i> Chapter 11</a>
+            <a href="quizzes_ch13.html" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-amber-600 text-white font-semibold text-sm shadow-sm transition-colors">Chapter 13 <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print bg-white border-t border-slate-200 py-8 px-4 mt-12">
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 Grade 12 Physics Quiz Bank &bull; Dr. Vince Curriculum</p>
+            <div class="flex items-center gap-4">
+                <a href="../quizzes.html" class="hover:text-amber-600 font-medium">All Chapters</a>
+                <a href="../index.html" class="hover:text-indigo-600 font-medium">Main Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY = "g12_physics_quiz_ch12";
+        const RAW_QUESTIONS = [{"uid": "c12_q1", "ch": 12, "showCh": false, "id": "R201 (1)", "section": "Review & Q&P", "q": "Where are LEDs used?", "a": "<ol class='list-decimal pl-5 space-y-1'><li>LEDs are typically used as ON/OFF indicator lights in electrical appliances such as televisions, VCRs (video cassette recorders), video cameras, computers, and stereos.</li><li>They are also used to display numbers in some alarm clocks, radios, and microwave ovens.</li><li>Another use is very large video displays at sporting events and concerts.</li></ol>"}, {"uid": "c12_q2", "ch": 12, "showCh": false, "id": "R201 (2)", "section": "Review & Q&P", "q": "Describe some applications of LEDs.", "a": "<ol class='list-decimal pl-5 space-y-1'><li>LEDs are typically used as ON/OFF indicator lights in electrical appliances such as televisions, VCRs (video cassette recorders), video cameras, computers, and stereos.</li><li>They are also used to display numbers in some alarm clocks, radios, and microwave ovens.</li><li>Another use is very large video displays at sporting events and concerts.</li></ol>"}, {"uid": "c12_q3", "ch": 12, "showCh": false, "id": "R202", "section": "Review & Q&P", "q": "Explain the function of a photodiode.", "a": "<p>When the photodiode is illuminated with light (photons) of energy $h\\nu$ greater than the energy gap $E_g$ of the semiconductor used in it, then electron-hole pairs are generated due to the absorption of photons. When an external load is connected, the current flows.</p>"}, {"uid": "c12_q4", "ch": 12, "showCh": false, "id": "R203 (1)", "section": "Review & Q&P", "q": "What effect does an increase in light intensity on LDR have on its resistance?", "a": "<p>An increase in light intensity on the LDR decreases the resistance of the LDR.</p>"}, {"uid": "c12_q5", "ch": 12, "showCh": false, "id": "Q01", "section": "Review & Q&P", "q": "Which electrical component is used to switch ON or OFF the street lamps depending on the brightness of the street?<br>A. LED &nbsp;&nbsp; B. LDR &nbsp;&nbsp; C. thermistor", "a": "<p><strong>B. LDR.</strong></p>"}, {"uid": "c12_q6", "ch": 12, "showCh": false, "id": "R203 (2)", "section": "Review & Q&P", "q": "What is a thermistor? What is the main difference between NTC and PTC thermistors?", "a": "<p>A <strong>thermistor</strong> is a temperature sensor that exhibits a large change in resistance proportional to a change in temperature.</p><p>As temperature increases, the resistance of the <strong>NTC thermistor</strong> decreases whereas the resistance of the <strong>PTC thermistor</strong> increases.</p>"}, {"uid": "c12_q7", "ch": 12, "showCh": false, "id": "R205", "section": "Review & Q&P", "q": "What are the disadvantages of LCDs?", "a": "<ul class='list-disc pl-5 space-y-1'><li>Liquid crystals do not emit light directly, instead using a backlight or reflector to produce images.</li><li>A polarizing glass filter is needed.</li><li>Loss of contrast in high temperature.</li><li>Produces heat, and consumes much electrical energy.</li></ul>"}, {"uid": "c12_q8", "ch": 12, "showCh": false, "id": "R219 (1)", "section": "Review & Q&P", "q": "Give a short note on the communication system. [p. 219]", "a": "<p>In general, an electronic communication system is composed of the transmission, reception, and processing of information between two or more locations with the use of electronic circuits.</p><p>The basic components of an electronic communication system are the <strong>transmitter</strong>, <strong>communication channel or medium</strong>, <strong>receiver</strong>, and <strong>noise</strong> (as a source of disturbance).</p><div class='my-3 overflow-x-auto'><svg viewBox='0 0 620 155' class='w-full max-w-xl mx-auto bg-white rounded-xl border border-slate-200 p-2'><rect x='10' y='30' width='90' height='45' rx='6' fill='#fef3c7' stroke='#d97706' stroke-width='1.5'/><text x='55' y='50' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Information</text><text x='55' y='63' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Source</text><line x1='100' y1='52' x2='155' y2='52' stroke='#0f172a' stroke-width='2'/><polygon points='155,52 147,48 147,56' fill='#0f172a'/><rect x='155' y='30' width='85' height='45' rx='6' fill='#e2e8f0' stroke='#475569' stroke-width='1.5'/><text x='197' y='56' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Transmitter</text><line x1='240' y1='52' x2='290' y2='52' stroke='#0f172a' stroke-width='2'/><polygon points='290,52 282,48 282,56' fill='#0f172a'/><rect x='290' y='30' width='80' height='45' rx='6' fill='#e2e8f0' stroke='#475569' stroke-width='1.5'/><text x='330' y='56' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Channel</text><line x1='370' y1='52' x2='420' y2='52' stroke='#0f172a' stroke-width='2'/><polygon points='420,52 412,48 412,56' fill='#0f172a'/><rect x='420' y='30' width='80' height='45' rx='6' fill='#e2e8f0' stroke='#475569' stroke-width='1.5'/><text x='460' y='56' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Receiver</text><line x1='500' y1='52' x2='540' y2='52' stroke='#0f172a' stroke-width='2'/><polygon points='540,52 532,48 532,56' fill='#0f172a'/><rect x='540' y='30' width='72' height='45' rx='6' fill='#fef3c7' stroke='#d97706' stroke-width='1.5'/><text x='576' y='50' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Use of</text><text x='576' y='63' font-size='10' text-anchor='middle' font-weight='bold' fill='#0f172a'>Info</text><rect x='295' y='105' width='70' height='32' rx='6' fill='#dbeafe' stroke='#2563eb' stroke-dasharray='3,3'/><text x='330' y='125' font-size='10' text-anchor='middle' font-weight='bold' fill='#1e3a8a'>Noise</text><line x1='330' y1='105' x2='330' y2='75' stroke='#2563eb' stroke-width='1.5' stroke-dasharray='3,3'/><polygon points='330,75 326,83 334,83' fill='#2563eb'/></svg></div>"}, {"uid": "c12_q9", "ch": 12, "showCh": false, "id": "R219 (2)", "section": "Review & Q&P", "q": "Write short notes on the components of a simple radio receiver.", "a": "<p>The radio receiver comprises roughly six pieces: <strong>antenna, tuner, rf (radio frequency) amplifier, diode detector, af (audio frequency) amplifier, and speaker</strong>.</p>"}, {"uid": "c12_q10", "ch": 12, "showCh": false, "id": "Q12", "section": "Review & Q&P", "q": "Can sound travel very far? Why? Which device can be used to transmit sounds over long distance? What range of frequencies do the radio waves have? [p. 221]", "a": "<p>No. In air sound waves travel at $320\\text{ m/s}$ and are readily damped or attenuated. Thus, sound waves themselves will not travel very far.</p><p><strong>Radio</strong> can be used to transmit sounds over long distances. The radio waves have frequencies in kilohertz ($\\text{kHz}$) and megahertz ($\\text{MHz}$) ranges well above the audible frequencies.</p>"}, {"uid": "c12_q11", "ch": 12, "showCh": false, "id": "Q13", "section": "Review & Q&P", "q": "What is meant by \"AM and FM\"?", "a": "<p><strong>AM</strong> means <strong>Amplitude Modulation</strong>, and <strong>FM</strong> means <strong>Frequency Modulation</strong>.</p><p>When the amplitude of a high-frequency carrier wave is changed in accordance with the intensity of the signal, it is called amplitude modulation (AM).</p><p>When the frequency of a carrier wave is changed in accordance with the intensity of the signal, it is called frequency modulation (FM).</p>"}, {"uid": "c12_q12", "ch": 12, "showCh": false, "id": "Q14", "section": "Review & Q&P", "q": "What are the differences between FM and AM? Explain with illustrative diagrams. [p. 221]", "a": "<div class='overflow-x-auto'><table class='w-full text-xs sm:text-sm border border-slate-300 rounded-lg'><thead><tr class='bg-slate-100'><th class='p-2 border border-slate-300 text-left'>FM (Frequency Modulation)</th><th class='p-2 border border-slate-300 text-left'>AM (Amplitude Modulation)</th></tr></thead><tbody><tr><td class='p-2 border border-slate-300'>(i) The amplitude of carrier wave remains constant with modulation.</td><td class='p-2 border border-slate-300'>(i) The amplitude of carrier wave changes with modulation.</td></tr><tr><td class='p-2 border border-slate-300'>(ii) The carrier frequency changes according to the strength of the modulating signal.</td><td class='p-2 border border-slate-300'>(ii) The carrier amplitude changes according to the strength of the modulating signal.</td></tr><tr><td class='p-2 border border-slate-300'>(iii) The carrier frequency changes with modulation.</td><td class='p-2 border border-slate-300'>(iii) The carrier frequency remains constant with modulation.</td></tr><tr><td class='p-2 border border-slate-300'>(iv) FM radio ranges in a higher spectrum from $88$ to $108\\text{ MHz}$ (or $1200$ to $2400\\text{ bits/s}$).</td><td class='p-2 border border-slate-300'>(iv) AM radio ranges from $535$ to $1705\\text{ kHz}$ (or up to $1200\\text{ bits/s}$).</td></tr></tbody></table></div>"}, {"uid": "c12_q13", "ch": 12, "showCh": false, "id": "Q1", "section": "Extra Questions", "q": "What is electronics?", "a": "<p>The branch of physics and technology concerned with the design of circuits using transistors, integrated circuits and microchips, and also with the behaviour and movement of electrons in a semiconductor, conductor or vacuum is known as electronics.</p>"}, {"uid": "c12_q14", "ch": 12, "showCh": false, "id": "Q2", "section": "Extra Questions", "q": "What do the following words, TRIAC, SCR, and LED, refer to?", "a": "<p><strong>TRIAC</strong> = Three terminal AC switch<br><strong>SCR</strong> = Silicon Controlled Rectifier<br><strong>LED</strong> = Light Emitting Diode</p>"}, {"uid": "c12_q15", "ch": 12, "showCh": false, "id": "Q3", "section": "Extra Questions", "q": "What is a Zener diode?", "a": "<p>A zener diode is a heavily doped semiconductor (silicon or germanium) pn junction diode.</p>"}, {"uid": "c12_q16", "ch": 12, "showCh": false, "id": "Q4", "section": "Extra Questions", "q": "What is the zener effect?", "a": "<p>When the voltage across the terminals of a zener diode is reversed, and the potential reaches the zener voltage ($V_z$) (breakdown voltage or knee voltage), the junction breaks down, and the current flows in the reverse direction. This effect is known as the zener effect.</p>"}, {"uid": "c12_q17", "ch": 12, "showCh": false, "id": "Q5", "section": "Extra Questions", "q": "How many types of reverse breakdown regions are there in a zener diode?", "a": "<p>There are two types of reverse breakdown regions in a zener diode: (i) avalanche breakdown and (ii) zener breakdown.</p>"}, {"uid": "c12_q18", "ch": 12, "showCh": false, "id": "Q6", "section": "Extra Questions", "q": "Where does avalanche breakdown occur in a zener diode?", "a": "<p>Avalanche breakdown occurs at the junctions which are lightly doped and have wide depletion layers.</p>"}, {"uid": "c12_q19", "ch": 12, "showCh": false, "id": "Q7", "section": "Extra Questions", "q": "Where does zener breakdown occur in a zener diode?", "a": "<p>Zener breakdown occurs at the junctions which are heavily doped and have narrow depletion layers.</p>"}, {"uid": "c12_q20", "ch": 12, "showCh": false, "id": "Q8", "section": "Extra Questions", "q": "What is an LED?", "a": "<p>An LED is a semiconductor light source that emits light when a current flows through it.</p>"}, {"uid": "c12_q21", "ch": 12, "showCh": false, "id": "Q9", "section": "Extra Questions", "q": "What are the visible lights that an LED emits?", "a": "<p>The visible lights that an LED emits are usually orange, red, yellow, or green (and blue).</p>"}, {"uid": "c12_q22", "ch": 12, "showCh": false, "id": "Q10", "section": "Extra Questions", "q": "Express any two materials used to make LED.", "a": "<p>Gallium Arsenide ($\\text{GaAs}$), Gallium Phosphide ($\\text{GaP}$), Gallium Arsenide Phosphide ($\\text{GaAsP}$), Silicon Carbide ($\\text{SiC}$), or Gallium Indium Nitride ($\\text{GaInN}$), mixed together at different ratios to produce a distinct wavelength of colour.</p>"}, {"uid": "c12_q23", "ch": 12, "showCh": false, "id": "Q11", "section": "Extra Questions", "q": "How do LEDs produce white light?", "a": "<p>Using a blue LED with a phosphor coating to convert the blue light to white light by a process called fluorescence.</p>"}, {"uid": "c12_q24", "ch": 12, "showCh": false, "id": "Q12", "section": "Extra Questions", "q": "Express the working function of a photodiode.", "a": "<p>When the photodiode is illuminated with light (photons) of energy $h\\nu$ greater than the energy gap $E_g$ of the semiconductor ($h\\nu > E_g$), electron-hole pairs are generated due to the absorption of photons. When an external load is connected, the current (photocurrent) flows.</p>"}, {"uid": "c12_q25", "ch": 12, "showCh": false, "id": "Q13", "section": "Extra Questions", "q": "What is photocurrent?", "a": "<p>Photocurrent is an electric current produced by electromagnetic radiation in the photoelectric effect, photovoltaic effect, or photoconductivity.</p>"}, {"uid": "c12_q26", "ch": 12, "showCh": false, "id": "Q14", "section": "Extra Questions", "q": "What are used to make photoresistors?", "a": "<p>Special semiconductor crystal, such as cadmium sulfide or lead sulfide, is used to make photoresistors.</p>"}, {"uid": "c12_q27", "ch": 12, "showCh": false, "id": "Q15", "section": "Extra Questions", "q": "What is a light activated relay switch?", "a": "<p>It is an automatic switch that trips the relay whenever the light intensity changes.</p>"}, {"uid": "c12_q28", "ch": 12, "showCh": false, "id": "Q16", "section": "Extra Questions", "q": "What is a thermistor?", "a": "<p>A thermistor is a temperature sensor that exhibits a large change in resistance proportional to a change in temperature.</p>"}, {"uid": "c12_q29", "ch": 12, "showCh": false, "id": "Q17", "section": "Extra Questions", "q": "How many types of thermistors are there? Express them.", "a": "<p>Two types: Negative Temperature Coefficient (NTC) thermistor and Positive Temperature Coefficient (PTC) thermistor.</p>"}, {"uid": "c12_q30", "ch": 12, "showCh": false, "id": "Q18", "section": "Extra Questions", "q": "What is the difference between the NTC and the PTC thermistors?", "a": "<p>As temperature increases, the resistance of the NTC thermistor decreases whereas the resistance of the PTC thermistor increases.</p>"}, {"uid": "c12_q31", "ch": 12, "showCh": false, "id": "Q19", "section": "Extra Questions", "q": "What are liquid crystals?", "a": "<p>Liquid crystals are a state of matter which has properties between those of conventional liquids and those of solid crystals.</p>"}, {"uid": "c12_q32", "ch": 12, "showCh": false, "id": "Q20", "section": "Extra Questions", "q": "What is a liquid crystal display?", "a": "<p>A liquid crystal display (LCD) is a flat-panel display or other electronically modulated optical device that uses the light-modulating properties of liquid crystals combined with polarizers.</p>"}, {"uid": "c12_q33", "ch": 12, "showCh": false, "id": "Q21", "section": "Extra Questions", "q": "Why do LCDs consume much less power than LEDs and gas-plasma displays?", "a": "<p>Because they work on the principle of blocking light rather than emitting it.</p>"}, {"uid": "c12_q34", "ch": 12, "showCh": false, "id": "Q22", "section": "Extra Questions", "q": "What is a polarizer?", "a": "<p>A polarizer is an optical device that can convert an unpolarized light wave into a polarized light wave by blocking all other vibrations.</p>"}, {"uid": "c12_q35", "ch": 12, "showCh": false, "id": "Q23", "section": "Extra Questions", "q": "What is digital electronics?", "a": "<p>Digital electronics is a field of electronics involving the study of digital signals, and the engineering of devices that use or produce them.</p>"}, {"uid": "c12_q36", "ch": 12, "showCh": false, "id": "Q24", "section": "Extra Questions", "q": "Discuss some advantages of LED.", "a": "<ul class='list-disc pl-5 space-y-1'><li>Very low voltage ($1$ to $2\\text{ V}$) and current ($5$ to $20\\text{ mA}$) are enough to drive the LED.</li><li>Less power consumption (less than $150\\text{ mW}$).</li><li>Fast action and no warmup time (response time is about $10\\text{ ns}$).</li><li>Miniature in size and hence lightweight.</li><li>Long life span and ruggedness.</li><li>More reliable, and more efficient to use under cold temperatures.</li></ul>"}, {"uid": "c12_q37", "ch": 12, "showCh": false, "id": "Q25", "section": "Extra Questions", "q": "Express the disadvantages of LED.", "a": "<ul class='list-disc pl-5 space-y-1'><li>A slight excess in voltage or current can damage the device.</li><li>The device is known to have a much wider bandwidth (wavelength spread) compared to the laser.</li><li>The device temperature affects the radiant output power and wavelength.</li><li>Little effective in wide-area illumination.</li></ul>"}, {"uid": "c12_q38", "ch": 12, "showCh": false, "id": "Q26", "section": "Extra Questions", "q": "What is the advantage of digital circuits when compared to analog circuits?", "a": "<p>An advantage of digital circuits when compared to analog circuits is that signals represented digitally can be transmitted without degradation caused by noise.</p>"}, {"uid": "c12_q39", "ch": 12, "showCh": false, "id": "Q27", "section": "Extra Questions", "q": "What is an integrated circuit?", "a": "<p>An integrated circuit, sometimes called a chip or microchip, is a semiconductor wafer on which thousands or millions of tiny resistors, capacitors, and transistors are fabricated.</p>"}, {"uid": "c12_q40", "ch": 12, "showCh": false, "id": "Q28", "section": "Extra Questions", "q": "Where are digital ICs used?", "a": "<p>Digital ICs are used in computers, computer networks, modems, and frequency counters.</p>"}, {"uid": "c12_q41", "ch": 12, "showCh": false, "id": "Q29", "section": "Extra Questions", "q": "How many types of logic packages are available?", "a": "<p>There are two common types of packages available, known as TTL (Transistor-Transistor Logic) and CMOS (Complementary Metal Oxide Semiconductor).</p>"}, {"uid": "c12_q42", "ch": 12, "showCh": false, "id": "Q30", "section": "Extra Questions", "q": "What is Boolean algebra?", "a": "<p>Boolean algebra is a branch of mathematics where variables can have only two possible values: false and true, or logic values $0$ and $1$.</p>"}, {"uid": "c12_q43", "ch": 12, "showCh": false, "id": "Q31", "section": "Extra Questions", "q": "Express the commutative law of addition for Boolean algebra.", "a": "<p>$$A + B = B + A$$</p>"}, {"uid": "c12_q44", "ch": 12, "showCh": false, "id": "Q32", "section": "Extra Questions", "q": "Express the commutative law of multiplication for Boolean algebra.", "a": "<p>$$AB = BA$$</p>"}, {"uid": "c12_q45", "ch": 12, "showCh": false, "id": "Q33", "section": "Extra Questions", "q": "Express the associative law of addition for Boolean algebra.", "a": "<p>$$A + (B + C) = (A + B) + C$$</p>"}, {"uid": "c12_q46", "ch": 12, "showCh": false, "id": "Q34", "section": "Extra Questions", "q": "Express the associative law of multiplication for Boolean algebra.", "a": "<p>$$A(BC) = (AB)C$$</p>"}, {"uid": "c12_q47", "ch": 12, "showCh": false, "id": "Q35", "section": "Extra Questions", "q": "Express the distributive law for Boolean algebra.", "a": "<p>$$A(B + C) = AB + AC$$</p>"}, {"uid": "c12_q48", "ch": 12, "showCh": false, "id": "Q36", "section": "Extra Questions", "q": "What is an electronic communication system composed of?", "a": "<p>In general, an electronic communication system is composed of the transmission, reception, and processing of information between two or more locations with the use of electronic circuits.</p>"}, {"uid": "c12_q49", "ch": 12, "showCh": false, "id": "Q37", "section": "Extra Questions", "q": "What are the basic components of an electronic communication system?", "a": "<p>The basic components of an electronic communication system are the transmitter, the communication channel or the medium, the receiver, and noise (as a source of disturbance).</p>"}, {"uid": "c12_q50", "ch": 12, "showCh": false, "id": "Q38", "section": "Extra Questions", "q": "When is a communication system claimed to be reliable?", "a": "<p>A communication system is claimed to be reliable and effective only when errors are minimized within the process.</p>"}, {"uid": "c12_q51", "ch": 12, "showCh": false, "id": "Q39", "section": "Extra Questions", "q": "What is an information source?", "a": "<p>An information source is a device that generates information (messages or data) to be transmitted.</p>"}, {"uid": "c12_q52", "ch": 12, "showCh": false, "id": "Q40", "section": "Extra Questions", "q": "What are the messages generated by the source of the communication system?", "a": "<p>The messages generated by the source may be voice, audio, music, video, or data (text, image, email, temperature, pressure, etc.).</p>"}, {"uid": "c12_q53", "ch": 12, "showCh": false, "id": "Q41", "section": "Extra Questions", "q": "What is a transmitter of a communication system?", "a": "<p>It is the arrangement that processes the message signal into an appropriate form for transmission and subsequent reception.</p>"}, {"uid": "c12_q54", "ch": 12, "showCh": false, "id": "Q42", "section": "Extra Questions", "q": "What is the channel of the communication system?", "a": "<p>The channel of the communication system is the medium that connects the transmitter and the receiver to convey the information.</p>"}, {"uid": "c12_q55", "ch": 12, "showCh": false, "id": "Q43", "section": "Extra Questions", "q": "What is noise in the communication system?", "a": "<p>Noise is an unwanted signal that disturbs, interferes, and affects the transmitted signal.</p>"}, {"uid": "c12_q56", "ch": 12, "showCh": false, "id": "Q44", "section": "Extra Questions", "q": "How is the measure of noise usually expressed?", "a": "<p>The measure of noise is usually expressed in terms of SNR (signal-to-noise ratio).</p>"}, {"uid": "c12_q57", "ch": 12, "showCh": false, "id": "Q45", "section": "Extra Questions", "q": "In the communication system, how is external noise often minimized?", "a": "<p>External noise is often minimized and eliminated by the appropriate design of the channel, and shielding of cables.</p>"}, {"uid": "c12_q58", "ch": 12, "showCh": false, "id": "Q46", "section": "Extra Questions", "q": "What is the receiver in the communication system?", "a": "<p>The receiver reconstructs the transmitted signal and delivers it to the destination called the user of information.</p>"}, {"uid": "c12_q59", "ch": 12, "showCh": false, "id": "Q47", "section": "Extra Questions", "q": "In the communication system, what do the receivers contain?", "a": "<p>In the communication system, the receivers contain amplifiers, oscillators, mixers, tuned circuits, filters, and a demodulator (detector).</p>"}, {"uid": "c12_q60", "ch": 12, "showCh": false, "id": "Q48", "section": "Extra Questions", "q": "How many basic modes of communication are there? Express them.", "a": "<p>There are two basic modes of communication: point-to-point and broadcast.</p>"}, {"uid": "c12_q61", "ch": 12, "showCh": false, "id": "Q49", "section": "Extra Questions", "q": "What is point-to-point mode of communication?", "a": "<p>In point-to-point mode, communication takes place over a link between a single transmitter and a single receiver.</p>"}, {"uid": "c12_q62", "ch": 12, "showCh": false, "id": "Q50", "section": "Extra Questions", "q": "Give an example of a point-to-point mode of communication.", "a": "<p>Telephony.</p>"}, {"uid": "c12_q63", "ch": 12, "showCh": false, "id": "Q51", "section": "Extra Questions", "q": "Give some examples of broadcast modes of communication.", "a": "<p>Radios and televisions.</p>"}, {"uid": "c12_q64", "ch": 12, "showCh": false, "id": "Q52", "section": "Extra Questions", "q": "What are the wires that are most popular for wired communication?", "a": "<p>The wires that are most popular for wired communication are: co-axial, parallel wire lines, twisted pair cables, and optical fibre.</p>"}, {"uid": "c12_q65", "ch": 12, "showCh": false, "id": "Q53", "section": "Extra Questions", "q": "What is a transducer?", "a": "<p>A transducer is a device for converting a non-electrical input into an electrical signal, or vice versa.</p>"}, {"uid": "c12_q66", "ch": 12, "showCh": false, "id": "Q54", "section": "Extra Questions", "q": "What is transduction?", "a": "<p>The process of converting energy from one form to another is known as transduction.</p>"}, {"uid": "c12_q67", "ch": 12, "showCh": false, "id": "Q55", "section": "Extra Questions", "q": "What are the parts contained in a transducer?", "a": "<p>A transducer contains two parts that are closely related to each other: the sensing element and the transduction element.</p>"}, {"uid": "c12_q68", "ch": 12, "showCh": false, "id": "Q56", "section": "Extra Questions", "q": "What is a sensor?", "a": "<p>The sensor is a device which produces a measurable response due to a change in physical conditions.</p>"}, {"uid": "c12_q69", "ch": 12, "showCh": false, "id": "Q57", "section": "Extra Questions", "q": "What is modulation?", "a": "<p>The process of changing some characteristics (e.g. amplitude, frequency, or phase) of a carrier wave (e.g. radio wave) in accordance with the intensity of the signal is known as modulation.</p>"}, {"uid": "c12_q70", "ch": 12, "showCh": false, "id": "Q58", "section": "Extra Questions", "q": "What are the basic types of modulation?", "a": "<p>There are three basic types of modulation: (i) Amplitude modulation (AM), (ii) Frequency modulation (FM), and (iii) Phase modulation (PM).</p>"}, {"uid": "c12_q71", "ch": 12, "showCh": false, "id": "Q59", "section": "Extra Questions", "q": "What is phase modulation?", "a": "<p>Phase modulation is a modulation pattern that encodes information as variations in the instantaneous phase of a carrier wave.</p>"}, {"uid": "c12_q72", "ch": 12, "showCh": false, "id": "Q60", "section": "Extra Questions", "q": "What is demodulation?", "a": "<p>The process of recovering the audio signal from the modulated wave is known as demodulation or detection.</p>"}, {"uid": "c12_q73", "ch": 12, "showCh": false, "id": "Q61", "section": "Extra Questions", "q": "What is a demodulator?", "a": "<p>A demodulator is an electronic circuit (or computer program in a software defined radio) that is used to recover the information content from the modulated carrier wave.</p>"}, {"uid": "c12_q74", "ch": 12, "showCh": false, "id": "Q62", "section": "Extra Questions", "q": "What is the function of a receiving antenna in a radio receiver?", "a": "<p>The receiving antenna picks up the radio signals which are coupled to a tuning circuit (through the inductor $L$) and by adjusting a variable capacitor, a particular radio frequency can be selected.</p>"}, {"uid": "c12_q75", "ch": 12, "showCh": false, "id": "Q63", "section": "Extra Questions", "q": "Give some examples of communication systems.", "a": "<p>Examples: internet, public switched telephone network, intranet and extranet, smart home systems, and television.</p>"}];
+
+        let questions = [...RAW_QUESTIONS];
+        let currentFilter = "all";
+        let currentChapterFilter = "all";
+        let allRevealed = false;
+        let progressState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressState));
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = RAW_QUESTIONS.length;
+            let mastered = 0;
+            let review = 0;
+            RAW_QUESTIONS.forEach(item => {
+                const st = progressState[item.uid];
+                if (st === "mastered") mastered++;
+                if (st === "review") review++;
+            });
+            document.getElementById("statTotal").textContent = total;
+            document.getElementById("statMastered").textContent = mastered;
+            document.getElementById("statReview").textContent = review;
+            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+            document.getElementById("progressBar").style.width = pct + "%";
+        }
+
+        function setStatus(uid, status) {
+            if (progressState[uid] === status) {
+                delete progressState[uid];
+            } else {
+                progressState[uid] = status;
+            }
+            saveProgress();
+            renderQuestions();
+        }
+
+        function resetProgress() {
+            if (confirm("Reset your mastered/review progress for this page?")) {
+                progressState = {};
+                saveProgress();
+                renderQuestions();
+            }
+        }
+
+        function toggleSingleAnswer(uid) {
+            const box = document.getElementById("ans-" + uid);
+            const btn = document.getElementById("btn-" + uid);
+            if (!box) return;
+            const isHidden = box.classList.contains("hidden");
+            if (isHidden) {
+                box.classList.remove("hidden");
+                btn.innerHTML = '<i class="fas fa-eye-slash mr-1.5"></i>Hide Answer';
+            } else {
+                box.classList.add("hidden");
+                btn.innerHTML = '<i class="fas fa-eye mr-1.5"></i>Show Answer (အဖြေကြည့်ရန်)';
+            }
+        }
+
+        function toggleAllAnswers() {
+            allRevealed = !allRevealed;
+            const btn = document.getElementById("toggleAllBtn");
+            btn.innerHTML = allRevealed
+                ? '<i class="fas fa-eye-slash"></i><span>Hide All Answers</span>'
+                : '<i class="fas fa-eye"></i><span>Show All Answers</span>';
+            renderQuestions();
+        }
+
+        function shuffleQuestions() {
+            for (let i = questions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [questions[i], questions[j]] = [questions[j], questions[i]];
+            }
+            renderQuestions();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll(".filter-btn").forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.classList.remove("bg-slate-100", "text-slate-600", "bg-emerald-50", "text-emerald-700", "bg-amber-50", "text-amber-700");
+                    btn.classList.add("bg-slate-900", "text-white");
+                } else {
+                    btn.classList.remove("bg-slate-900", "text-white");
+                    if (btn.dataset.filter === "mastered") {
+                        btn.classList.add("bg-emerald-50", "text-emerald-700");
+                    } else if (btn.dataset.filter === "review") {
+                        btn.classList.add("bg-amber-50", "text-amber-700");
+                    } else {
+                        btn.classList.add("bg-slate-100", "text-slate-600");
+                    }
+                }
+            });
+            renderQuestions();
+        }
+
+        function setChapterFilter(chNum) {
+            currentChapterFilter = chNum;
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const container = document.getElementById("quizContainer");
+            const emptyState = document.getElementById("emptyState");
+
+            const filtered = questions.filter(item => {
+                if (currentChapterFilter !== "all" && String(item.ch) !== String(currentChapterFilter)) return false;
+                const st = progressState[item.uid];
+                if (currentFilter === "mastered" && st !== "mastered") return false;
+                if (currentFilter === "review" && st !== "review") return false;
+                if (currentFilter !== "all" && currentFilter !== "mastered" && currentFilter !== "review") {
+                    if (item.section !== currentFilter) return false;
+                }
+                if (query) {
+                    const hay = (item.id + " " + item.q + " " + item.a + " ch" + item.ch).toLowerCase();
+                    if (!hay.includes(query)) return false;
+                }
+                return true;
+            });
+
+            document.getElementById("visibleCount").textContent = `Showing ${filtered.length} of ${RAW_QUESTIONS.length} questions`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = "";
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            emptyState.classList.add("hidden");
+
+            container.innerHTML = filtered.map((item, idx) => {
+                const st = progressState[item.uid];
+                const isMastered = st === "mastered";
+                const isReview = st === "review";
+                const borderClass = isMastered
+                    ? "border-emerald-300 bg-emerald-50/20"
+                    : isReview
+                        ? "border-amber-300 bg-amber-50/20"
+                        : "border-slate-200 bg-white";
+
+                const sectionBadge = item.section === "Review & Q&P"
+                    ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                    : "bg-slate-100 text-slate-700 border-slate-200";
+
+                const chTag = item.showCh
+                    ? `<span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-100 text-amber-800">Ch ${item.ch}</span>`
+                    : "";
+
+                return `
+                <article class="rounded-2xl border ${borderClass} shadow-sm p-5 sm:p-6 transition-all">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-white text-xs font-extrabold tracking-wide">
+                                ${item.id}
+                            </span>
+                            ${chTag}
+                            <span class="px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${sectionBadge}">
+                                ${item.section}
+                            </span>
+                        </div>
+                        <div class="no-print flex items-center gap-1.5">
+                            <button onclick="setStatus('${item.uid}', 'mastered')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isMastered ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-500 border-slate-200 hover:border-emerald-400 hover:text-emerald-600'}"
+                                title="Mark as Mastered">
+                                <i class="fas fa-check mr-1"></i>Got it
+                            </button>
+                            <button onclick="setStatus('${item.uid}', 'review')"
+                                class="px-2.5 py-1 rounded-lg text-xs font-semibold border transition-colors ${isReview ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-slate-500 border-slate-200 hover:border-amber-400 hover:text-amber-600'}"
+                                title="Mark for Review">
+                                <i class="fas fa-star mr-1"></i>Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-slate-900 font-semibold text-base sm:text-lg leading-relaxed mb-4">
+                        ${item.q}
+                    </div>
+
+                    <div class="no-print flex items-center justify-between">
+                        <button id="btn-${item.uid}" onclick="toggleSingleAnswer('${item.uid}')"
+                            class="inline-flex items-center text-xs sm:text-sm font-semibold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-3.5 py-2 rounded-xl transition-colors">
+                            <i class="fas ${allRevealed ? 'fa-eye-slash' : 'fa-eye'} mr-1.5"></i>${allRevealed ? 'Hide Answer' : 'Show Answer (အဖြေကြည့်ရန်)'}
+                        </button>
+                    </div>
+
+                    <div id="ans-${item.uid}" class="answer-box ${allRevealed ? '' : 'hidden'} mt-4 pt-4 border-t border-slate-200/80 text-slate-700 text-sm sm:text-base leading-relaxed space-y-2">
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                            <i class="fas fa-lightbulb mr-1"></i> Answer:
+                        </div>
+                        ${item.a}
+                    </div>
+                </article>`;
+            }).join("");
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([container]).catch(() => {});
+            }
+        }
+
+        document.getElementById("searchInput").addEventListener("input", renderQuestions);
+        updateStats();
+        renderQuestions();
+    </script>
+</body>
+</html>
