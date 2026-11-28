@@ -854,9 +854,45 @@
       .toolbar, .card-actions, .toast { display: none !important; }
       .diag-card { break-inside: avoid; box-shadow: none; }
     }
-  </style>
+  .home-button {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+
+.home-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+@media print {
+  .home-button {
+    display: none;
+  }
+}
+</style>
 </head>
 <body>
+   <a
+  href="https://berrycran976-star.github.io/G12-phy-all-chapters/index.html"
+  class="home-button"
+  title="Return to Main Menu"
+>
+  🏠 Main Menu
+</a> 
 <svg aria-hidden="true" height="0" id="shared-svg-defs" style="position:absolute;pointer-events:none;" width="0">
 <defs>
 <marker id="arr-ink" markerheight="6.5" markerwidth="6.5" orient="auto-start-reverse" refx="8.5" refy="5" viewbox="0 0 10 10">
